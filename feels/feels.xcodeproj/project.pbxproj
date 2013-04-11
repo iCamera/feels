@@ -36,6 +36,12 @@
 		295186E91717401D007E09F5 /* PassthroughShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 295186E11717401D007E09F5 /* PassthroughShader.vsh */; };
 		295186EA1717401D007E09F5 /* TestShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 295186E21717401D007E09F5 /* TestShader.fsh */; };
 		295186EB1717401D007E09F5 /* TestShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 295186E31717401D007E09F5 /* TestShader.vsh */; };
+		295186ED17174159007E09F5 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 295186EC17174159007E09F5 /* MediaPlayer.framework */; };
+		295186FF1717539E007E09F5 /* VideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 295186FC1717539D007E09F5 /* VideoPlayerView.m */; };
+		295187001717539E007E09F5 /* VideoPlayerItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 295186FE1717539D007E09F5 /* VideoPlayerItem.m */; };
+		29518705171753CE007E09F5 /* NSTimer+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 29518704171753CE007E09F5 /* NSTimer+Block.m */; };
+		2951870B1717543C007E09F5 /* UIView+Additional.m in Sources */ = {isa = PBXBuildFile; fileRef = 295187081717543C007E09F5 /* UIView+Additional.m */; };
+		2951870C1717543C007E09F5 /* UIView_DrawRect.m in Sources */ = {isa = PBXBuildFile; fileRef = 2951870A1717543C007E09F5 /* UIView_DrawRect.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +84,17 @@
 		295186E11717401D007E09F5 /* PassthroughShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = PassthroughShader.vsh; sourceTree = "<group>"; };
 		295186E21717401D007E09F5 /* TestShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TestShader.fsh; sourceTree = "<group>"; };
 		295186E31717401D007E09F5 /* TestShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TestShader.vsh; sourceTree = "<group>"; };
+		295186EC17174159007E09F5 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		295186FB1717539D007E09F5 /* VideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayerView.h; sourceTree = "<group>"; };
+		295186FC1717539D007E09F5 /* VideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerView.m; sourceTree = "<group>"; };
+		295186FD1717539D007E09F5 /* VideoPlayerItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayerItem.h; sourceTree = "<group>"; };
+		295186FE1717539D007E09F5 /* VideoPlayerItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerItem.m; sourceTree = "<group>"; };
+		29518703171753CE007E09F5 /* NSTimer+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Block.h"; sourceTree = "<group>"; };
+		29518704171753CE007E09F5 /* NSTimer+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Block.m"; sourceTree = "<group>"; };
+		295187071717543C007E09F5 /* UIView+Additional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Additional.h"; sourceTree = "<group>"; };
+		295187081717543C007E09F5 /* UIView+Additional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Additional.m"; sourceTree = "<group>"; };
+		295187091717543C007E09F5 /* UIView_DrawRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIView_DrawRect.h; sourceTree = "<group>"; };
+		2951870A1717543C007E09F5 /* UIView_DrawRect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIView_DrawRect.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				295186ED17174159007E09F5 /* MediaPlayer.framework in Frameworks */,
 				295186DA17173DC9007E09F5 /* CoreVideo.framework in Frameworks */,
 				295186D817173DB4007E09F5 /* QuartzCore.framework in Frameworks */,
 				295186D617173D46007E09F5 /* CoreMedia.framework in Frameworks */,
@@ -120,6 +138,7 @@
 		2951869C17173643007E09F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				295186EC17174159007E09F5 /* MediaPlayer.framework */,
 				295186D917173DC9007E09F5 /* CoreVideo.framework */,
 				295186D717173DB4007E09F5 /* QuartzCore.framework */,
 				295186D517173D46007E09F5 /* CoreMedia.framework */,
@@ -136,6 +155,8 @@
 		295186A317173643007E09F5 /* feels */ = {
 			isa = PBXGroup;
 			children = (
+				2951870D17175858007E09F5 /* Data models */,
+				29518701171753B2007E09F5 /* Categories */,
 				295186CD17173CC0007E09F5 /* Constants */,
 				295186C017173C53007E09F5 /* Camera stuff */,
 				295186AC17173644007E09F5 /* AppDelegate.h */,
@@ -174,6 +195,10 @@
 				295186C417173C81007E09F5 /* GLView.m */,
 				295186C517173C81007E09F5 /* Video.h */,
 				295186C617173C81007E09F5 /* Video.m */,
+				295186FB1717539D007E09F5 /* VideoPlayerView.h */,
+				295186FC1717539D007E09F5 /* VideoPlayerView.m */,
+				295186FD1717539D007E09F5 /* VideoPlayerItem.h */,
+				295186FE1717539D007E09F5 /* VideoPlayerItem.m */,
 			);
 			path = "Camera stuff";
 			sourceTree = "<group>";
@@ -199,6 +224,43 @@
 				295186E31717401D007E09F5 /* TestShader.vsh */,
 			);
 			name = Shaders;
+			sourceTree = "<group>";
+		};
+		29518701171753B2007E09F5 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				2951870617175420007E09F5 /* UIView */,
+				29518702171753C4007E09F5 /* NSTimer */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		29518702171753C4007E09F5 /* NSTimer */ = {
+			isa = PBXGroup;
+			children = (
+				29518703171753CE007E09F5 /* NSTimer+Block.h */,
+				29518704171753CE007E09F5 /* NSTimer+Block.m */,
+			);
+			name = NSTimer;
+			sourceTree = "<group>";
+		};
+		2951870617175420007E09F5 /* UIView */ = {
+			isa = PBXGroup;
+			children = (
+				295187071717543C007E09F5 /* UIView+Additional.h */,
+				295187081717543C007E09F5 /* UIView+Additional.m */,
+				295187091717543C007E09F5 /* UIView_DrawRect.h */,
+				2951870A1717543C007E09F5 /* UIView_DrawRect.m */,
+			);
+			name = UIView;
+			path = ../UIView;
+			sourceTree = "<group>";
+		};
+		2951870D17175858007E09F5 /* Data models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Data models";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -282,6 +344,11 @@
 				295186C817173C81007E09F5 /* GLView.m in Sources */,
 				295186C917173C81007E09F5 /* Video.m in Sources */,
 				295186CC17173C98007E09F5 /* CameraViewController.m in Sources */,
+				295186FF1717539E007E09F5 /* VideoPlayerView.m in Sources */,
+				295187001717539E007E09F5 /* VideoPlayerItem.m in Sources */,
+				29518705171753CE007E09F5 /* NSTimer+Block.m in Sources */,
+				2951870B1717543C007E09F5 /* UIView+Additional.m in Sources */,
+				2951870C1717543C007E09F5 /* UIView_DrawRect.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
