@@ -33,7 +33,7 @@
     
     _currentVideo = [[VideoPlayerView alloc] init];
     _currentVideo.item = playerItem;
-    _currentVideo.frame = self.view.bounds;
+    _currentVideo.frame = CGRectMake(0, 0, 568, 320);
     
     id firstBlock = ^(VideoPlayerItem *item){
         [self startNextVideo];
@@ -45,12 +45,12 @@
     
     
     VideoPlayerItem *playerItem2 = [[VideoPlayerItem alloc] init];
-    playerItem.mainURL = [NSURL URLWithString:@"http://andreas.animalweekend.com/test_clip.mov"];
+    playerItem2.mainURL = [NSURL URLWithString:@"http://andreas.animalweekend.com/test_clip2.mov"];
     
     _nextVideo = [[VideoPlayerView alloc] init];
     _nextVideo.item = playerItem2;
 
-    _nextVideo.frame = self.view.bounds;
+    _nextVideo.frame = CGRectMake(0, 0, 568, 320);
     
     id secondBlock = ^(VideoPlayerItem *item){
         [self startNextVideo];
@@ -68,6 +68,7 @@
 }
 
 -(void)startNextVideo{
+    
     [self playVideo:_nextVideo];
     NSLog(@"play next");
     
@@ -82,9 +83,9 @@
         [self startNextVideo];
     };
     
-    _nextVideo.frame = CGRectMake(0, 0, 100, 100);
+    _nextVideo.frame = CGRectMake(0, 0, 568, 320);
     [_nextVideo setDidFinnisPlaying:secondBlock];
-    [self.view insertSubview:_nextVideo belowSubview:_currentVideo];
+
     _lastVideo++;
     if (_lastVideo > _videos.count - 1) {
         _lastVideo = 0;
@@ -93,11 +94,14 @@
 }
 
 -(void)playVideo:(VideoPlayerView *)playerView{
-    NSLog(@"play");
+    NSLog(@"play %@",playerView);
+    [_currentVideo removeFromSuperview];
+    _currentVideo = nil;
     _currentVideo = playerView;
-    _currentVideo.frame = CGRectMake(0, 0, 100, 100);
-    [playerView bringToFront];
-    [playerView play];
+    [self.view addSubview:_currentVideo];
+    _currentVideo.frame = CGRectMake(0, 0, 568, 320);
+    [_currentVideo bringToFront];
+    [_currentVideo play];
 
     
 

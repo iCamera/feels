@@ -50,9 +50,9 @@ typedef void(^DidFinnishPlaying)(VideoPlayerItem *videoItem);
 - (void)deactivateIfActive;
 
 // Sets the currently active session. This will load player and stuff.
-+ (void)setActive:(VideoPlayerView*)instance;
-+ (void)setupGlobalAudioSession; // Needs to be set once. Will make airplay play correctly in background, etc.
-+ (BOOL)isActive:(VideoPlayerView*)instance;
+//+ (void)setActive:(VideoPlayerView*)instance;
+//+ (void)setupGlobalAudioSession; // Needs to be set once. Will make airplay play correctly in background, etc.
+//+ (BOOL)isActive:(VideoPlayerView*)instance;
 
 @end
 

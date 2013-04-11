@@ -180,9 +180,6 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
     BOOL _loading;
 }
 
-@property (nonatomic, strong) AVPlayer *adPlayer;
-@property (nonatomic, strong) NSMutableArray *adPlayerItems;
-
 @property (nonatomic, strong) AVPlayer *mainPlayer;
 @property (nonatomic, strong) AVPlayerItem *mainPlayerItem;
 
@@ -239,15 +236,7 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
         self.playerLayerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.playerContainerView addSubview:self.playerLayerView];
         
-        
-        // Temp
-        UISegmentedControl *s = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"e", @"p", @"pu", @"ll", @"lr", nil]];
-        s.segmentedControlStyle = UISegmentedControlStyleBar;
-        s.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        s.frame = CGRectMake(0, 0, self.playerContainerView.width, 40);
-        s.selectedSegmentIndex = 0;
-        [s addTarget:self action:@selector(temp:) forControlEvents:UIControlEventValueChanged];
-        //[self.playerContainerView addSubview:s];
+
         
         self.thumbnailView = [[UIImageView alloc] init];
         self.thumbnailView.frame = self.bounds;
@@ -256,7 +245,7 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
         
         self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         self.activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-        //[self.playerContainerView addSubview:self.activityView];
+
         [self.activityView centerInSuperview];
         
         self.playiconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"player_big_play_button"]];
@@ -515,8 +504,7 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
 }
 
 - (AVPlayer*)playerForCurrentPlayerItem {
-    AVPlayer *player = _currentPlayerItem == self.mainPlayerItem ? self.mainPlayer : self.adPlayer;
-    return player;
+    return self.mainPlayer;
 }
 
 
@@ -568,7 +556,7 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
     self.paused = NO;
     
     [self activateIfNeccessary];
-    
+    NSLog(@"%@",[self playerForCurrentPlayerItem]);
     [[self playerForCurrentPlayerItem] play];
     
     if (self.delegate) {
@@ -600,9 +588,9 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
     
     AVPlayer *player = nil;
     
-    if ([self.adPlayerItems containsObject:item]) {
-        player = self.adPlayer;
-    }
+//    if ([self.adPlayerItems containsObject:item]) {
+//        player = self.adPlayer;
+//    }
     
     return player;
 }
@@ -642,29 +630,7 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
 }
 
 - (void)skipToNextPlayerItem {
-    // Ad finished
-    if ([self.adPlayerItems containsObject:_currentPlayerItem]) {
-        
-        //AVPlayerItem *playerItem = (AVPlayerItem*)n.object;
-        int index = [self.adPlayerItems indexOfObject:_currentPlayerItem];
-        
-        // Do we have more ads?
-        if (index < self.adPlayerItems.count - 1) {
-            AVPlayerItem *nextItem = [self.adPlayerItems objectAtIndex:index + 1];
-            [self setCurrentPlayerItem:nextItem];
-        }
-        
-        // Else start main video
-        else {
-            [self setCurrentPlayerItem:self.mainPlayerItem];
-        }
-        
-    }
-    
-    // Main finished
-    else if (_currentPlayerItem == self.mainPlayerItem) {
-        
-    }
+    [self setCurrentPlayerItem:self.mainPlayerItem];
 }
 
 - (void)playerItemDidPlayToEndTime:(NSNotification*)n {
@@ -685,10 +651,6 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
 
 - (void)playerItemPlaybackStalled:(NSNotification*)n {
     
-    if ([self.adPlayerItems containsObject:n.object]) {
-        //AVPlayerItem *playerItem = (AVPlayerItem*)n.object;
-        //int index = [self.adPlayerItems indexOfObject:n.object];
-    }
     
 }
 
@@ -827,34 +789,15 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
     self.active = YES;
     self.thumbnailView.hidden = YES;
     
-    self.adPlayer = [[AVPlayer alloc] init];
     self.mainPlayer = [[AVPlayer alloc] init];
     
-    self.adPlayerItems = [NSMutableArray array];
-    for (NSURL *url in self.item.adURLs) {
-        // Create player item
-        AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:url];
-        [self.adPlayerItems addObject:playerItem];
-    }
     
     self.mainPlayerItem = [[AVPlayerItem alloc] initWithURL:self.item.mainURL];
     
     
     // Restore state or create the first player item
     
-    AVPlayerItem *playerItem = nil;
-    
-    if (self.adPlayerItems.count == 0) {
-        playerItem = self.mainPlayerItem;
-    } else if (self.storedState) {
-        playerItem = self.storedState.playerItemIndex == self.adPlayerItems.count ? self.mainPlayerItem : [self.adPlayerItems objectAtIndex:self.storedState.playerItemIndex];
-    
-    } else {
-        playerItem = [self.adPlayerItems objectAtIndex:0];
-        
-    }
-    
-    
+    AVPlayerItem *playerItem = self.mainPlayerItem;
     
     [self setCurrentPlayerItem:playerItem];
     
@@ -895,22 +838,18 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
     self.thumbnailView.hidden = NO;
     
     self.storedState = [[VideoPlayerViewState alloc] init];
-    self.storedState.playerItemIndex = _currentPlayerItem == self.mainPlayerItem ? self.adPlayerItems.count : [self.adPlayerItems indexOfObject:_currentPlayerItem];
+//    self.storedState.playerItemIndex = _currentPlayerItem == self.mainPlayerItem ? self.adPlayerItems.count : [self.adPlayerItems indexOfObject:_currentPlayerItem];
     self.storedState.time = _currentPlayerItem.currentTime;
     
     
     [self setCurrentPlayerItem:nil];
     
-    [self.adPlayer pause];
     [self.mainPlayer pause];    
     
-    [self.adPlayer replaceCurrentItemWithPlayerItem:nil];
     [self.mainPlayer replaceCurrentItemWithPlayerItem:nil];
     
-    self.adPlayer = nil;
     self.mainPlayer = nil;
     
-    self.adPlayerItems = nil;
     
     [self updateLoadingState];
 }
@@ -965,7 +904,7 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
     
     [self updateLoadingState];
     
-    AVPlayerItem *playerItem = self.currentPlayerItem;
+//    AVPlayerItem *playerItem = self.currentPlayerItem;
     AVPlayer *player = [self playerForCurrentPlayerItem];
     
     // Assume we're going to get there  
