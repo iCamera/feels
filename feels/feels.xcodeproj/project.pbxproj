@@ -18,6 +18,16 @@
 		295186B417173644007E09F5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 295186B317173644007E09F5 /* Default-568h@2x.png */; };
 		295186B717173644007E09F5 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 295186B517173644007E09F5 /* MainStoryboard.storyboard */; };
 		295186BA17173644007E09F5 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 295186B917173644007E09F5 /* ViewController.m */; };
+		295186C717173C81007E09F5 /* Camera.m in Sources */ = {isa = PBXBuildFile; fileRef = 295186C217173C81007E09F5 /* Camera.m */; };
+		295186C817173C81007E09F5 /* GLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 295186C417173C81007E09F5 /* GLView.m */; };
+		295186C917173C81007E09F5 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = 295186C617173C81007E09F5 /* Video.m */; };
+		295186CC17173C98007E09F5 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 295186CA17173C98007E09F5 /* CameraViewController.m */; };
+		295186D017173CE6007E09F5 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 295186CF17173CE6007E09F5 /* OpenGLES.framework */; };
+		295186D217173CF5007E09F5 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 295186D117173CF5007E09F5 /* AssetsLibrary.framework */; };
+		295186D417173D28007E09F5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 295186D317173D28007E09F5 /* AVFoundation.framework */; };
+		295186D617173D46007E09F5 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 295186D517173D46007E09F5 /* CoreMedia.framework */; };
+		295186D817173DB4007E09F5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 295186D717173DB4007E09F5 /* QuartzCore.framework */; };
+		295186DA17173DC9007E09F5 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 295186D917173DC9007E09F5 /* CoreVideo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +47,21 @@
 		295186B617173644007E09F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		295186B817173644007E09F5 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		295186B917173644007E09F5 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		295186C117173C81007E09F5 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		295186C217173C81007E09F5 /* Camera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Camera.m; sourceTree = "<group>"; };
+		295186C317173C81007E09F5 /* GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLView.h; sourceTree = "<group>"; };
+		295186C417173C81007E09F5 /* GLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLView.m; sourceTree = "<group>"; };
+		295186C517173C81007E09F5 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Video.h; sourceTree = "<group>"; };
+		295186C617173C81007E09F5 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Video.m; sourceTree = "<group>"; };
+		295186CA17173C98007E09F5 /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
+		295186CB17173C98007E09F5 /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
+		295186CE17173CD6007E09F5 /* MathHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MathHelper.h; sourceTree = "<group>"; };
+		295186CF17173CE6007E09F5 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		295186D117173CF5007E09F5 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		295186D317173D28007E09F5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		295186D517173D46007E09F5 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		295186D717173DB4007E09F5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		295186D917173DC9007E09F5 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +69,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				295186DA17173DC9007E09F5 /* CoreVideo.framework in Frameworks */,
+				295186D817173DB4007E09F5 /* QuartzCore.framework in Frameworks */,
+				295186D617173D46007E09F5 /* CoreMedia.framework in Frameworks */,
+				295186D417173D28007E09F5 /* AVFoundation.framework in Frameworks */,
+				295186D217173CF5007E09F5 /* AssetsLibrary.framework in Frameworks */,
+				295186D017173CE6007E09F5 /* OpenGLES.framework in Frameworks */,
 				2951869E17173643007E09F5 /* UIKit.framework in Frameworks */,
 				295186A017173643007E09F5 /* Foundation.framework in Frameworks */,
 				295186A217173643007E09F5 /* CoreGraphics.framework in Frameworks */,
@@ -56,6 +87,8 @@
 		2951869117173643007E09F5 = {
 			isa = PBXGroup;
 			children = (
+				295186D917173DC9007E09F5 /* CoreVideo.framework */,
+				295186D717173DB4007E09F5 /* QuartzCore.framework */,
 				295186A317173643007E09F5 /* feels */,
 				2951869C17173643007E09F5 /* Frameworks */,
 				2951869B17173643007E09F5 /* Products */,
@@ -73,6 +106,10 @@
 		2951869C17173643007E09F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				295186D517173D46007E09F5 /* CoreMedia.framework */,
+				295186D317173D28007E09F5 /* AVFoundation.framework */,
+				295186D117173CF5007E09F5 /* AssetsLibrary.framework */,
+				295186CF17173CE6007E09F5 /* OpenGLES.framework */,
 				2951869D17173643007E09F5 /* UIKit.framework */,
 				2951869F17173643007E09F5 /* Foundation.framework */,
 				295186A117173643007E09F5 /* CoreGraphics.framework */,
@@ -83,6 +120,8 @@
 		295186A317173643007E09F5 /* feels */ = {
 			isa = PBXGroup;
 			children = (
+				295186CD17173CC0007E09F5 /* Constants */,
+				295186C017173C53007E09F5 /* Camera stuff */,
 				295186AC17173644007E09F5 /* AppDelegate.h */,
 				295186AD17173644007E09F5 /* AppDelegate.m */,
 				295186B517173644007E09F5 /* MainStoryboard.storyboard */,
@@ -105,6 +144,29 @@
 				295186B317173644007E09F5 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		295186C017173C53007E09F5 /* Camera stuff */ = {
+			isa = PBXGroup;
+			children = (
+				295186CA17173C98007E09F5 /* CameraViewController.m */,
+				295186CB17173C98007E09F5 /* CameraViewController.h */,
+				295186C117173C81007E09F5 /* Camera.h */,
+				295186C217173C81007E09F5 /* Camera.m */,
+				295186C317173C81007E09F5 /* GLView.h */,
+				295186C417173C81007E09F5 /* GLView.m */,
+				295186C517173C81007E09F5 /* Video.h */,
+				295186C617173C81007E09F5 /* Video.m */,
+			);
+			path = "Camera stuff";
+			sourceTree = "<group>";
+		};
+		295186CD17173CC0007E09F5 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				295186CE17173CD6007E09F5 /* MathHelper.h */,
+			);
+			path = Constants;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,6 +238,10 @@
 				295186AA17173644007E09F5 /* main.m in Sources */,
 				295186AE17173644007E09F5 /* AppDelegate.m in Sources */,
 				295186BA17173644007E09F5 /* ViewController.m in Sources */,
+				295186C717173C81007E09F5 /* Camera.m in Sources */,
+				295186C817173C81007E09F5 /* GLView.m in Sources */,
+				295186C917173C81007E09F5 /* Video.m in Sources */,
+				295186CC17173C98007E09F5 /* CameraViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
