@@ -28,6 +28,14 @@
 		295186D617173D46007E09F5 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 295186D517173D46007E09F5 /* CoreMedia.framework */; };
 		295186D817173DB4007E09F5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 295186D717173DB4007E09F5 /* QuartzCore.framework */; };
 		295186DA17173DC9007E09F5 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 295186D917173DC9007E09F5 /* CoreVideo.framework */; };
+		295186E41717401D007E09F5 /* BlurShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 295186DC1717401D007E09F5 /* BlurShader.fsh */; };
+		295186E51717401D007E09F5 /* BlurShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 295186DD1717401D007E09F5 /* BlurShader.vsh */; };
+		295186E61717401D007E09F5 /* LotrShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 295186DE1717401D007E09F5 /* LotrShader.fsh */; };
+		295186E71717401D007E09F5 /* LotrShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 295186DF1717401D007E09F5 /* LotrShader.vsh */; };
+		295186E81717401D007E09F5 /* PassthroughShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 295186E01717401D007E09F5 /* PassthroughShader.fsh */; };
+		295186E91717401D007E09F5 /* PassthroughShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 295186E11717401D007E09F5 /* PassthroughShader.vsh */; };
+		295186EA1717401D007E09F5 /* TestShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 295186E21717401D007E09F5 /* TestShader.fsh */; };
+		295186EB1717401D007E09F5 /* TestShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 295186E31717401D007E09F5 /* TestShader.vsh */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +70,14 @@
 		295186D517173D46007E09F5 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		295186D717173DB4007E09F5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		295186D917173DC9007E09F5 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		295186DC1717401D007E09F5 /* BlurShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BlurShader.fsh; sourceTree = "<group>"; };
+		295186DD1717401D007E09F5 /* BlurShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BlurShader.vsh; sourceTree = "<group>"; };
+		295186DE1717401D007E09F5 /* LotrShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LotrShader.fsh; sourceTree = "<group>"; };
+		295186DF1717401D007E09F5 /* LotrShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LotrShader.vsh; sourceTree = "<group>"; };
+		295186E01717401D007E09F5 /* PassthroughShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = PassthroughShader.fsh; sourceTree = "<group>"; };
+		295186E11717401D007E09F5 /* PassthroughShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = PassthroughShader.vsh; sourceTree = "<group>"; };
+		295186E21717401D007E09F5 /* TestShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TestShader.fsh; sourceTree = "<group>"; };
+		295186E31717401D007E09F5 /* TestShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TestShader.vsh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,8 +103,6 @@
 		2951869117173643007E09F5 = {
 			isa = PBXGroup;
 			children = (
-				295186D917173DC9007E09F5 /* CoreVideo.framework */,
-				295186D717173DB4007E09F5 /* QuartzCore.framework */,
 				295186A317173643007E09F5 /* feels */,
 				2951869C17173643007E09F5 /* Frameworks */,
 				2951869B17173643007E09F5 /* Products */,
@@ -106,6 +120,8 @@
 		2951869C17173643007E09F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				295186D917173DC9007E09F5 /* CoreVideo.framework */,
+				295186D717173DB4007E09F5 /* QuartzCore.framework */,
 				295186D517173D46007E09F5 /* CoreMedia.framework */,
 				295186D317173D28007E09F5 /* AVFoundation.framework */,
 				295186D117173CF5007E09F5 /* AssetsLibrary.framework */,
@@ -135,6 +151,7 @@
 		295186A417173644007E09F5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				295186DB1717400C007E09F5 /* Shaders */,
 				295186A517173644007E09F5 /* feels-Info.plist */,
 				295186A617173644007E09F5 /* InfoPlist.strings */,
 				295186A917173644007E09F5 /* main.m */,
@@ -167,6 +184,21 @@
 				295186CE17173CD6007E09F5 /* MathHelper.h */,
 			);
 			path = Constants;
+			sourceTree = "<group>";
+		};
+		295186DB1717400C007E09F5 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				295186DC1717401D007E09F5 /* BlurShader.fsh */,
+				295186DD1717401D007E09F5 /* BlurShader.vsh */,
+				295186DE1717401D007E09F5 /* LotrShader.fsh */,
+				295186DF1717401D007E09F5 /* LotrShader.vsh */,
+				295186E01717401D007E09F5 /* PassthroughShader.fsh */,
+				295186E11717401D007E09F5 /* PassthroughShader.vsh */,
+				295186E21717401D007E09F5 /* TestShader.fsh */,
+				295186E31717401D007E09F5 /* TestShader.vsh */,
+			);
+			name = Shaders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,6 +252,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				295186E41717401D007E09F5 /* BlurShader.fsh in Resources */,
+				295186E51717401D007E09F5 /* BlurShader.vsh in Resources */,
+				295186E61717401D007E09F5 /* LotrShader.fsh in Resources */,
+				295186E71717401D007E09F5 /* LotrShader.vsh in Resources */,
+				295186E81717401D007E09F5 /* PassthroughShader.fsh in Resources */,
+				295186E91717401D007E09F5 /* PassthroughShader.vsh in Resources */,
+				295186EA1717401D007E09F5 /* TestShader.fsh in Resources */,
+				295186EB1717401D007E09F5 /* TestShader.vsh in Resources */,
 				295186A817173644007E09F5 /* InfoPlist.strings in Resources */,
 				295186B017173644007E09F5 /* Default.png in Resources */,
 				295186B217173644007E09F5 /* Default@2x.png in Resources */,
