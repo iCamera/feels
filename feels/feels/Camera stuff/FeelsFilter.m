@@ -17,30 +17,33 @@
 		return nil;
     }
     
-    UIImage *image = [UIImage imageNamed:@"lookup_miss_etikate.png"];
-    NSAssert(image, @"To use GPUImageMissEtikateFilter you need to add lookup_miss_etikate.png from GPUImage/framework/Resources to your application bundle.");
-    
-    _lookupImageSource = [[GPUImagePicture alloc] initWithImage:image];
-    GPUImageLookupFilter *lookupFilter = [[GPUImageLookupFilter alloc] init];
-    
-    [_lookupImageSource addTarget:lookupFilter atTextureLocation:1];
-    [_lookupImageSource processImage];
-    
-    self.initialFilters = [NSArray arrayWithObjects:lookupFilter, nil];
-    self.terminalFilter = lookupFilter;
-    
+//    UIImage *image = [UIImage imageNamed:@"lookup_miss_etikate.png"];
+//    NSAssert(image, @"To use GPUImageMissEtikateFilter you need to add lookup_miss_etikate.png from GPUImage/framework/Resources to your application bundle.");
+//    
+//    _lookupImageSource = [[GPUImagePicture alloc] initWithImage:image];
+//    GPUImageLookupFilter *lookupFilter = [[GPUImageLookupFilter alloc] init];
+//    
+//    [_lookupImageSource addTarget:lookupFilter atTextureLocation:1];
+//    [_lookupImageSource processImage];
+//    
+//    self.initialFilters = [NSArray arrayWithObjects:lookupFilter, nil];
+//    self.terminalFilter = lookupFilter;
     
     
     return self;
 }
 
 -(void)prepareForImageCapture {
-    [_lookupImageSource processImage];
+    if (_lookupImageSource) {
+
+    }
+        [_lookupImageSource processImage];            
+
     [super prepareForImageCapture];
 }
 
 -(void)setSourceImage:(UIImage *)sourceImage{
-    _loading = YES;
+//    _loading = YES;
     _sourceImage = sourceImage;
     _lookupImageSource = [[GPUImagePicture alloc] initWithImage:_sourceImage];
     GPUImageLookupFilter *lookupFilter = [[GPUImageLookupFilter alloc] init];

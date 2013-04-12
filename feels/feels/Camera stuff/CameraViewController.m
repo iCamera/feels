@@ -14,7 +14,11 @@
 #define videoHeight 720
 
 @interface CameraViewController()
-@property (weak, nonatomic) IBOutlet GPUImageView *gpuImageView;
+@property (strong, nonatomic)  GPUImageView *gpuImageView;
+@property (strong, nonatomic) UIImageView *imageView;
+@property(nonatomic,strong) FeelsFilter *filter;
+@property(nonatomic,strong) FeelsFilter *filter2;
+@property(nonatomic,assign) int changeCounter;
 
 @end
 
@@ -41,8 +45,12 @@
     
 
     _filter = [[FeelsFilter alloc] init];
+    UIImage *i = [self blendImage:@"test" andImage2:@"lookup_xpro" first:0.0 second:0.0];
+    [_filter setSourceImage:i];
     
-    [_filter setSourceImage:[UIImage imageNamed:@"lookup_miss_etikate"]];
+    _filter2 = [[FeelsFilter alloc] init];
+    UIImage *image = [self blendImage:@"test" andImage2:@"lookup_xpro" first:1.0 second:0.0];
+    [_filter2 setSourceImage:image];
     
     //    filter = [[GPUImageTiltShiftFilter alloc] init];
     //    [(GPUImageTiltShiftFilter *)filter setTopFocusLevel:0.65];
@@ -56,9 +64,10 @@
     
     [_videoCamera addTarget:_filter];
 
-    GPUImageView *filterView = [[GPUImageView alloc] initWithFrame:self.view.frame];
-    [_filter addTarget:filterView];
-    [self.view addSubview:filterView];
+    _gpuImageView = [[GPUImageView alloc] initWithFrame:self.view.frame];
+    [_filter addTarget:_gpuImageView];
+    [_filter2 addTarget:_gpuImageView];
+    [self.view addSubview:_gpuImageView];
     //    filterView.fillMode = kGPUImageFillModeStretch;
     //    filterView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
     
@@ -104,34 +113,98 @@
             
         });
     });
+    
+    _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    [self.view addSubview:_imageView];
+
+}
+
+-(void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-  [_filter setSourceImage:[UIImage imageNamed:@"lookup_miss_etikate"]];
+
+    
+//    if (_stringMax) {
+//        _stringMax = NO;
+//        [_videoCamera removeTarget:_filter];
+//        [_videoCamera addTarget:_filter2];
+//    } else {
+//        _stringMax = YES;
+//        [_videoCamera removeTarget:_filter2];
+//        [_videoCamera addTarget:_filter];
+//        
+//    }
+//    
+
+//  [_filter setSourceImage:[UIImage imageNamed:@"lookup_miss_etikate"]];
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    return;
+
+    if (_changeCounter < 5) {
+        _changeCounter ++;
+        return;
+    }
+    _changeCounter = 0;
+    
     float dragValue = [[touches anyObject] locationInView:self.view].y/self.view.height;
-    float first = clamp(0.0,1.0,map(dragValue, 0, 0.5, 1.0, 0.0));
+
     
-    float second = 0.0;
-    
-    if (dragValue < 0.5) {
-        second = clamp(0.0,1.0,map(dragValue, 0.0, 0.5, 0.0, 1.0));
+    if (dragValue < 0.25) {
+        [_videoCamera removeTarget:_filter];
+        _filter = [[FeelsFilter alloc] init];
+        UIImage *i = [self blendImage:@"lookup" andImage2:@"lookup_xpro" first:map(dragValue, 0.0, 0.25, 1.0, 0.0) second:0.0];
+        [_filter setSourceImage:i];
+
+        [_filter addTarget:_gpuImageView];
+        [_videoCamera addTarget:_filter];
+        
+    } else if (dragValue < 0.50){
+        [_videoCamera removeTarget:_filter];
+        _filter = [[FeelsFilter alloc] init];
+        UIImage *i = [self blendImage:@"lookup_xpro" andImage2:@"lookup_toaster" first:map(dragValue, 0.25, 0.50, 1.0, 0.0) second:0.0];
+        [_filter setSourceImage:i];
+        
+        [_filter addTarget:_gpuImageView];
+        [_videoCamera addTarget:_filter];
+    } else if (dragValue < 0.75){
+        [_videoCamera removeTarget:_filter];
+        _filter = [[FeelsFilter alloc] init];
+        UIImage *i = [self blendImage:@"lookup_toaster" andImage2:@"lookup_nashville" first:map(dragValue, 0.50, 0.75, 1.0, 0.0) second:0.0];
+        [_filter setSourceImage:i];
+        
+        [_filter addTarget:_gpuImageView];
+        [_videoCamera addTarget:_filter];
     } else {
-        second = clamp(0.0,1.0,map(dragValue, 0.5, 1.0, 1.0, 0.0));
+        [_videoCamera removeTarget:_filter];
+        _filter = [[FeelsFilter alloc] init];
+        UIImage *i = [self blendImage:@"lookup_nashville" andImage2:@"lookup" first:map(dragValue, 0.75, 1.0, 1.0, 0.0) second:0.0];
+        [_filter setSourceImage:i];
+        
+        [_filter addTarget:_gpuImageView];
+        [_videoCamera addTarget:_filter];
     }
-    
-    float third = clamp(0.0,1.0,map(dragValue, 0.5, 1.0, 0.0, 1.0));
-    
-    if (!_filter.loading) {
-        [_filter setSourceImage:[UIImage imageNamed:@"lookup_miss_etikate"]];
-    }
-    
+}
 
+-(UIImage *)blendImage:(NSString *)imageName andImage2:(NSString *)image2Name first:(float)first second:(float)second{
+    UIImage *bottomImage = [UIImage imageNamed:image2Name];
+    UIImage *image = [UIImage imageNamed:imageName];
 
+    CGSize newSize = CGSizeMake(512, 512);
+    UIGraphicsBeginImageContext( newSize );
     
+    // Use existing opacity as is
+    [bottomImage drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    // Apply supplied opacity
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height) blendMode:kCGBlendModeNormal alpha:first];
+    
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    _imageView.image = newImage;
+    return newImage;
 }
 
 @end

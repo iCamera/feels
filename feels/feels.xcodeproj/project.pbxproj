@@ -61,6 +61,11 @@
 		29F3036617183F28003B7812 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F3035D17183F28003B7812 /* UIImageView+AFNetworking.m */; };
 		29F3036917183F7D003B7812 /* FeelsShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 29F3036717183F7D003B7812 /* FeelsShader.fsh */; };
 		29F3036A17183F7D003B7812 /* FeelsShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 29F3036817183F7D003B7812 /* FeelsShader.vsh */; };
+		6010AF311718BE040092D50A /* lookup.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF2D1718BE040092D50A /* lookup.png */; };
+		6010AF321718BE040092D50A /* lookup_xpro.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF2E1718BE040092D50A /* lookup_xpro.png */; };
+		6010AF331718BE040092D50A /* lookup_toaster.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF2F1718BE040092D50A /* lookup_toaster.png */; };
+		6010AF341718BE040092D50A /* lookup_nashville.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF301718BE040092D50A /* lookup_nashville.png */; };
+		6010AF361718C3550092D50A /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF351718C3550092D50A /* test.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -170,6 +175,11 @@
 		29F3035D17183F28003B7812 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+AFNetworking.m"; path = "../../AFNetworking/AFNetworking/UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		29F3036717183F7D003B7812 /* FeelsShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FeelsShader.fsh; sourceTree = "<group>"; };
 		29F3036817183F7D003B7812 /* FeelsShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FeelsShader.vsh; sourceTree = "<group>"; };
+		6010AF2D1718BE040092D50A /* lookup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup.png; sourceTree = "<group>"; };
+		6010AF2E1718BE040092D50A /* lookup_xpro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup_xpro.png; sourceTree = "<group>"; };
+		6010AF2F1718BE040092D50A /* lookup_toaster.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup_toaster.png; sourceTree = "<group>"; };
+		6010AF301718BE040092D50A /* lookup_nashville.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup_nashville.png; sourceTree = "<group>"; };
+		6010AF351718C3550092D50A /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,7 +218,6 @@
 		2951869117173643007E09F5 = {
 			isa = PBXGroup;
 			children = (
-				29BEA0E7171896CA00F3A073 /* libGPUImage.a */,
 				295186A317173643007E09F5 /* feels */,
 				2951869C17173643007E09F5 /* Frameworks */,
 				2951869B17173643007E09F5 /* Products */,
@@ -226,6 +235,7 @@
 		2951869C17173643007E09F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				29BEA0E7171896CA00F3A073 /* libGPUImage.a */,
 				292295CB1718957A00362325 /* GPUImage.xcodeproj */,
 				29F30346171837C5003B7812 /* MobileCoreServices.framework */,
 				29F3034417183789003B7812 /* SystemConfiguration.framework */,
@@ -264,6 +274,11 @@
 		295186A417173644007E09F5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6010AF2D1718BE040092D50A /* lookup.png */,
+				6010AF2E1718BE040092D50A /* lookup_xpro.png */,
+				6010AF2F1718BE040092D50A /* lookup_toaster.png */,
+				6010AF301718BE040092D50A /* lookup_nashville.png */,
+				6010AF351718C3550092D50A /* test.png */,
 				29F3032417181D6E003B7812 /* video2.mov */,
 				29F3032217181AFE003B7812 /* video.mov */,
 				295186DB1717400C007E09F5 /* Shaders */,
@@ -491,6 +506,11 @@
 				29F3032317181AFE003B7812 /* video.mov in Resources */,
 				29F3032517181D6E003B7812 /* video2.mov in Resources */,
 				29BEA0EC17189C1000F3A073 /* lookup_miss_etikate.png in Resources */,
+				6010AF311718BE040092D50A /* lookup.png in Resources */,
+				6010AF321718BE040092D50A /* lookup_xpro.png in Resources */,
+				6010AF331718BE040092D50A /* lookup_toaster.png in Resources */,
+				6010AF341718BE040092D50A /* lookup_nashville.png in Resources */,
+				6010AF361718C3550092D50A /* test.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,7 +12,6 @@
 @interface CameraViewController : UIViewController
 
 @property(nonatomic,strong) GPUImageVideoCamera *videoCamera;
-@property(nonatomic,strong) FeelsFilter *filter;
 @property(nonatomic,strong) GPUImageMovieWriter *movieWriter;
 
 
