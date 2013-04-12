@@ -60,6 +60,7 @@
 		29F3036A17183F7D003B7812 /* FeelsShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 29F3036817183F7D003B7812 /* FeelsShader.vsh */; };
 		D13214421718A888004E0C87 /* GeosansLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D13214401718A888004E0C87 /* GeosansLight.ttf */; };
 		D13214431718A888004E0C87 /* ITCAvantGardeStd-XLt.otf in Resources */ = {isa = PBXBuildFile; fileRef = D13214411718A888004E0C87 /* ITCAvantGardeStd-XLt.otf */; };
+		D13214461718BD8C004E0C87 /* UIFont+Feels.m in Sources */ = {isa = PBXBuildFile; fileRef = D13214451718BD8C004E0C87 /* UIFont+Feels.m */; };
 		D19682F91718937C0072FD78 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D19682F81718937C0072FD78 /* RootViewController.m */; };
 		D19682FE171898420072FD78 /* main_picture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D19682FC171898420072FD78 /* main_picture.jpg */; };
 		D19682FF171898420072FD78 /* main_picture@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D19682FD171898420072FD78 /* main_picture@2x.jpg */; };
@@ -181,6 +182,8 @@
 		29F3036817183F7D003B7812 /* FeelsShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FeelsShader.vsh; sourceTree = "<group>"; };
 		D13214401718A888004E0C87 /* GeosansLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GeosansLight.ttf; sourceTree = "<group>"; };
 		D13214411718A888004E0C87 /* ITCAvantGardeStd-XLt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-XLt.otf"; sourceTree = "<group>"; };
+		D13214441718BD8C004E0C87 /* UIFont+Feels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Feels.h"; sourceTree = "<group>"; };
+		D13214451718BD8C004E0C87 /* UIFont+Feels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+Feels.m"; sourceTree = "<group>"; };
 		D19682F71718937C0072FD78 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = Classes/Root/RootViewController.h; sourceTree = "<group>"; };
 		D19682F81718937C0072FD78 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = Classes/Root/RootViewController.m; sourceTree = "<group>"; };
 		D19682FC171898420072FD78 /* main_picture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = main_picture.jpg; sourceTree = "<group>"; };
@@ -414,6 +417,7 @@
 		29518701171753B2007E09F5 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				D13214471718BDB3004E0C87 /* UIFont */,
 				2951870617175420007E09F5 /* UIView */,
 				29518702171753C4007E09F5 /* NSTimer */,
 			);
@@ -489,6 +493,15 @@
 				D13214411718A888004E0C87 /* ITCAvantGardeStd-XLt.otf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		D13214471718BDB3004E0C87 /* UIFont */ = {
+			isa = PBXGroup;
+			children = (
+				D13214441718BD8C004E0C87 /* UIFont+Feels.h */,
+				D13214451718BD8C004E0C87 /* UIFont+Feels.m */,
+			);
+			name = UIFont;
 			sourceTree = "<group>";
 		};
 		D19682F617188F250072FD78 /* Root */ = {
@@ -805,6 +818,7 @@
 				29F3036517183F28003B7812 /* AFXMLRequestOperation.m in Sources */,
 				29F3036617183F28003B7812 /* UIImageView+AFNetworking.m in Sources */,
 				D19682F91718937C0072FD78 /* RootViewController.m in Sources */,
+				D13214461718BD8C004E0C87 /* UIFont+Feels.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
