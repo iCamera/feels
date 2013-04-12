@@ -58,6 +58,7 @@
 		29F3036617183F28003B7812 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F3035D17183F28003B7812 /* UIImageView+AFNetworking.m */; };
 		29F3036917183F7D003B7812 /* FeelsShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 29F3036717183F7D003B7812 /* FeelsShader.fsh */; };
 		29F3036A17183F7D003B7812 /* FeelsShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 29F3036817183F7D003B7812 /* FeelsShader.vsh */; };
+		602F42601718C9DD009ADE50 /* UILabel+Feels.m in Sources */ = {isa = PBXBuildFile; fileRef = 602F425F1718C9DD009ADE50 /* UILabel+Feels.m */; };
 		D13214421718A888004E0C87 /* GeosansLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D13214401718A888004E0C87 /* GeosansLight.ttf */; };
 		D13214431718A888004E0C87 /* ITCAvantGardeStd-XLt.otf in Resources */ = {isa = PBXBuildFile; fileRef = D13214411718A888004E0C87 /* ITCAvantGardeStd-XLt.otf */; };
 		D13214461718BD8C004E0C87 /* UIFont+Feels.m in Sources */ = {isa = PBXBuildFile; fileRef = D13214451718BD8C004E0C87 /* UIFont+Feels.m */; };
@@ -180,6 +181,8 @@
 		29F3035D17183F28003B7812 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+AFNetworking.m"; path = "../../AFNetworking/AFNetworking/UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		29F3036717183F7D003B7812 /* FeelsShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FeelsShader.fsh; sourceTree = "<group>"; };
 		29F3036817183F7D003B7812 /* FeelsShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FeelsShader.vsh; sourceTree = "<group>"; };
+		602F425E1718C9DD009ADE50 /* UILabel+Feels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Feels.h"; sourceTree = "<group>"; };
+		602F425F1718C9DD009ADE50 /* UILabel+Feels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Feels.m"; sourceTree = "<group>"; };
 		D13214401718A888004E0C87 /* GeosansLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GeosansLight.ttf; sourceTree = "<group>"; };
 		D13214411718A888004E0C87 /* ITCAvantGardeStd-XLt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-XLt.otf"; sourceTree = "<group>"; };
 		D13214441718BD8C004E0C87 /* UIFont+Feels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Feels.h"; sourceTree = "<group>"; };
@@ -417,6 +420,7 @@
 		29518701171753B2007E09F5 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				602F425A1718C964009ADE50 /* UILabel */,
 				D13214471718BDB3004E0C87 /* UIFont */,
 				2951870617175420007E09F5 /* UIView */,
 				29518702171753C4007E09F5 /* NSTimer */,
@@ -484,6 +488,15 @@
 				29F3035D17183F28003B7812 /* UIImageView+AFNetworking.m */,
 			);
 			name = AFNetwork;
+			sourceTree = "<group>";
+		};
+		602F425A1718C964009ADE50 /* UILabel */ = {
+			isa = PBXGroup;
+			children = (
+				602F425E1718C9DD009ADE50 /* UILabel+Feels.h */,
+				602F425F1718C9DD009ADE50 /* UILabel+Feels.m */,
+			);
+			name = UILabel;
 			sourceTree = "<group>";
 		};
 		D132143F1718A888004E0C87 /* Fonts */ = {
@@ -819,6 +832,7 @@
 				29F3036617183F28003B7812 /* UIImageView+AFNetworking.m in Sources */,
 				D19682F91718937C0072FD78 /* RootViewController.m in Sources */,
 				D13214461718BD8C004E0C87 /* UIFont+Feels.m in Sources */,
+				602F42601718C9DD009ADE50 /* UILabel+Feels.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

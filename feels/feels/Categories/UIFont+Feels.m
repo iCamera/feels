@@ -15,7 +15,7 @@
 }
 
 + (UIFont *)AvantGardeExtraLight:(float)size {
-    return [UIFont fontWithName:@"ITC Avant Garde Gothic Std Extra Light" size:size];
+    return [UIFont fontWithName:@"ITCAvantGardeStd-XLt" size:size];
 }
 
 @end
