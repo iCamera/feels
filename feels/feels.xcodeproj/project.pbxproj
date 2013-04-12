@@ -61,6 +61,8 @@
 		F4192970171889AF0017C12B /* APIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F419296F171889AF0017C12B /* APIClient.m */; };
 		F4192977171894140017C12B /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = F4192974171894140017C12B /* NSString+MD5Addition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F4192978171894140017C12B /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = F4192976171894140017C12B /* UIDevice+IdentifierAddition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F419297B171897390017C12B /* AppManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F419297A171897390017C12B /* AppManager.m */; };
+		F419297F171898C80017C12B /* TimeHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = F419297E171898C80017C12B /* TimeHolder.m */; };
 		F44E11081718335000E9D4EC /* MixerController.m in Sources */ = {isa = PBXBuildFile; fileRef = F44E11071718335000E9D4EC /* MixerController.m */; };
 		F44E110B1718337F00E9D4EC /* Mixer.m in Sources */ = {isa = PBXBuildFile; fileRef = F44E110A1718337F00E9D4EC /* Mixer.m */; };
 		F44E11511718385B00E9D4EC /* OALAction.m in Sources */ = {isa = PBXBuildFile; fileRef = F44E11111718385A00E9D4EC /* OALAction.m */; };
@@ -183,6 +185,10 @@
 		F4192974171894140017C12B /* NSString+MD5Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Addition.m"; sourceTree = "<group>"; };
 		F4192975171894140017C12B /* UIDevice+IdentifierAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IdentifierAddition.h"; sourceTree = "<group>"; };
 		F4192976171894140017C12B /* UIDevice+IdentifierAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IdentifierAddition.m"; sourceTree = "<group>"; };
+		F4192979171897390017C12B /* AppManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppManager.h; sourceTree = "<group>"; };
+		F419297A171897390017C12B /* AppManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppManager.m; sourceTree = "<group>"; };
+		F419297D171898C80017C12B /* TimeHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeHolder.h; sourceTree = "<group>"; };
+		F419297E171898C80017C12B /* TimeHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeHolder.m; sourceTree = "<group>"; };
 		F44E11061718335000E9D4EC /* MixerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MixerController.h; sourceTree = "<group>"; };
 		F44E11071718335000E9D4EC /* MixerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MixerController.m; sourceTree = "<group>"; };
 		F44E11091718337F00E9D4EC /* Mixer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mixer.h; sourceTree = "<group>"; };
@@ -482,6 +488,8 @@
 			children = (
 				F419296E171889AF0017C12B /* APIClient.h */,
 				F419296F171889AF0017C12B /* APIClient.m */,
+				F4192979171897390017C12B /* AppManager.h */,
+				F419297A171897390017C12B /* AppManager.m */,
 			);
 			path = Global;
 			sourceTree = "<group>";
@@ -497,9 +505,19 @@
 			path = Categories;
 			sourceTree = "<group>";
 		};
+		F419297C171898C10017C12B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F419297D171898C80017C12B /* TimeHolder.h */,
+				F419297E171898C80017C12B /* TimeHolder.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		F44E1104171832E800E9D4EC /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				F419297C171898C10017C12B /* Models */,
 				F4192972171894140017C12B /* Categories */,
 				F419296D1718899F0017C12B /* Global */,
 				F44E11051718331400E9D4EC /* Mixer */,
@@ -785,6 +803,8 @@
 				F4192970171889AF0017C12B /* APIClient.m in Sources */,
 				F4192977171894140017C12B /* NSString+MD5Addition.m in Sources */,
 				F4192978171894140017C12B /* UIDevice+IdentifierAddition.m in Sources */,
+				F419297B171897390017C12B /* AppManager.m in Sources */,
+				F419297F171898C80017C12B /* TimeHolder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
