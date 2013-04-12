@@ -58,6 +58,8 @@
 		29F3036617183F28003B7812 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F3035D17183F28003B7812 /* UIImageView+AFNetworking.m */; };
 		29F3036917183F7D003B7812 /* FeelsShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 29F3036717183F7D003B7812 /* FeelsShader.fsh */; };
 		29F3036A17183F7D003B7812 /* FeelsShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 29F3036817183F7D003B7812 /* FeelsShader.vsh */; };
+		D13214421718A888004E0C87 /* GeosansLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D13214401718A888004E0C87 /* GeosansLight.ttf */; };
+		D13214431718A888004E0C87 /* ITCAvantGardeStd-XLt.otf in Resources */ = {isa = PBXBuildFile; fileRef = D13214411718A888004E0C87 /* ITCAvantGardeStd-XLt.otf */; };
 		D19682F91718937C0072FD78 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D19682F81718937C0072FD78 /* RootViewController.m */; };
 		D19682FE171898420072FD78 /* main_picture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D19682FC171898420072FD78 /* main_picture.jpg */; };
 		D19682FF171898420072FD78 /* main_picture@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D19682FD171898420072FD78 /* main_picture@2x.jpg */; };
@@ -177,6 +179,8 @@
 		29F3035D17183F28003B7812 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+AFNetworking.m"; path = "../../AFNetworking/AFNetworking/UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		29F3036717183F7D003B7812 /* FeelsShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FeelsShader.fsh; sourceTree = "<group>"; };
 		29F3036817183F7D003B7812 /* FeelsShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FeelsShader.vsh; sourceTree = "<group>"; };
+		D13214401718A888004E0C87 /* GeosansLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GeosansLight.ttf; sourceTree = "<group>"; };
+		D13214411718A888004E0C87 /* ITCAvantGardeStd-XLt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-XLt.otf"; sourceTree = "<group>"; };
 		D19682F71718937C0072FD78 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = Classes/Root/RootViewController.h; sourceTree = "<group>"; };
 		D19682F81718937C0072FD78 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = Classes/Root/RootViewController.m; sourceTree = "<group>"; };
 		D19682FC171898420072FD78 /* main_picture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = main_picture.jpg; sourceTree = "<group>"; };
@@ -326,6 +330,7 @@
 				D19682F617188F250072FD78 /* Root */,
 				F44E1170171839B700E9D4EC /* Music */,
 				D19682FA171898420072FD78 /* Graphcis */,
+				D132143F1718A888004E0C87 /* Fonts */,
 				F44E1104171832E800E9D4EC /* Classes */,
 				29F3032617183706003B7812 /* Modules */,
 				2951870D17175858007E09F5 /* Data models */,
@@ -475,6 +480,15 @@
 				29F3035D17183F28003B7812 /* UIImageView+AFNetworking.m */,
 			);
 			name = AFNetwork;
+			sourceTree = "<group>";
+		};
+		D132143F1718A888004E0C87 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				D13214401718A888004E0C87 /* GeosansLight.ttf */,
+				D13214411718A888004E0C87 /* ITCAvantGardeStd-XLt.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		D19682F617188F250072FD78 /* Root */ = {
@@ -727,6 +741,8 @@
 				29F3032517181D6E003B7812 /* video2.mov in Resources */,
 				D19682FE171898420072FD78 /* main_picture.jpg in Resources */,
 				D19682FF171898420072FD78 /* main_picture@2x.jpg in Resources */,
+				D13214421718A888004E0C87 /* GeosansLight.ttf in Resources */,
+				D13214431718A888004E0C87 /* ITCAvantGardeStd-XLt.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
