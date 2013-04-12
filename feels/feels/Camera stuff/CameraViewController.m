@@ -55,6 +55,7 @@ enum {
 @interface CameraViewController()<VideoDelegate,CameraDelegate>
 
 @property(nonatomic,assign) BOOL recordOnTouch;
+@property(nonatomic,assign) int panningRead;
 
 @property(nonatomic,assign) BOOL recording;
 @property(nonatomic,assign) int recordedFrames;
@@ -78,6 +79,8 @@ enum {
 @property(nonatomic,assign) CMTime time;
 
 @property(nonatomic,strong) GLView *glView;
+
+@property(nonatomic,assign) float dragValue;
 
 @end
 
@@ -103,16 +106,16 @@ enum {
     [self loadShaders:@"LotrShader" forProgram:&_lotrProgram];
     [self loadShaders:@"BlurShader" forProgram:&_blurProgram];
     
-    _recordOnTouch = NO;
+    _recordOnTouch = YES;
     
-    if (YES) {
+    if (NO) {
         _camera = [[Camera alloc] init];
         _camera.delegate = self;
         [_camera startCamera];
     } else {
         _video = [[Video alloc] init];
         _video.delegate = self;
-        [_video startReading:@"video.mov"];
+        [_video loadVideoFile:@"video.mov"];
     }
 }
 
@@ -378,7 +381,7 @@ enum {
 }
 
 -(void)didStopReading:(AVAssetReaderStatus)status{
-    [_video startReading:@"video.mov"];
+    [_video loadVideo];
 }
 
 #pragma mark - CameraDelegate methods
@@ -401,12 +404,28 @@ enum {
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
 
-    float f = _startTouch.x - [[touches anyObject] locationInView:self.view].x;
+    float f = _startTouch.y - [[touches anyObject] locationInView:self.view].y;
     
     _blur = clamp(0.0, 0.01, map(f, 0, 150, 0.0, 0.01));
+    _dragValue = [[touches anyObject] locationInView:self.view].y/self.view.height;
+    
+    if (_panningRead > 2) {
+        _panningRead = 0;
+        [_video readFrame:_dragValue];
+        [_video loadVideo];
+    }
+    _panningRead ++;
+
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+
+    if (!_recordOnTouch) {
+        
+        [_video setStartTime:_dragValue];
+        [_video loadVideo];
+    }
+    
     if (_recording && _recordOnTouch) {
         [self performSelectorInBackground:@selector(stopRecording) withObject:nil];
     }
