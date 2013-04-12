@@ -42,7 +42,6 @@
 		29518705171753CE007E09F5 /* NSTimer+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 29518704171753CE007E09F5 /* NSTimer+Block.m */; };
 		2951870B1717543C007E09F5 /* UIView+Additional.m in Sources */ = {isa = PBXBuildFile; fileRef = 295187081717543C007E09F5 /* UIView+Additional.m */; };
 		2951870C1717543C007E09F5 /* UIView_DrawRect.m in Sources */ = {isa = PBXBuildFile; fileRef = 2951870A1717543C007E09F5 /* UIView_DrawRect.m */; };
-		29BEA0E8171896CA00F3A073 /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29BEA0E7171896CA00F3A073 /* libGPUImage.a */; };
 		29BEA0EC17189C1000F3A073 /* lookup_miss_etikate.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BEA0EB17189C1000F3A073 /* lookup_miss_etikate.png */; };
 		29BEA0F01718A1F200F3A073 /* FeelsFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BEA0EF1718A1F200F3A073 /* FeelsFilter.m */; };
 		29F3032317181AFE003B7812 /* video.mov in Resources */ = {isa = PBXBuildFile; fileRef = 29F3032217181AFE003B7812 /* video.mov */; };
@@ -66,6 +65,7 @@
 		6010AF331718BE040092D50A /* lookup_toaster.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF2F1718BE040092D50A /* lookup_toaster.png */; };
 		6010AF341718BE040092D50A /* lookup_nashville.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF301718BE040092D50A /* lookup_nashville.png */; };
 		6010AF361718C3550092D50A /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF351718C3550092D50A /* test.png */; };
+		6010AF5D1718D6520092D50A /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 292295D21718957A00362325 /* libGPUImage.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -193,7 +193,7 @@
 				295186DA17173DC9007E09F5 /* CoreVideo.framework in Frameworks */,
 				295186D817173DB4007E09F5 /* QuartzCore.framework in Frameworks */,
 				295186D617173D46007E09F5 /* CoreMedia.framework in Frameworks */,
-				29BEA0E8171896CA00F3A073 /* libGPUImage.a in Frameworks */,
+				6010AF5D1718D6520092D50A /* libGPUImage.a in Frameworks */,
 				295186D417173D28007E09F5 /* AVFoundation.framework in Frameworks */,
 				295186D217173CF5007E09F5 /* AssetsLibrary.framework in Frameworks */,
 				295186D017173CE6007E09F5 /* OpenGLES.framework in Frameworks */,
