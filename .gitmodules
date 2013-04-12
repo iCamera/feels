@@ -1,3 +1,6 @@
 [submodule "AFNetworking"]
 	path = AFNetworking
 	url = git@github.com:AFNetworking/AFNetworking.git
+[submodule "GPUImage"]
+	path = GPUImage
+	url = git@github.com:BradLarson/GPUImage.git
