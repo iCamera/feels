@@ -18,8 +18,6 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(update) userInfo:nil repeats:YES];
-    
     [NSTimer scheduledTimerWithTimeInterval:2. target:self selector:@selector(start) userInfo:nil repeats:NO];
 }
 
@@ -27,10 +25,6 @@
     
     [[Intense shared] play];
     
-}
-
-- (void)update {
-    NSLog(@"%@ %@", [NSDate dateWithTimeIntervalSince1970:[[AppManager sharedManager] serverTimeIntervalSince1970]], [NSDate date]);
 }
 
 - (IBAction)sliderDidChange:(UISlider *)slider {
