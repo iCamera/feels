@@ -7,24 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
-#import "Camera.h"
-#import "GLView.h"
-
+#import "GPUImage.h"
+#import "FeelsFilter.h"
 @interface CameraViewController : UIViewController
 
-@property(nonatomic,strong) Camera *camera;
-
-@property(nonatomic,strong) AVAssetWriter *assetWriter;
-@property(nonatomic,strong) AVAssetWriterInput *assetWriterVideoInput;
-
-@property(nonatomic,strong) AVAssetWriterInputPixelBufferAdaptor *adaptor;
-
-// OpenGL ES 2.0 setup methods
-- (BOOL)loadShaders:(NSString *)shadersName forProgram:(GLuint *)programPointer;
-- (BOOL)compileShader:(GLuint *)shader type:(GLenum)type file:(NSString *)file;
-- (BOOL)linkProgram:(GLuint)prog;
-- (BOOL)validateProgram:(GLuint)prog;
+@property(nonatomic,strong) GPUImageVideoCamera *videoCamera;
+@property(nonatomic,strong) FeelsFilter *filter;
+@property(nonatomic,strong) GPUImageMovieWriter *movieWriter;
 
 
 @end
