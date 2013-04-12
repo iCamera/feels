@@ -7,12 +7,44 @@
 //
 
 #import "AppDelegate.h"
+#import "AppManager.h"
+#import "APIClient.h"
+#import "UIDevice+IdentifierAddition.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    /* TA INTE BORT
+     
+    __block NSError *error = nil;
+    NSString *location = @"Östermalm, Stockholm";
+    NSString *author = [[UIDevice currentDevice] uniqueDeviceIdentifier];
+    NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];
+    NSMutableURLRequest *urlRequest = [[APIClient shareClient] multipartFormRequestWithMethod:@"POST" path:@"/ahd/upload" parameters:@{ @"location":location, @"author":author, @"timestamp":@(timestamp) } constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileURL:[[NSBundle mainBundle] URLForResource:@"video" withExtension:@"mov"] name:@"file" error:&error];
+    }];
+    
+    if (!error) {
+        AFHTTPRequestOperation *operation = [[APIClient shareClient] HTTPRequestOperationWithRequest:urlRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"Success: %@", NSStringFromClass([responseObject class]));
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@ %@", operation.responseString, [error localizedDescription]);
+        }];
+        
+        
+        [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+            NSLog(@"Uploading: %.0f%%", ((float)totalBytesWritten/(float)totalBytesExpectedToWrite)*100.0);
+        }];
+        [operation start];
+    }
+    */
+    
+    [[AppManager sharedManager] syncServerWithCompleteBlock:^{
+        NSLog(@"Complete");
+    }];
+    
     return YES;
 }
 							

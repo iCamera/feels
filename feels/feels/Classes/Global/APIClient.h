@@ -6,8 +6,10 @@
 //  Copyright (c) 2013 Feels. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "AFNetworking.h"
 
-@interface APIClient : NSObject
+@interface APIClient : AFHTTPClient
+
++ (APIClient *)shareClient;
 
 @end

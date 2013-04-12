@@ -8,7 +8,7 @@
 
 #import "MixerController.h"
 #import "Intense.h"
-
+#import "AppManager.h"
 @implementation MixerController
 
 - (void)viewDidLoad {
