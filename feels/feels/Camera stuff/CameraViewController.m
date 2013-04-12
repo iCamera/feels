@@ -28,6 +28,7 @@ static const GLfloat textureVertices[] = {
 // Shaders.
 typedef enum {
     PASSTHROUGH_SHADER,
+    FEELS_SHADER,
     TEST_SHADER,
     BLUR_SHADER,
     LOTR_SHADER,
@@ -37,9 +38,9 @@ typedef enum {
 enum {
     UNIFORM_VIDEOFRAME,
     UNIFORM_BLUR,
-    NUM_UNIFORMS
+    NUM_UNIS
 };
-GLint uniforms[NUM_UNIFORMS];
+GLint uni[NUM_UNIS];
 
 // Attribute index.
 enum {
@@ -52,9 +53,10 @@ enum {
 #define videoWidth 1280
 #define videoHeight 720
 
-@interface CameraViewController()<VideoDelegate,CameraDelegate>
+@interface CameraViewController()<CameraDelegate>
 
 @property(nonatomic,assign) BOOL recordOnTouch;
+@property(nonatomic,assign) int panningRead;
 
 @property(nonatomic,assign) BOOL recording;
 @property(nonatomic,assign) int recordedFrames;
@@ -66,6 +68,7 @@ enum {
 @property(nonatomic,assign) CGPoint currentTouchPoint;
 
 @property(nonatomic,assign) GLuint passthroughProgram;
+@property(nonatomic,assign) GLuint feelsProgram;
 @property(nonatomic,assign) GLuint testProgram;
 @property(nonatomic,assign) GLuint blurProgram;
 @property(nonatomic,assign) GLuint lotrProgram;
@@ -79,6 +82,8 @@ enum {
 
 @property(nonatomic,strong) GLView *glView;
 
+@property(nonatomic,assign) float dragValue;
+
 @end
 
 @implementation CameraViewController
@@ -89,7 +94,7 @@ enum {
 -(void)viewDidLoad{
     [super viewDidLoad];
     
-    _currentShader = TEST_SHADER;
+    _currentShader = BLUR_SHADER;
     
 	_glView = [[GLView alloc] initWithFrame:CGRectMake(0, 0, videoHeight, videoWidth)];
 	[self.view addSubview:_glView];
@@ -99,21 +104,15 @@ enum {
     
 
     [self loadShaders:@"PassthroughShader" forProgram:&_passthroughProgram];
+    [self loadShaders:@"FeelsShader" forProgram:&_feelsProgram];
     [self loadShaders:@"TestShader" forProgram:&_testProgram];
     [self loadShaders:@"LotrShader" forProgram:&_lotrProgram];
     [self loadShaders:@"BlurShader" forProgram:&_blurProgram];
     
     _recordOnTouch = NO;
-    
-    if (YES) {
-        _camera = [[Camera alloc] init];
-        _camera.delegate = self;
-        [_camera startCamera];
-    } else {
-        _video = [[Video alloc] init];
-        _video.delegate = self;
-        [_video startReading:@"video.mov"];
-    }
+    _camera = [[Camera alloc] init];
+    _camera.delegate = self;
+    [_camera startCamera];
 }
 
 #pragma mark - OpenGL ES 2.0 rendering methods
@@ -130,6 +129,10 @@ enum {
 			[_glView setDisplayFramebuffer];
 			glUseProgram(_testProgram);
             break;
+        case FEELS_SHADER:
+            [_glView setDisplayFramebuffer];
+			glUseProgram(_feelsProgram);
+            break;
         case BLUR_SHADER:
 			[_glView setDisplayFramebuffer];
 			glUseProgram(_blurProgram);
@@ -137,15 +140,28 @@ enum {
         case LOTR_SHADER:
 			[_glView setDisplayFramebuffer];
 			glUseProgram(_lotrProgram);
-            break;
 	}
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _videoFrameTexture);
 	
 	// Update uniform values
-	glUniform1i(uniforms[UNIFORM_VIDEOFRAME], 0);
-    glUniform1f(uniforms[UNIFORM_BLUR], _blur);
+	glUniform1i(uni[UNIFORM_VIDEOFRAME], 0);
+    glUniform1f(uni[UNIFORM_BLUR], _dragValue);
+    
+    float first = clamp(0.0,1.0,map(_dragValue, 0, 0.5, 1.0, 0.0));
+
+    float second = 0.0;
+    
+    if (_dragValue < 0.5) {
+        second = clamp(0.0,1.0,map(_dragValue, 0.0, 0.5, 0.0, 1.0));
+    } else {
+        second = clamp(0.0,1.0,map(_dragValue, 0.5, 1.0, 1.0, 0.0));
+    }
+    
+    float third = clamp(0.0,1.0,map(_dragValue, 0.5, 1.0, 0.0, 1.0));
+
+    NSLog(@"%f %f %f",first ,second,third);
 
 	// Update attribute values.
 	glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, 0, 0, squareVertices);
@@ -253,8 +269,8 @@ enum {
     }
     
     // Get uniform locations.
-    uniforms[UNIFORM_VIDEOFRAME] = glGetUniformLocation(*programPointer, "videoFrame");
-    uniforms[UNIFORM_BLUR] = glGetUniformLocation(*programPointer, "uniformBlur");
+    uni[UNIFORM_VIDEOFRAME] = glGetUniformLocation(*programPointer, "videoFrame");
+    uni[UNIFORM_BLUR] = glGetUniformLocation(*programPointer, "uniformBlur");
     // Release vertex and fragment shaders.
     if (vertexShader) {
         glDeleteShader(vertexShader);
@@ -370,17 +386,6 @@ enum {
 	CVPixelBufferUnlockBaseAddress(frame, 0);
 }
 
-
-#pragma mark - VideoDelegate methods
-
-- (void)processVideoFrame:(CVImageBufferRef)cameraFrame {
-    [self processFrameBuffer:cameraFrame];
-}
-
--(void)didStopReading:(AVAssetReaderStatus)status{
-    [_video startReading:@"video.mov"];
-}
-
 #pragma mark - CameraDelegate methods
 -(void)processCameraFrame:(CVImageBufferRef)cameraFrame{
     [self processFrameBuffer:cameraFrame];
@@ -401,12 +406,15 @@ enum {
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
 
-    float f = _startTouch.x - [[touches anyObject] locationInView:self.view].x;
+    float f = _startTouch.y - [[touches anyObject] locationInView:self.view].y;
     
     _blur = clamp(0.0, 0.01, map(f, 0, 150, 0.0, 0.01));
+    _dragValue = [[touches anyObject] locationInView:self.view].y/self.view.height;
+
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+    
     if (_recording && _recordOnTouch) {
         [self performSelectorInBackground:@selector(stopRecording) withObject:nil];
     }

@@ -15,8 +15,14 @@
 @interface Video : NSObject
 
 @property(nonatomic, weak) id<VideoDelegate> delegate;
+@property(nonatomic, assign) int numberOfFrames;
+@property(nonatomic, assign) int possibleStartFrames;
+@property(nonatomic, assign) int durationInFrame;
 
--(void)startReading:(NSString *)videoFile;
+-(void)loadVideoFile:(NSString *) videoFile;
+-(void)setStartTime:(float) startTime;
+-(void)readFrame:(float)frame;
+-(void)loadVideo;
 
 @end
 
