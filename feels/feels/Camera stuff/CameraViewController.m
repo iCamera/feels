@@ -37,14 +37,10 @@ typedef enum {
 // Uniform index.
 enum {
     UNIFORM_VIDEOFRAME,
-    UNIFORM_PAN,
-    UNIFORM_FIRST,
-    UNIFORM_SECOND,
-    UNIFORM_THIRD,
     UNIFORM_BLUR,
-    NUM_UNIFORMS
+    NUM_UNIS
 };
-GLint uniforms[NUM_UNIFORMS];
+GLint uni[NUM_UNIS];
 
 // Attribute index.
 enum {
@@ -98,7 +94,7 @@ enum {
 -(void)viewDidLoad{
     [super viewDidLoad];
     
-    _currentShader = FEELS_SHADER;
+    _currentShader = BLUR_SHADER;
     
 	_glView = [[GLView alloc] initWithFrame:CGRectMake(0, 0, videoHeight, videoWidth)];
 	[self.view addSubview:_glView];
@@ -150,16 +146,22 @@ enum {
 	glBindTexture(GL_TEXTURE_2D, _videoFrameTexture);
 	
 	// Update uniform values
-	//glUniform1i(uniforms[UNIFORM_VIDEOFRAME], 0);
-    glUniform1f(uniforms[UNIFORM_BLUR], _blur);
+	glUniform1i(uni[UNIFORM_VIDEOFRAME], 0);
+    glUniform1f(uni[UNIFORM_BLUR], _dragValue);
     
-    float first = clamp(0.0,1.0,map(_dragValue * 3.0, 0, 1.0, 1.0, 0.0));
+    float first = clamp(0.0,1.0,map(_dragValue, 0, 0.5, 1.0, 0.0));
+
+    float second = 0.0;
     
-    glUniform1f(uniforms[UNIFORM_PAN], _dragValue * 3.0);
-    glUniform1f(uniforms[UNIFORM_FIRST], first);
-    glUniform1f(uniforms[UNIFORM_SECOND], _dragValue * 3.0);
-    glUniform1f(uniforms[UNIFORM_THIRD], _dragValue * 3.0);
-    NSLog(@"%f",_blur);
+    if (_dragValue < 0.5) {
+        second = clamp(0.0,1.0,map(_dragValue, 0.0, 0.5, 0.0, 1.0));
+    } else {
+        second = clamp(0.0,1.0,map(_dragValue, 0.5, 1.0, 1.0, 0.0));
+    }
+    
+    float third = clamp(0.0,1.0,map(_dragValue, 0.5, 1.0, 0.0, 1.0));
+
+    NSLog(@"%f %f %f",first ,second,third);
 
 	// Update attribute values.
 	glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, 0, 0, squareVertices);
@@ -267,12 +269,8 @@ enum {
     }
     
     // Get uniform locations.
-    //uniforms[UNIFORM_VIDEOFRAME] = glGetUniformLocation(*programPointer, "videoFrame");
-    uniforms[UNIFORM_BLUR] = glGetUniformLocation(*programPointer, "uniformBlur");
-    uniforms[UNIFORM_PAN] = glGetUniformLocation(*programPointer, "uniformPan");
-    uniforms[UNIFORM_FIRST] = glGetUniformLocation(*programPointer, "uniformFirst");
-    uniforms[UNIFORM_SECOND] = glGetUniformLocation(*programPointer, "uniformSecond");
-    uniforms[UNIFORM_THIRD] = glGetUniformLocation(*programPointer, "uniformThird");
+    uni[UNIFORM_VIDEOFRAME] = glGetUniformLocation(*programPointer, "videoFrame");
+    uni[UNIFORM_BLUR] = glGetUniformLocation(*programPointer, "uniformBlur");
     // Release vertex and fragment shaders.
     if (vertexShader) {
         glDeleteShader(vertexShader);

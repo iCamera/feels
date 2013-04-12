@@ -1,11 +1,14 @@
 varying highp vec2 textureCoordinate;
 
 uniform sampler2D videoFrame;
+uniform highp float uniformBlur;
+uniform mediump float uniformPan;
+uniform mediump float noise;
 
 void main()
 {
 
-    mediump vec4 overlay = vec4(0.11,0.53,0.98,0.10);
+    mediump vec4 overlay = vec4(0.11 + uniformPan,0.53 + noise,0.98,0.10);
     mediump vec4 base = texture2D(videoFrame, textureCoordinate);
     mediump float ra;
     if (2.0 * base.r < base.a) {
@@ -28,6 +31,6 @@ void main()
         ba = overlay.a * base.a - 2.0 * (base.a - base.b) * (overlay.a - overlay.b) + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);
     }
     
-    gl_FragColor = vec4(ra, ga, ba, 1.0);
+    gl_FragColor = vec4(ra, ga + uniformPan, ba, 1.0);
 	gl_FragColor = gl_FragColor.bgra;
 }

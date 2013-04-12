@@ -28,15 +28,21 @@ static const GLfloat textureVertices[] = {
 // Shaders.
 typedef enum {
     PASSTHROUGH_SHADER,
+    FEELS_SHADER,
+    TEST_SHADER,
+    BLUR_SHADER,
+    LOTR_SHADER,
 } Shader;
 
 // Uniform index.
 enum {
     UNIFORM_VIDEOFRAME,
+    UNIFORM_PAN,
     UNIFORM_BLUR,
+    UNIFORM_NOISE,
     NUM_UNIFORMS
 };
-GLint uniforms2[NUM_UNIFORMS];
+GLint uniforms[NUM_UNIFORMS];
 
 // Attribute index.
 enum {
@@ -44,6 +50,7 @@ enum {
     ATTRIB_TEXTUREPOSITON,
     NUM_ATTRIBUTES
 };
+
 
 
 #define videoWidth 1280
@@ -121,8 +128,8 @@ enum {
 	glBindTexture(GL_TEXTURE_2D, _videoFrameTexture);
 	
 	// Update uniform values
-	glUniform1i(uniforms2[UNIFORM_VIDEOFRAME], 0);
-    glUniform1f(uniforms2[UNIFORM_BLUR], _blur);
+	glUniform1i(uniforms[UNIFORM_VIDEOFRAME], 0);
+    glUniform1f(uniforms[UNIFORM_BLUR], _blur);
 
 	// Update attribute values.
 	glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, 0, 0, squareVertices);
@@ -230,8 +237,8 @@ enum {
     }
     
     // Get uniform locations.
-    uniforms2[UNIFORM_VIDEOFRAME] = glGetUniformLocation(*programPointer, "videoFrame");
-    uniforms2[UNIFORM_BLUR] = glGetUniformLocation(*programPointer, "uniformBlur");
+    uniforms[UNIFORM_VIDEOFRAME] = glGetUniformLocation(*programPointer, "videoFrame");
+    uniforms[UNIFORM_BLUR] = glGetUniformLocation(*programPointer, "uniformBlur");
     // Release vertex and fragment shaders.
     if (vertexShader) {
         glDeleteShader(vertexShader);

@@ -1,25 +1,17 @@
 varying highp vec2 textureCoordinate;
 
 uniform sampler2D videoFrame;
+uniform mediump float noise;
+uniform mediump float uniformPan;
+mediump vec4 first;
 
-uniform highp float uniformBlur;
-uniform highp float uniformPan;
-uniform lowp float uniformFirst;
-uniform highp float uniformSecond;
-uniform highp float uniformThird;
-mediump float uniformFirst2;
 
-//clamp(min, max, value) (MIN(max, MAX(min, value)))
-//mediump float clampSpecial(mediump float min,mediump float max,mediump float value){
-//    mediump float ret = MIN(max,MAX(min,value));
-//    return ret;
-//}
+
 
 void main() {
-    uniformFirst2 = uniformPan + 0.5;
     
-	mediump vec4 first = texture2D(videoFrame, textureCoordinate);
-//    first = vec4(first.r * uniformFirst2,first.g * uniformFirst2,first.b * uniformFirst2,1.0);
+    first = texture2D(videoFrame, textureCoordinate);
+    first = vec4(first.r + noise,first.g + uniformPan,first.b + uniformPan,1.0);
     gl_FragColor = first;
     gl_FragColor = gl_FragColor.bgra;
 //

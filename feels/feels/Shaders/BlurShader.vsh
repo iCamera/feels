@@ -6,6 +6,7 @@ const lowp int GAUSSIAN_SAMPLES = 9;
 //uniform highp float texelWidthOffset;
 //uniform highp float texelHeightOffset;
 uniform highp float uniformBlur;
+uniform highp float uniformPan;
 
 varying highp vec2 blurCoordinates[GAUSSIAN_SAMPLES];
 
@@ -19,7 +20,7 @@ void main()
  	// Calculate the positions for the blur
  	int multiplier = 0;
  	highp vec2 blurStep;
-    highp vec2 singleStepOffset = vec2(0.0,uniformBlur);
+    highp vec2 singleStepOffset = vec2(0.0,uniformPan);
      
  	for (lowp int i = 0; i < GAUSSIAN_SAMPLES; i++) {
  		multiplier = (i - ((GAUSSIAN_SAMPLES - 1) / 2));
