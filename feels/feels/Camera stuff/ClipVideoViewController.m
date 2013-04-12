@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Andreas Areschoug. All rights reserved.
 //
 
-#import "CameraViewController.h"
+#import "ClipVideoViewController.h"
 #import "MathHelper.h"
 
 #import <AssetsLibrary/AssetsLibrary.h>
@@ -28,23 +28,15 @@ static const GLfloat textureVertices[] = {
 // Shaders.
 typedef enum {
     PASSTHROUGH_SHADER,
-    FEELS_SHADER,
-    TEST_SHADER,
-    BLUR_SHADER,
-    LOTR_SHADER,
 } Shader;
 
 // Uniform index.
 enum {
     UNIFORM_VIDEOFRAME,
-    UNIFORM_PAN,
-    UNIFORM_FIRST,
-    UNIFORM_SECOND,
-    UNIFORM_THIRD,
     UNIFORM_BLUR,
     NUM_UNIFORMS
 };
-GLint uniforms[NUM_UNIFORMS];
+GLint uniforms2[NUM_UNIFORMS];
 
 // Attribute index.
 enum {
@@ -57,7 +49,7 @@ enum {
 #define videoWidth 1280
 #define videoHeight 720
 
-@interface CameraViewController()<CameraDelegate>
+@interface ClipVideoViewController()<VideoDelegate>
 
 @property(nonatomic,assign) BOOL recordOnTouch;
 @property(nonatomic,assign) int panningRead;
@@ -72,10 +64,6 @@ enum {
 @property(nonatomic,assign) CGPoint currentTouchPoint;
 
 @property(nonatomic,assign) GLuint passthroughProgram;
-@property(nonatomic,assign) GLuint feelsProgram;
-@property(nonatomic,assign) GLuint testProgram;
-@property(nonatomic,assign) GLuint blurProgram;
-@property(nonatomic,assign) GLuint lotrProgram;
 
 @property(nonatomic,assign) float blur;
 
@@ -90,7 +78,7 @@ enum {
 
 @end
 
-@implementation CameraViewController
+@implementation ClipVideoViewController
 
 
 #pragma mark - Initialization and teardown
@@ -98,7 +86,7 @@ enum {
 -(void)viewDidLoad{
     [super viewDidLoad];
     
-    _currentShader = FEELS_SHADER;
+    _currentShader = PASSTHROUGH_SHADER;
     
 	_glView = [[GLView alloc] initWithFrame:CGRectMake(0, 0, videoHeight, videoWidth)];
 	[self.view addSubview:_glView];
@@ -108,15 +96,13 @@ enum {
     
 
     [self loadShaders:@"PassthroughShader" forProgram:&_passthroughProgram];
-    [self loadShaders:@"FeelsShader" forProgram:&_feelsProgram];
-    [self loadShaders:@"TestShader" forProgram:&_testProgram];
-    [self loadShaders:@"LotrShader" forProgram:&_lotrProgram];
-    [self loadShaders:@"BlurShader" forProgram:&_blurProgram];
     
-    _recordOnTouch = NO;
-    _camera = [[Camera alloc] init];
-    _camera.delegate = self;
-    [_camera startCamera];
+    _recordOnTouch = YES;
+    
+    _video = [[Video alloc] init];
+    _video.delegate = self;
+    [_video loadVideoFile:@"video.mov"];
+
 }
 
 #pragma mark - OpenGL ES 2.0 rendering methods
@@ -129,37 +115,14 @@ enum {
 			[_glView setDisplayFramebuffer];
 			glUseProgram(_passthroughProgram);
             break;
-        case TEST_SHADER:
-			[_glView setDisplayFramebuffer];
-			glUseProgram(_testProgram);
-            break;
-        case FEELS_SHADER:
-            [_glView setDisplayFramebuffer];
-			glUseProgram(_feelsProgram);
-            break;
-        case BLUR_SHADER:
-			[_glView setDisplayFramebuffer];
-			glUseProgram(_blurProgram);
-            break;
-        case LOTR_SHADER:
-			[_glView setDisplayFramebuffer];
-			glUseProgram(_lotrProgram);
 	}
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _videoFrameTexture);
 	
 	// Update uniform values
-	//glUniform1i(uniforms[UNIFORM_VIDEOFRAME], 0);
-    glUniform1f(uniforms[UNIFORM_BLUR], _blur);
-    
-    float first = clamp(0.0,1.0,map(_dragValue * 3.0, 0, 1.0, 1.0, 0.0));
-    
-    glUniform1f(uniforms[UNIFORM_PAN], _dragValue * 3.0);
-    glUniform1f(uniforms[UNIFORM_FIRST], first);
-    glUniform1f(uniforms[UNIFORM_SECOND], _dragValue * 3.0);
-    glUniform1f(uniforms[UNIFORM_THIRD], _dragValue * 3.0);
-    NSLog(@"%f",_blur);
+	glUniform1i(uniforms2[UNIFORM_VIDEOFRAME], 0);
+    glUniform1f(uniforms2[UNIFORM_BLUR], _blur);
 
 	// Update attribute values.
 	glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, 0, 0, squareVertices);
@@ -267,12 +230,8 @@ enum {
     }
     
     // Get uniform locations.
-    //uniforms[UNIFORM_VIDEOFRAME] = glGetUniformLocation(*programPointer, "videoFrame");
-    uniforms[UNIFORM_BLUR] = glGetUniformLocation(*programPointer, "uniformBlur");
-    uniforms[UNIFORM_PAN] = glGetUniformLocation(*programPointer, "uniformPan");
-    uniforms[UNIFORM_FIRST] = glGetUniformLocation(*programPointer, "uniformFirst");
-    uniforms[UNIFORM_SECOND] = glGetUniformLocation(*programPointer, "uniformSecond");
-    uniforms[UNIFORM_THIRD] = glGetUniformLocation(*programPointer, "uniformThird");
+    uniforms2[UNIFORM_VIDEOFRAME] = glGetUniformLocation(*programPointer, "videoFrame");
+    uniforms2[UNIFORM_BLUR] = glGetUniformLocation(*programPointer, "uniformBlur");
     // Release vertex and fragment shaders.
     if (vertexShader) {
         glDeleteShader(vertexShader);
@@ -388,9 +347,15 @@ enum {
 	CVPixelBufferUnlockBaseAddress(frame, 0);
 }
 
-#pragma mark - CameraDelegate methods
--(void)processCameraFrame:(CVImageBufferRef)cameraFrame{
+
+#pragma mark - VideoDelegate methods
+
+- (void)processVideoFrame:(CVImageBufferRef)cameraFrame {
     [self processFrameBuffer:cameraFrame];
+}
+
+-(void)didStopReading:(AVAssetReaderStatus)status{
+    [_video loadVideo];
 }
 
 
@@ -412,10 +377,23 @@ enum {
     
     _blur = clamp(0.0, 0.01, map(f, 0, 150, 0.0, 0.01));
     _dragValue = [[touches anyObject] locationInView:self.view].y/self.view.height;
+    
+    if (_panningRead > 2) {
+        _panningRead = 0;
+        [_video readFrame:_dragValue];
+        [_video loadVideo];
+    }
+    _panningRead ++;
 
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+
+    if (!_recordOnTouch) {
+        
+        [_video setStartTime:_dragValue];
+        [_video loadVideo];
+    }
     
     if (_recording && _recordOnTouch) {
         [self performSelectorInBackground:@selector(stopRecording) withObject:nil];

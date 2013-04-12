@@ -7,13 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
-#import "Camera.h"
+#import "Video.h"
 #import "GLView.h"
 
-@interface CameraViewController : UIViewController
+@interface ClipVideoViewController : UIViewController
 
-@property(nonatomic,strong) Camera *camera;
+@property(nonatomic,strong) Video *video;
 
 @property(nonatomic,strong) AVAssetWriter *assetWriter;
 @property(nonatomic,strong) AVAssetWriterInput *assetWriterVideoInput;
