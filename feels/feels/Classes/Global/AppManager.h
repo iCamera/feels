@@ -11,6 +11,8 @@
 @interface AppManager : NSObject
 + (AppManager *)sharedManager;
 
+- (NSString *)author;
+
 - (void)syncServerWithCompleteBlock:(void(^)())block;
 - (NSTimeInterval)serverTimeIntervalSince1970;
 

@@ -9,6 +9,7 @@
 #import "AppManager.h"
 #import "APIClient.h"
 #import "TimeHolder.h"
+#import "UIDevice+IdentifierAddition.h"
 
 @interface AppManager ()
 @property (nonatomic, strong) TimeHolder *currentTimeHolder;
@@ -25,6 +26,10 @@
     });
     
     return INSTANCE;
+}
+
+- (NSString *)author {
+    return [[UIDevice currentDevice] uniqueDeviceIdentifier];
 }
 
 static inline double calcServerTimeOffset(double  localSent, double  localReceived, double  serverReceived, double serverSent) {
