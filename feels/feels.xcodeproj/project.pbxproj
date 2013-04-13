@@ -42,11 +42,8 @@
 		29518705171753CE007E09F5 /* NSTimer+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 29518704171753CE007E09F5 /* NSTimer+Block.m */; };
 		2951870B1717543C007E09F5 /* UIView+Additional.m in Sources */ = {isa = PBXBuildFile; fileRef = 295187081717543C007E09F5 /* UIView+Additional.m */; };
 		2951870C1717543C007E09F5 /* UIView_DrawRect.m in Sources */ = {isa = PBXBuildFile; fileRef = 2951870A1717543C007E09F5 /* UIView_DrawRect.m */; };
-		29F3032317181AFE003B7812 /* video.mov in Resources */ = {isa = PBXBuildFile; fileRef = 29F3032217181AFE003B7812 /* video.mov */; };
-		29F3032517181D6E003B7812 /* video2.mov in Resources */ = {isa = PBXBuildFile; fileRef = 29F3032417181D6E003B7812 /* video2.mov */; };
 		29F3034517183789003B7812 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29F3034417183789003B7812 /* SystemConfiguration.framework */; };
 		29F30347171837C5003B7812 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29F30346171837C5003B7812 /* MobileCoreServices.framework */; };
-		29F3034A17183BF7003B7812 /* ClipVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F3034817183BF7003B7812 /* ClipVideoViewController.m */; };
 		29F3035E17183F28003B7812 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F3034C17183F28003B7812 /* AFHTTPClient.m */; };
 		29F3035F17183F28003B7812 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F3034E17183F28003B7812 /* AFHTTPRequestOperation.m */; };
 		29F3036017183F28003B7812 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F3035017183F28003B7812 /* AFImageRequestOperation.m */; };
@@ -68,6 +65,11 @@
 		6010AF711718EBDC0092D50A /* close_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF6F1718EBDC0092D50A /* close_button@2x.png */; };
 		6010AF781719458E0092D50A /* back_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF761719458E0092D50A /* back_button.png */; };
 		6010AF791719458E0092D50A /* back_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF771719458E0092D50A /* back_button@2x.png */; };
+		6010AF7C17195C780092D50A /* lookup.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF2D1718BE040092D50A /* lookup.png */; };
+		6010AF7D17195C780092D50A /* lookup_xpro.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF2E1718BE040092D50A /* lookup_xpro.png */; };
+		6010AF7E17195C780092D50A /* lookup_toaster.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF2F1718BE040092D50A /* lookup_toaster.png */; };
+		6010AF7F17195C780092D50A /* lookup_nashville.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF301718BE040092D50A /* lookup_nashville.png */; };
+		6010AF8017195C780092D50A /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF351718C3550092D50A /* test.png */; };
 		602F42601718C9DD009ADE50 /* UILabel+Feels.m in Sources */ = {isa = PBXBuildFile; fileRef = 602F425F1718C9DD009ADE50 /* UILabel+Feels.m */; };
 		602F42681718CFD2009ADE50 /* menu_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F42621718CFD2009ADE50 /* menu_arrow.png */; };
 		602F42691718CFD2009ADE50 /* menu_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F42631718CFD2009ADE50 /* menu_arrow@2x.png */; };
@@ -215,8 +217,6 @@
 		29F3032417181D6E003B7812 /* video2.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = video2.mov; sourceTree = "<group>"; };
 		29F3034417183789003B7812 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		29F30346171837C5003B7812 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		29F3034817183BF7003B7812 /* ClipVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClipVideoViewController.m; sourceTree = "<group>"; };
-		29F3034917183BF7003B7812 /* ClipVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClipVideoViewController.h; sourceTree = "<group>"; };
 		29F3034B17183F28003B7812 /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AFHTTPClient.h; path = ../../AFNetworking/AFNetworking/AFHTTPClient.h; sourceTree = "<group>"; };
 		29F3034C17183F28003B7812 /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AFHTTPClient.m; path = ../../AFNetworking/AFNetworking/AFHTTPClient.m; sourceTree = "<group>"; };
 		29F3034D17183F28003B7812 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AFHTTPRequestOperation.h; path = ../../AFNetworking/AFNetworking/AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -494,8 +494,6 @@
 		295186C017173C53007E09F5 /* Camera stuff */ = {
 			isa = PBXGroup;
 			children = (
-				29F3034917183BF7003B7812 /* ClipVideoViewController.h */,
-				29F3034817183BF7003B7812 /* ClipVideoViewController.m */,
 				295186CB17173C98007E09F5 /* CameraViewController.h */,
 				295186CA17173C98007E09F5 /* CameraViewController.m */,
 				295186C117173C81007E09F5 /* Camera.h */,
@@ -1011,8 +1009,6 @@
 				F44E11751718423800E9D4EC /* music.mp3 in Resources */,
 				F44E11781718440600E9D4EC /* base.mp3 in Resources */,
 				F44E11791718440600E9D4EC /* sample.mp3 in Resources */,
-				29F3032317181AFE003B7812 /* video.mov in Resources */,
-				29F3032517181D6E003B7812 /* video2.mov in Resources */,
 				D19682FE171898420072FD78 /* main_picture.jpg in Resources */,
 				D19682FF171898420072FD78 /* main_picture@2x.jpg in Resources */,
 				D13214421718A888004E0C87 /* GeosansLight.ttf in Resources */,
@@ -1032,6 +1028,11 @@
 				6010AF711718EBDC0092D50A /* close_button@2x.png in Resources */,
 				6010AF781719458E0092D50A /* back_button.png in Resources */,
 				6010AF791719458E0092D50A /* back_button@2x.png in Resources */,
+				6010AF7C17195C780092D50A /* lookup.png in Resources */,
+				6010AF7D17195C780092D50A /* lookup_xpro.png in Resources */,
+				6010AF7E17195C780092D50A /* lookup_toaster.png in Resources */,
+				6010AF7F17195C780092D50A /* lookup_nashville.png in Resources */,
+				6010AF8017195C780092D50A /* test.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1083,7 +1084,6 @@
 				F44E116A1718385B00E9D4EC /* OALAudioFile.m in Sources */,
 				F44E116B1718385B00E9D4EC /* OALTools.m in Sources */,
 				F44E117C17185C7400E9D4EC /* Intense.m in Sources */,
-				29F3034A17183BF7003B7812 /* ClipVideoViewController.m in Sources */,
 				29F3035E17183F28003B7812 /* AFHTTPClient.m in Sources */,
 				29F3035F17183F28003B7812 /* AFHTTPRequestOperation.m in Sources */,
 				29F3036017183F28003B7812 /* AFImageRequestOperation.m in Sources */,
@@ -1223,6 +1223,7 @@
 		295186BF17173644007E09F5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Andreas Areschoug";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "feels/feels-Prefix.pch";
 				HEADER_SEARCH_PATHS = "../GPUImage/framework/Source/**";
@@ -1233,6 +1234,7 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1E7EC656-919B-42C6-914D-8ED0AB4331C1";
 				USER_HEADER_SEARCH_PATHS = "../GPUImage/framework/Source/**";
 				WRAPPER_EXTENSION = app;
 			};
