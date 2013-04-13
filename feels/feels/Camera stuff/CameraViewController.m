@@ -9,7 +9,9 @@
 #import "CameraViewController.h"
 #import "FeelsFilter.h"
 #import "MathHelper.h"
-
+#import <AssetsLibrary/AssetsLibrary.h>
+#import "APIClient.h"
+#import "AppManager.h"
 #define videoWidth 1280
 #define videoHeight 720
 
@@ -18,6 +20,15 @@
 @property (strong, nonatomic) UIImageView *imageView;
 @property(nonatomic,strong) FeelsFilter *filter;
 @property(nonatomic,assign) int changeCounter;
+@property(nonatomic,assign) BOOL recording;
+@property (weak, nonatomic) IBOutlet UILabel *startRecordingLabel;
+@property (weak, nonatomic) IBOutlet UILabel *tapLabel;
+@property (weak, nonatomic) IBOutlet UIView *preRecordingView;
+
+@property (weak, nonatomic) IBOutlet UIView *recordingView;
+@property (weak, nonatomic) IBOutlet UILabel *recordingTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *recordingTapLabel;
+
 
 @end
 
@@ -29,11 +40,22 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     
+    {
+        _startRecordingLabel.font = [UIFont GeoSansLight:_startRecordingLabel.font.pointSize];
+        _tapLabel.font = [UIFont GeogrotesqueGardeExtraLight:_tapLabel.font.pointSize];
+        
+        UIView *v = [[UIView alloc] initWithFrame:CGRectMake((_tapLabel.superview.width-144)/2, _startRecordingLabel.bottom - 2, 144, 0.5)];
+        v.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
+        v.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        [_tapLabel.superview addSubview:v];
+    }
+
+    {
+        _startRecordingLabel.font = [UIFont AvantGardeExtraLight:_startRecordingLabel.font.pointSize];
+    }
     
-    _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionBack];
-    //    videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionFront];
-    //    videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1280x720 cameraPosition:AVCaptureDevicePositionBack];
-    //    videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1920x1080 cameraPosition:AVCaptureDevicePositionBack];
+    _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1280x720 cameraPosition:AVCaptureDevicePositionBack];
+
     
     _videoCamera.outputImageOrientation = UIInterfaceOrientationLandscapeLeft;
     _videoCamera.horizontallyMirrorFrontFacingCamera = NO;
@@ -41,76 +63,31 @@
     
     //_filter = [[GPUImageSepiaFilter alloc] init];
     
-    
 
     _filter = [[FeelsFilter alloc] init];
     UIImage *i = [self blendImage:@"test" andImage2:@"lookup_xpro" first:0.0 second:0.0];
     [_filter setSourceImage:i];
     
-    //    filter = [[GPUImageTiltShiftFilter alloc] init];
-    //    [(GPUImageTiltShiftFilter *)filter setTopFocusLevel:0.65];
-    //    [(GPUImageTiltShiftFilter *)filter setBottomFocusLevel:0.85];
-    //    [(GPUImageTiltShiftFilter *)filter setBlurSize:1.5];
-    //    [(GPUImageTiltShiftFilter *)filter setFocusFallOffRate:0.2];
-    
-    //    filter = [[GPUImageSketchFilter alloc] init];
-    //    filter = [[GPUImageSmoothToonFilter alloc] init];
-    //    GPUImageRotationFilter *rotationFilter = [[GPUImageRotationFilter alloc] initWithRotation:kGPUImageRotateRightFlipVertical];
     
     [_videoCamera addTarget:_filter];
 
     _gpuImageView = [[GPUImageView alloc] initWithFrame:self.view.bounds];
     [_filter addTarget:_gpuImageView];
 
-    [self.view addSubview:_gpuImageView];
+    [self.view insertSubview:_gpuImageView atIndex:0];
     //    filterView.fillMode = kGPUImageFillModeStretch;
     _gpuImageView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
-    
-    // Record a movie for 10 s and store it in /Documents, visible via iTunes file sharing
-    
-    NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.m4v"];
+
+    NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
     unlink([pathToMovie UTF8String]); // If a file already exists, AVAssetWriter won't let you record new frames, so delete the old movie
     NSURL *movieURL = [NSURL fileURLWithPath:pathToMovie];
-    _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(480.0, 640.0)];
-    //    movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(640.0, 480.0)];
-    //    movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(720.0, 1280.0)];
-    //    movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(1080.0, 1920.0)];
+    _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(1280.0, 720.0)];
+
     [_filter addTarget:_movieWriter];
     
     [_videoCamera startCameraCapture];
     
-    double delayToStartRecording = 0.5;
-    dispatch_time_t startTime = dispatch_time(DISPATCH_TIME_NOW, delayToStartRecording * NSEC_PER_SEC);
-    dispatch_after(startTime, dispatch_get_main_queue(), ^(void){
-        NSLog(@"Start recording");
-        
-        _videoCamera.audioEncodingTarget = _movieWriter;
-        [_movieWriter startRecording];
-        
-        //        NSError *error = nil;
-        //        if (![videoCamera.inputCamera lockForConfiguration:&error])
-        //        {
-        //            NSLog(@"Error locking for configuration: %@", error);
-        //        }
-        //        [videoCamera.inputCamera setTorchMode:AVCaptureTorchModeOn];
-        //        [videoCamera.inputCamera unlockForConfiguration];
-        
-        double delayInSeconds = 10.0;
-        dispatch_time_t stopTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(stopTime, dispatch_get_main_queue(), ^(void){
-            
-            [_filter removeTarget:_movieWriter];
-            _videoCamera.audioEncodingTarget = nil;
-            [_movieWriter finishRecordingWithCompletionHandler:^{
-                NSLog(@"Movie completed");    
-            }];
-            
-            
-        });
-    });
-    
-    _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-    [self.view addSubview:_imageView];
+    [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)]];
 
 }
 
@@ -121,6 +98,16 @@
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
 
+    
+}
+
+-(void)tap{
+
+    if (_recording) {
+        [self stopRecording];
+    } else {
+        [self startRecording];
+    }
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -187,6 +174,80 @@
     UIGraphicsEndImageContext();
     _imageView.image = newImage;
     return newImage;
+}
+
+-(void)startRecording{
+    _recording = YES;
+    double delayToStartRecording = 0.0;
+    dispatch_time_t startTime = dispatch_time(DISPATCH_TIME_NOW, delayToStartRecording * NSEC_PER_SEC);
+    dispatch_after(startTime, dispatch_get_main_queue(), ^(void){
+        NSLog(@"Start recording");
+        
+        _videoCamera.audioEncodingTarget = _movieWriter;
+        [_movieWriter startRecording];
+        
+        //        NSError *error = nil;
+        //        if (![videoCamera.inputCamera lockForConfiguration:&error])
+        //        {
+        //            NSLog(@"Error locking for configuration: %@", error);
+        //        }
+        //        [videoCamera.inputCamera setTorchMode:AVCaptureTorchModeOn];
+        //        [videoCamera.inputCamera unlockForConfiguration];
+        
+        double delayInSeconds = 6.0;
+        dispatch_time_t stopTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(stopTime, dispatch_get_main_queue(), ^(void){
+            
+            [self stopRecording];
+            
+        });
+    });
+    
+}
+
+-(void)stopRecording{
+    _recording = NO;
+    [_filter removeTarget:_movieWriter];
+    _videoCamera.audioEncodingTarget = nil;
+    [_movieWriter finishRecordingWithCompletionHandler:^{
+        NSLog(@"Movie completed");
+
+        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+        NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
+        NSURL* fileURL = [NSURL fileURLWithPath:localVid];
+
+        __block NSError *error = nil;
+        NSString *location = @"Östermalm, Stockholm";
+        NSString *author = [[AppManager sharedManager] author];
+        NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];
+        NSMutableURLRequest *urlRequest = [[APIClient shareClient] multipartFormRequestWithMethod:@"POST" path:@"/ahd/upload" parameters:@{ @"location":location, @"author":author, @"timestamp":@(timestamp) } constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+            [formData appendPartWithFileURL:fileURL name:@"file" error:&error];
+        }];
+        
+        if (!error) {
+            AFHTTPRequestOperation *operation = [[APIClient shareClient] HTTPRequestOperationWithRequest:urlRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"Success: %@", responseObject);
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"Error: %@ %@", operation.responseString, [error localizedDescription]);
+            }];
+            
+            
+            [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+                NSLog(@"Uploading: %.0f%%", ((float)totalBytesWritten/(float)totalBytesExpectedToWrite)*100.0);
+            }];
+            [operation start];
+        }
+        
+//        [library writeVideoAtPathToSavedPhotosAlbum:fileURL completionBlock:^(NSURL *assetURL, NSError *error) {
+//            if (!error) {
+//                NSLog(@"Video Saved - %@",assetURL);
+//            } else {
+//                NSLog(@"%@: Error saving context: %@", [self class], [error localizedDescription]);
+//            }
+//        }];
+        
+    }];
+    
 }
 
 @end

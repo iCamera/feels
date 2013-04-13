@@ -43,6 +43,9 @@
     */
     [[AppManager sharedManager] start];
     
+    NSLog(@"%@",[UIFont fontNamesForFamilyName:@"GeosansLight"]);
+    
+    
     return YES;
 }
 							
