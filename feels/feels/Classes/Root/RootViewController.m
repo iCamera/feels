@@ -122,6 +122,11 @@
         //NSLog(@"%@", [video.videoURL absoluteString]);
         _vidLocationLabel.text = [video.location uppercaseString];
         {
+            
+            _vidDateLabel.alpha = 0;
+            _vidTimeLabel.alpha = 0;
+            _vidLocationLabel.alpha = 0;
+            
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"hh:mm a"];
             _vidTimeLabel.text = [[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:video.timestamp]] uppercaseString];
@@ -136,6 +141,21 @@
             [_vidDateLabel setAdjustsFontSizeToFitWidth:YES];
             [_vidTimeLabel setAdjustsLetterSpacingToFitWidth:YES];
             [_vidTimeLabel setAdjustsFontSizeToFitWidth:YES];
+            
+            [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
+                _vidDateLabel.alpha = 1;
+                _vidTimeLabel.alpha = 1;
+                _vidLocationLabel.alpha = 1;
+            } completion:^(BOOL finished) {
+                [UIView animateWithDuration:0.5 delay:3 options:0 animations:^{
+                    
+                    _vidDateLabel.alpha = 0;
+                    _vidTimeLabel.alpha = 0;
+                    _vidLocationLabel.alpha = 0;
+                } completion:^(BOOL finished) {
+                    
+                }];
+            }];
         }
     }];
 }
