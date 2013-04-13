@@ -10,6 +10,7 @@
 #import "AppManager.h"
 #import "APIClient.h"
 #import "UIDevice+IdentifierAddition.h"
+#import "NSTimer+Block.h"
 
 @implementation AppDelegate
 
@@ -40,10 +41,7 @@
         [operation start];
     }
     */
-    
-    [[AppManager sharedManager] syncServerWithCompleteBlock:^{
-        NSLog(@"Complete");
-    }];
+    [[AppManager sharedManager] start];
     
     return YES;
 }

@@ -9,11 +9,19 @@
 #import <Foundation/Foundation.h>
 
 @interface AppManager : NSObject
+
+@property (nonatomic, strong) NSMutableArray *videos;
+@property (nonatomic, assign) double startTimestamp;
+@property (nonatomic, assign) int startIndex;
 + (AppManager *)sharedManager;
 
 - (NSString *)author;
 
+- (void)start;
 - (void)syncServerWithCompleteBlock:(void(^)())block;
 - (NSTimeInterval)serverTimeIntervalSince1970;
+- (void)fetchVideosWithBlock:(void(^)(NSMutableArray *videos))completeBlock afterIndex:(NSString *)index;
+
+
 
 @end

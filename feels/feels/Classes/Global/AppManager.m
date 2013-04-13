@@ -10,10 +10,13 @@
 #import "APIClient.h"
 #import "TimeHolder.h"
 #import "UIDevice+IdentifierAddition.h"
+#import "VideoModel.h"
+#import "NSTimer+Block.h"
 
 @interface AppManager ()
 @property (nonatomic, strong) TimeHolder *currentTimeHolder;
 @property (nonatomic, readonly) NSTimeInterval time;
+@property (nonatomic, strong) NSTimer *videoFetchingTimer;
 @end
 
 @implementation AppManager
@@ -28,8 +31,73 @@
     return INSTANCE;
 }
 
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        self.videos = [NSMutableArray array];
+        self.startIndex = -1;
+    }
+    return self;
+}
+
 - (NSString *)author {
     return [[UIDevice currentDevice] uniqueDeviceIdentifier];
+}
+
+- (void)start {
+    [[AppManager sharedManager] syncServerWithCompleteBlock:^{
+        [self startFetchingVideos];
+        self.startTimestamp = self.serverTimeIntervalSince1970;
+        
+    }];
+}
+
+- (void)startFetchingVideos {
+    self.videoFetchingTimer = [NSTimer scheduledTimerWithTimeInterval:10.0 completion:^{
+        VideoModel *videoModel = [self.videos lastObject];
+        NSString *lastID = videoModel.ID ?: @"0";
+        
+        [self fetchVideosWithBlock:^(NSMutableArray *videos) {
+            if ([videos count] > 0) {
+                [videos enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    if (![self.videos containsObject:obj]) {
+                        [self.videos addObject:obj];
+                        self.startTimestamp -= 6;
+                    }
+                }];
+                
+                if (self.startIndex < 0) {
+                    NSTimeInterval date = self.serverTimeIntervalSince1970 - self.startTimestamp;
+                    NSLog(@"%f", date);
+                    
+                    if (self.videos.count > 0) {
+                        NSLog(@"%i", (int)(date / 6) % (int)self.videos.count);
+                    }
+                    self.startIndex = (int)(date / 6) % (int)self.videos.count;
+                }
+            }
+        } afterIndex:lastID];
+    } repeat:YES];
+}
+
+- (void)fetchVideosWithBlock:(void(^)(NSMutableArray *videos))completeBlock afterIndex:(NSString *)index {
+    
+    [[APIClient shareClient] getPath:@"/ahd/stream/0" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableArray *videos = [NSMutableArray array];
+        if ([responseObject nullCheckedObjectForKey:@"success"]) {
+            for (NSDictionary *dict in responseObject[@"data"]) {
+                VideoModel *video = [[VideoModel alloc] initWithDictionary:dict];
+                if (![videos containsObject:video]) {
+                    [videos addObject:video];
+                }
+            }
+        }
+        
+        completeBlock(videos);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", operation.responseString);
+    }];
 }
 
 static inline double calcServerTimeOffset(double  localSent, double  localReceived, double  serverReceived, double serverSent) {
