@@ -12,5 +12,6 @@
 
 + (UIFont *)GeoSansLight:(float)size;
 + (UIFont *)AvantGardeExtraLight:(float)size;
++ (UIFont *)GeogrotesqueGardeExtraLight:(float)size;
 
 @end

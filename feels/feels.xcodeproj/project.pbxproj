@@ -61,6 +61,11 @@
 		6010AF521718D0050092D50A /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6010AF501718CFFD0092D50A /* libGPUImage.a */; };
 		6010AF531718D02B0092D50A /* FeelsFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BEA0EF1718A1F200F3A073 /* FeelsFilter.m */; };
 		6010AF611718D7060092D50A /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 292295D21718957A00362325 /* libGPUImage.a */; };
+		6010AF691718E6B40092D50A /* geogtq-rg-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF681718E6B40092D50A /* geogtq-rg-webfont.ttf */; };
+		6010AF6B1718E79C0092D50A /* bottom_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF6A1718E79C0092D50A /* bottom_shadow@2x.png */; };
+		6010AF6D1718E7AC0092D50A /* bottom_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF6C1718E7AC0092D50A /* bottom_shadow.png */; };
+		6010AF701718EBDC0092D50A /* close_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF6E1718EBDC0092D50A /* close_button.png */; };
+		6010AF711718EBDC0092D50A /* close_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF6F1718EBDC0092D50A /* close_button@2x.png */; };
 		602F42601718C9DD009ADE50 /* UILabel+Feels.m in Sources */ = {isa = PBXBuildFile; fileRef = 602F425F1718C9DD009ADE50 /* UILabel+Feels.m */; };
 		602F42681718CFD2009ADE50 /* menu_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F42621718CFD2009ADE50 /* menu_arrow.png */; };
 		602F42691718CFD2009ADE50 /* menu_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F42631718CFD2009ADE50 /* menu_arrow@2x.png */; };
@@ -239,6 +244,11 @@
 		6010AF301718BE040092D50A /* lookup_nashville.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup_nashville.png; sourceTree = "<group>"; };
 		6010AF351718C3550092D50A /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
 		6010AF501718CFFD0092D50A /* libGPUImage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGPUImage.a; sourceTree = "<group>"; };
+		6010AF681718E6B40092D50A /* geogtq-rg-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "geogtq-rg-webfont.ttf"; sourceTree = "<group>"; };
+		6010AF6A1718E79C0092D50A /* bottom_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bottom_shadow@2x.png"; sourceTree = "<group>"; };
+		6010AF6C1718E7AC0092D50A /* bottom_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_shadow.png; sourceTree = "<group>"; };
+		6010AF6E1718EBDC0092D50A /* close_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_button.png; sourceTree = "<group>"; };
+		6010AF6F1718EBDC0092D50A /* close_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close_button@2x.png"; sourceTree = "<group>"; };
 		602F425E1718C9DD009ADE50 /* UILabel+Feels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Feels.h"; sourceTree = "<group>"; };
 		602F425F1718C9DD009ADE50 /* UILabel+Feels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Feels.m"; sourceTree = "<group>"; };
 		602F42621718CFD2009ADE50 /* menu_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_arrow.png; sourceTree = "<group>"; };
@@ -629,6 +639,7 @@
 		D132143F1718A888004E0C87 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				6010AF681718E6B40092D50A /* geogtq-rg-webfont.ttf */,
 				D13214401718A888004E0C87 /* GeosansLight.ttf */,
 				D13214411718A888004E0C87 /* ITCAvantGardeStd-XLt.otf */,
 			);
@@ -669,6 +680,10 @@
 			children = (
 				602F427117190A9C009ADE50 /* placeholder_archive.png */,
 				602F427217190A9C009ADE50 /* placeholder_archive@2x.png */,
+				6010AF6E1718EBDC0092D50A /* close_button.png */,
+				6010AF6F1718EBDC0092D50A /* close_button@2x.png */,
+				6010AF6A1718E79C0092D50A /* bottom_shadow@2x.png */,
+				6010AF6C1718E7AC0092D50A /* bottom_shadow.png */,
 				D19682FC171898420072FD78 /* main_picture.jpg */,
 				D19682FD171898420072FD78 /* main_picture@2x.jpg */,
 			);
@@ -1012,6 +1027,11 @@
 				602F427417190A9C009ADE50 /* placeholder_archive@2x.png in Resources */,
 				602F428117193BB9009ADE50 /* Icon.png in Resources */,
 				602F428317193BC1009ADE50 /* Icon@2x.png in Resources */,
+				6010AF691718E6B40092D50A /* geogtq-rg-webfont.ttf in Resources */,
+				6010AF6B1718E79C0092D50A /* bottom_shadow@2x.png in Resources */,
+				6010AF6D1718E7AC0092D50A /* bottom_shadow.png in Resources */,
+				6010AF701718EBDC0092D50A /* close_button.png in Resources */,
+				6010AF711718EBDC0092D50A /* close_button@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1189,6 +1209,7 @@
 				GCC_PREFIX_HEADER = "feels/feels-Prefix.pch";
 				HEADER_SEARCH_PATHS = "../GPUImage/framework/Source/**";
 				INFOPLIST_FILE = "feels/feels-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -1206,6 +1227,7 @@
 				GCC_PREFIX_HEADER = "feels/feels-Prefix.pch";
 				HEADER_SEARCH_PATHS = "../GPUImage/framework/Source/**";
 				INFOPLIST_FILE = "feels/feels-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
