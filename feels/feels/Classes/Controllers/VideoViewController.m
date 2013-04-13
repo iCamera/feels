@@ -49,8 +49,10 @@
 }
 
 -(void)appear{
-    NSLog(@"%f",_disappearTime);
+    [[OALSimpleAudio sharedInstance] playBg:@"home.mp3" loop:YES];;
     if (_disappearTime > 0) {
+        
+        
         double now = [[NSDate date] timeIntervalSince1970];
         
         double secs = now - _disappearTime;
@@ -84,6 +86,7 @@
 }
 
 -(void)disappear{
+    [[OALSimpleAudio sharedInstance] stopBg];
     [_currentVideo pause];
     [_nextVideo pause];
     
@@ -101,6 +104,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [[OALSimpleAudio sharedInstance] preloadBg:@"home.mp3"];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationWillResignActiveNotification object:nil];
