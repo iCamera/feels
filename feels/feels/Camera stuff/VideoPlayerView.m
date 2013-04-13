@@ -221,6 +221,7 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
          
         //self.item = item;
         
+        self.clipsToBounds = YES;
         self.backgroundColor = [UIColor blackColor];
         
         self.autoresizesSubviews = YES;
@@ -236,7 +237,7 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
         self.playerLayerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.playerContainerView addSubview:self.playerLayerView];
         
-
+        
         
         self.thumbnailView = [[UIImageView alloc] init];
         self.thumbnailView.frame = self.bounds;
@@ -263,6 +264,9 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
         
         [self updateForCurrentDisplayState];
         
+        self.playerContainerView.clipsToBounds = YES;
+        self.playiconImageView.clipsToBounds = YES;
+        self.playerLayerView.clipsToBounds = YES;
         
         UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
         [self addGestureRecognizer:tapRecognizer];
@@ -452,7 +456,7 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
     if (playerItem) {
         
         [nc removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:playerItem];
-        [nc removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:playerItem]; 
+        [nc removeObserver:self name:AVPlayerItemFailedToPlayToEndTimeNotification object:playerItem];
 
         [playerItem removeObserver:self forKeyPath:@"status"];
         [playerItem removeObserver:self forKeyPath:@"playbackLikelyToKeepUp"];
@@ -664,6 +668,7 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
 }
 
 - (void)tap {
+    return;
 //    NSTimeInterval t = [NSDate timeIntervalSinceReferenceDate];
     [self activateIfNeccessary];
 //    t = [NSDate timeIntervalSinceReferenceDate] - t;
@@ -765,7 +770,7 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
 
 - (void)deactivateIfActive {
     if (self.active) {
-        [[self class] setActive:nil];
+        //[[self class] setActive:nil];
     }
 }
 
@@ -936,7 +941,7 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
 
 + (void)setActive:(VideoPlayerView*)instance {
     if (ACTIVE_VIDEO_PLAYER_VIEW_INSTANCE != instance) {
-        [ACTIVE_VIDEO_PLAYER_VIEW_INSTANCE shutdownForActive:YES];
+        //[ACTIVE_VIDEO_PLAYER_VIEW_INSTANCE shutdownForActive:YES];
         ACTIVE_VIDEO_PLAYER_VIEW_INSTANCE = instance;
         [ACTIVE_VIDEO_PLAYER_VIEW_INSTANCE setupForActive];
     }

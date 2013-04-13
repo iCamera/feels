@@ -55,36 +55,43 @@
 
 - (void)startFetchingVideos {
     self.videoFetchingTimer = [NSTimer scheduledTimerWithTimeInterval:10.0 completion:^{
-        VideoModel *videoModel = [self.videos lastObject];
-        NSString *lastID = videoModel.ID ?: @"0";
-        
-        [self fetchVideosWithBlock:^(NSMutableArray *videos) {
-            if ([videos count] > 0) {
-                [videos enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                    if (![self.videos containsObject:obj]) {
-                        [self.videos addObject:obj];
-                        self.startTimestamp -= 6;
-                    }
-                }];
+        [self fetchVideos];
+    } repeat:YES];
+    [self fetchVideos];
+}
+
+- (void)fetchVideos {
+    VideoModel *videoModel = [self.videos lastObject];
+    NSString *lastID = videoModel.ID ?: @"0";
+    
+    [self fetchVideosWithBlock:^(NSMutableArray *videos) {
+        if ([videos count] > 0) {
+            [videos enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                if (![self.videos containsObject:obj]) {
+                    [self.videos addObject:obj];
+                    self.startTimestamp -= 6;
+                }
+            }];
+            
+            if (self.startIndex < 0) {
+                NSTimeInterval date = self.serverTimeIntervalSince1970;
                 
-                if (self.startIndex < 0) {
-                    NSTimeInterval date = self.serverTimeIntervalSince1970;
+                if (self.videos.count > 0) {
+                    self.loading = NO;
+                    self.startIndex = (int)(date / 6) % (int)self.videos.count;
                     
-                    if (self.videos.count > 0) {
-                        self.loading = NO;
-                        self.startIndex = (int)(date / 6) % (int)self.videos.count;
-                        
-                        double numberOfClipsPlayed = floor(self.startTimestamp / 6);
-                        double secondsIntoClip = [[NSDate date] timeIntervalSince1970] - (numberOfClipsPlayed*6);
-                        
-                        self.startSecondTimeInterval = secondsIntoClip;
-                        self.play = YES;
-                    }
+                    double numberOfClipsPlayed = floor(self.serverTimeIntervalSince1970 / 6);
+                    double secondsIntoClip = self.serverTimeIntervalSince1970 - (numberOfClipsPlayed*6);
+                    
+                    NSLog(@"%f", secondsIntoClip);
+                    
+                    self.startSecondTimeInterval = secondsIntoClip;
+                    self.play = YES;
                 }
             }
-            
-        } afterIndex:lastID];
-    } repeat:YES];
+        }
+        
+    } afterIndex:lastID];
 }
 
 - (void)fetchVideosWithBlock:(void(^)(NSMutableArray *videos))completeBlock afterIndex:(NSString *)index {
@@ -114,8 +121,9 @@ static inline double calcServerTimeOffset(double  localSent, double  localReceiv
 static inline double calcRequestDelay(double localSent, double localReceived, double serverReceived, double serverSent) {
     return (localReceived - localSent) - (serverSent - serverReceived);
 }
-
+static int count = 0;
 - (void)syncServerWithCompleteBlock:(void(^)())block {
+    
     [[APIClient shareClient] getPath:@"/ahd/server/timestamp" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         double localSent = [[NSDate date] timeIntervalSince1970];
@@ -140,7 +148,14 @@ static inline double calcRequestDelay(double localSent, double localReceived, do
             }
             
             _time = now + offset;
-            block();
+            count++;
+            if (count < 10) {
+                [self syncServerWithCompleteBlock:block];
+            }
+            else {
+                count = 0;
+                block();
+            }
             
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
