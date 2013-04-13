@@ -317,6 +317,7 @@ float elasticEaseOut(float t, float b, float c, float d){
         _menuView.left = left;
         self.archiveViewController.view.left = left+_menuView.width-14;
         _videoWrapperView.left = map(clamp(0, 1, left/(self.view.bounds.size.width - pan.view.width)), 1, 0, 0, -120);
+        
         _fadeView.alpha = map(left/(self.view.bounds.size.width - pan.view.width), 1, 0, 0, 0.9);
         
         } else if ([pan state] == UIGestureRecognizerStateEnded || [pan state] == UIGestureRecognizerStateCancelled){
