@@ -48,6 +48,7 @@
             self.points = 6000; //first time
             [[NSUserDefaults standardUserDefaults] setInteger:self.points forKey:kUsersAmountOfPoints];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kLaunchedBefore];
+            [[NSUserDefaults standardUserDefaults] synchronize];
         }
         self.seconds = self.points / 1000;
     }

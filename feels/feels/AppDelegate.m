@@ -11,11 +11,16 @@
 #import "APIClient.h"
 #import "UIDevice+IdentifierAddition.h"
 #import "NSTimer+Block.h"
+#import "KVOR.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    [KVOR target:[AppManager sharedManager] keyPath:@"points" task:^(NSString *keyPath, NSDictionary *change) {
+        NSLog(@"%i", [AppManager sharedManager].points);
+    }];
     // Override point for customization after application launch.
     /* TA INTE BORT
      
@@ -42,8 +47,6 @@
     }
     */
     
-    NSLog(@"%@",[UIFont fontNamesForFamilyName:@"GeosansLight"]);
-    
     return YES;
 }
 							
@@ -57,8 +60,9 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    [[NSUserDefaults standardUserDefaults] setInteger:[AppManager sharedManager].points forKey:kUsersAmountOfPoints];
-    [[NSUserDefaults standardUserDefaults] setInteger:[[NSDate date] timeIntervalSince1970] forKey:kClosedAppTimeStamp];
+    [[NSUserDefaults standardUserDefaults] setDouble:[AppManager sharedManager].points forKey:kUsersAmountOfPoints];
+    [[NSUserDefaults standardUserDefaults] setDouble:[[NSDate date] timeIntervalSince1970] forKey:kClosedAppTimeStamp];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -69,20 +73,23 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    int timeOfExit = [[NSUserDefaults standardUserDefaults] integerForKey:kClosedAppTimeStamp];
-    int nowTimeStamp = [[NSDate date] timeIntervalSince1970];
+    double timeOfExit = [[NSUserDefaults standardUserDefaults] doubleForKey:kClosedAppTimeStamp];
+    double nowTimeStamp = [[NSDate date] timeIntervalSince1970];
     if (timeOfExit > 0) {
         int secondsAway = nowTimeStamp - timeOfExit;
-        [[AppManager sharedManager] addPointsFromSeconds:secondsAway];
+        [[AppManager sharedManager] addPointsFromSeconds:(int)secondsAway];
     } else {
         //First time. Hello.
     }
     
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application
-{
+- (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
+    [[NSUserDefaults standardUserDefaults] setDouble:[AppManager sharedManager].points forKey:kUsersAmountOfPoints];
+    [[NSUserDefaults standardUserDefaults] setDouble:[[NSDate date] timeIntervalSince1970] forKey:kClosedAppTimeStamp];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end

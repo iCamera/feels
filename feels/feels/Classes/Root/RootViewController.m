@@ -176,6 +176,9 @@ float elasticEaseOut(float t, float b, float c, float d){
             _vidLocationLabel.alpha = 0;
             
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setAMSymbol:@"AM"];
+            [dateFormatter setPMSymbol:@"PM"];
+            [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
             [dateFormatter setDateFormat:@"hh:mm a"];
             _vidTimeLabel.text = [[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:video.timestamp]] uppercaseString];
             [dateFormatter setDateFormat:@"dd LLL yyyy"];
