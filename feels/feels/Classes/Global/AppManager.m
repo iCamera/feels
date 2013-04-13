@@ -38,6 +38,15 @@
         self.videos = [NSMutableArray array];
         self.startIndex = -1;
         self.loading = YES;
+        
+        /* Points / seconds */
+        BOOL hasLaunchedBefore = [[NSUserDefaults standardUserDefaults] boolForKey:kLaunchedBefore];
+        int points = [[NSUserDefaults standardUserDefaults] integerForKey:kUsersAmountOfPoints];
+        if (!hasLaunchedBefore) {
+            points = 6000; //first time
+            [[NSUserDefaults standardUserDefaults] setInteger:points forKey:kUsersAmountOfPoints];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kLaunchedBefore];
+        }
     }
     return self;
 }
