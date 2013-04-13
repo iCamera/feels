@@ -264,6 +264,7 @@
 		602F427217190A9C009ADE50 /* placeholder_archive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder_archive@2x.png"; sourceTree = "<group>"; };
 		602F428017193BB9009ADE50 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../Icon.png; sourceTree = "<group>"; };
 		602F428217193BC1009ADE50 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "../Icon@2x.png"; sourceTree = "<group>"; };
+		602F428517195335009ADE50 /* Defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Defines.h; sourceTree = "<group>"; };
 		D13214401718A888004E0C87 /* GeosansLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GeosansLight.ttf; sourceTree = "<group>"; };
 		D13214411718A888004E0C87 /* ITCAvantGardeStd-XLt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-XLt.otf"; sourceTree = "<group>"; };
 		D13214441718BD8C004E0C87 /* UIFont+Feels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Feels.h"; sourceTree = "<group>"; };
@@ -518,6 +519,7 @@
 			isa = PBXGroup;
 			children = (
 				295186CE17173CD6007E09F5 /* MathHelper.h */,
+				602F428517195335009ADE50 /* Defines.h */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
