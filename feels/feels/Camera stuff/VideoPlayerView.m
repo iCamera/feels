@@ -274,6 +274,8 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
     return self;
 }
 
+
+
 - (void)dealloc {
     [self setCurrentPlayerItem:nil];
     
@@ -407,7 +409,7 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
     
     */
     
-    [self reloadAndKeepTime:YES];
+    //[self reloadAndKeepTime:YES];
 }
 
 - (void)deviceOrientationDidChange:(NSNotification*)n {
