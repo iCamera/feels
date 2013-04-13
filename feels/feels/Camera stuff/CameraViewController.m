@@ -491,7 +491,15 @@ typedef enum {
             
             double yourTime = ([AppManager sharedManager].videos.count - newIndex) * 6;
             NSDate *date = [NSDate dateWithTimeIntervalSinceNow:yourTime];
-            NSLog(@"Your clip will air: %@", date);
+            
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setAMSymbol:@"AM"];
+            [dateFormatter setPMSymbol:@"PM"];
+            [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+            [dateFormatter setDateFormat:@"hh:mm a"];
+            _uploadTimeLabel.text = [[dateFormatter stringFromDate:date] uppercaseString];
+            [dateFormatter setDateFormat:@"dd LLL yyyy"];
+            _uploadDateLabel.text = [[dateFormatter stringFromDate:date] uppercaseString];
             
             [self setCurrentState:StateDone];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
