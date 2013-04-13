@@ -536,7 +536,7 @@ typedef enum {
             _uploadView.alpha = 1.0;
             _doneView.alpha = 0.0;
             _postView.alpha = 0.0;
-            _backButton.alpha = 1.0;
+            _backButton.alpha = 0.0;
         } else if(_currentState == StateDone){
             _uploadView.alpha = 0.0;
             _doneView.alpha = 1.0;
