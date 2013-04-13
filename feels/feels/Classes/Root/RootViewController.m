@@ -8,6 +8,7 @@
 
 #import "RootViewController.h"
 #import "ArchiveViewController.h"
+#import "CameraViewController.h"
 #import "MathHelper.h"
 #import "VideoViewController.h"
 #import "VideoModel.h"
@@ -31,6 +32,8 @@
 @property (nonatomic, strong) ArchiveViewController *archiveViewController;
 @property (nonatomic, assign) BOOL isArchiveMode;
 @property (weak, nonatomic) IBOutlet UIView *videoWrapperView;
+
+@property(strong,nonatomic) VideoViewController *videoViewController;
 
 @end
 
@@ -112,13 +115,13 @@
     [_archiveButton addGestureRecognizer:panGesturizer];
     
     
-    VideoViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoViewController"];
-    [self addChildViewController:vc];
-    [self.videoWrapperView addSubview:vc.view];
-    vc.view.backgroundColor = [UIColor blackColor];
-    vc.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _videoViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoViewController"];
+    [self addChildViewController:_videoViewController];
+    [self.videoWrapperView addSubview:_videoViewController.view];
+    _videoViewController.view.backgroundColor = [UIColor blackColor];
+    _videoViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    [vc setVideoDidChange:^(VideoModel *video) {
+    id b = ^(VideoModel *video) {
         //NSLog(@"%@", [video.videoURL absoluteString]);
         _vidLocationLabel.text = [video.location uppercaseString];
         {
@@ -157,13 +160,28 @@
                 }];
             }];
         }
-    }];
+    };
+    
+    
+    [_videoViewController setVideoDidChange:b];
 }
+
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     self.archiveViewController.view.bounds = self.view.bounds;
     self.archiveViewController.view.origin = CGPointMake(self.view.height, 0);
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    _videoWrapperView.alpha = 0.0;
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    _videoWrapperView.alpha = 1.0;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -173,6 +191,9 @@
 
 - (IBAction)createButtonTapped:(id)sender {
     NSLog(@"CREATE THAT MTRFCKER");
+    
+    CameraViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"CameraViewController"];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 - (IBAction)timeButtonTapped:(id)sender {

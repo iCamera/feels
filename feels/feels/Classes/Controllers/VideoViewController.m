@@ -22,6 +22,8 @@
 @property(nonatomic,assign) int lastVideo;
 @property (nonatomic, assign) int currentIndex;
 
+@property(nonatomic,assign) double disappearTime;
+
 @end
 
 @implementation VideoViewController
@@ -33,8 +35,81 @@
     return self.currentIndex < [AppManager sharedManager].videos.count-1 ? self.currentIndex+1 : 0;
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self appear];
+
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self disappear];
+}
+
+-(void)appear{
+    NSLog(@"%f",_disappearTime);
+    if (_disappearTime > 0) {
+        double now = [[NSDate date] timeIntervalSince1970];
+        
+        double secs = now - _disappearTime;
+        int clips = secs/6;
+        
+        _currentIndex += clips;
+        _currentIndex = [self nextIndex];
+        
+        current = YES;
+//        [_currentVideo removeFromSuperview];
+//        _currentVideo = nil;
+        [_nextVideo removeFromSuperview];
+        _nextVideo = nil;
+        VideoModel *nextVideo = [AppManager sharedManager].videos[_currentIndex];
+        _currentIndex = [self nextIndex];
+        VideoPlayerItem *playerItem2 = [[VideoPlayerItem alloc] init];
+        playerItem2.mainURL = nextVideo.videoURL;
+        
+        _nextVideo = [[VideoPlayerView alloc] init];
+        _nextVideo.item = playerItem2;
+        
+        _nextVideo.frame = self.view.bounds;
+        
+        id secondBlock = ^(VideoPlayerItem *item){
+            [self startNextVideo];
+        };
+        [_nextVideo setDidFinnisPlaying:secondBlock];
+//        [_currentVideo play];
+        [self playVideo:nil];
+    }
+}
+
+-(void)disappear{
+    [_currentVideo pause];
+    [_nextVideo pause];
+    
+    _disappearTime = [[NSDate date] timeIntervalSince1970];
+}
+
+- (void)applicationDidEnterBackground:(NSNotification*)n {
+
+    [self disappear];
+}
+- (void)applicationWillEnterForeground:(NSNotification*)n {
+    [self appear];
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationWillResignActiveNotification object:nil];
+    [nc addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
+    
+    [KVOR target:self keyPath:@"currentIndex" task:^(NSString *keyPath, NSDictionary *change) {
+        [AppManager sharedManager].currentIndex = self.currentIndex;
+        
+        NSLog(@"%i", [AppManager sharedManager].currentIndex);
+    }];
     
     [[AppManager sharedManager] start];
     
@@ -87,7 +162,7 @@
         [_nextVideo play];
         [_nextVideo pause];
         [_currentVideo play];
-        [[Intense shared] play];
+        //[[Intense shared] play];
         
         current = YES;
     }];

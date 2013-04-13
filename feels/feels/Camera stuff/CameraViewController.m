@@ -24,6 +24,7 @@ typedef enum {
     StateRecording,
     StatePost,
     StateUploading,
+    StateDone,
 } State;
 
 @interface CameraViewController()<GPUImageMovieDelegate>
@@ -62,6 +63,15 @@ typedef enum {
 
 @property(nonatomic, strong) AVPlayerItem *playerItem;
 @property (weak, nonatomic) IBOutlet UIView *postVideoContainer;
+@property (weak, nonatomic) IBOutlet UIButton *closeButton;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
+@property (weak, nonatomic) IBOutlet UIView *uploadView;
+@property (weak, nonatomic) IBOutlet UILabel *procentLabel;
+@property (weak, nonatomic) IBOutlet UILabel *uploadDescLabel;
+@property (weak, nonatomic) IBOutlet UIView *doneView;
+@property (weak, nonatomic) IBOutlet UILabel *uploadSuccessLabel;
+- (IBAction)backButton:(id)sender;
+- (IBAction)closeButton:(id)sender;
 
 @end
 
@@ -72,6 +82,9 @@ typedef enum {
 
 -(void)viewDidLoad{
     [super viewDidLoad];
+    
+    _procentLabel.font = [UIFont  AvantGardeExtraLight:_procentLabel.font.pointSize];
+    _uploadDescLabel.font = [UIFont GeogrotesqueGardeExtraLight:8];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake((self.view.width-144)/2, 296, 144, 0.5)];
     _lineView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
@@ -133,7 +146,7 @@ typedef enum {
 
     [_filter addTarget:_movieWriter];
     
-    [_videoCamera startCameraCapture];
+   
     
     [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)]];
 
@@ -141,7 +154,7 @@ typedef enum {
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    
+    [_videoCamera startCameraCapture];    
     [self setCurrentState:StatePre];
 }
 
@@ -163,8 +176,10 @@ typedef enum {
         [self setCurrentState:StateRecording];
         
     } else if (_currentState == StatePost){
-//        [self setCurrentState:StateUploading];
+        [self setCurrentState:StateUploading];
         [self export];
+    } else if(_currentState == StateDone){
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
     
     
@@ -322,11 +337,12 @@ typedef enum {
     _recording = NO;
     [_filter removeTarget:_movieWriter];
     _videoCamera.audioEncodingTarget = nil;
+
     [_movieWriter finishRecordingWithCompletionHandler:^{
         
         NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
         NSURL* fileURL = [NSURL fileURLWithPath:localVid];
-        
+     
 
         
         _playerItem = [AVPlayerItem playerItemWithURL:fileURL];
@@ -426,6 +442,7 @@ typedef enum {
     if (!error) {
         AFHTTPRequestOperation *operation = [[APIClient shareClient] HTTPRequestOperationWithRequest:urlRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"Success: %@", responseObject);
+            [self setCurrentState:StateDone];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@ %@", operation.responseString, [error localizedDescription]);
         }];
@@ -433,6 +450,7 @@ typedef enum {
         
         [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
             NSLog(@"Uploading: %.0f%%", ((float)totalBytesWritten/(float)totalBytesExpectedToWrite)*100.0);
+            _procentLabel.text = [NSString stringWithFormat:@"%.0f%%",((float)totalBytesWritten/(float)totalBytesExpectedToWrite)*100.0];
         }];
         [operation start];
     }
@@ -454,15 +472,21 @@ typedef enum {
     [UIView animateWithDuration:0.6 animations:^{
 
         if (_currentState == StatePre) {
+            _uploadView.alpha = 0.0;            
             _preRecordingView.alpha = 1.0;
             _postView.alpha = 0.0;
             _recordingView.alpha = 0.0;
             
             _lineCurrentPostion.alpha = 0.0;
             _lineViewProgress.alpha = 0.0;
+
             _lineView.frame = CGRectMake((self.view.bounds.size.width - 144)/2, _lineView.top, 144, 0.5);
-            
+
+            _closeButton.alpha = 1.0;
+            _backButton.alpha = 0.0;            
+            _doneView.alpha = 0.0;
         } else if (_currentState == StateRecording){
+            _uploadView.alpha = 0.0;
             _preRecordingView.alpha = 0.0;
             _postView.alpha = 0.0;
             _recordingView.alpha = 1.0;
@@ -471,9 +495,11 @@ typedef enum {
             _lineViewProgress.alpha = 1.0;
             
             _lineView.frame = CGRectMake((self.view.bounds.size.width - 164)/2, _lineView.top, 164, 0.5);
-            
+            _closeButton.alpha = 0.0;
+            _backButton.alpha = 0.0;
+            _doneView.alpha = 0.0;
         } else if (_currentState == StatePost){
-
+            _uploadView.alpha = 0.0;
             _preRecordingView.alpha = 0.0;
             _postView.alpha = 1.0;
             _recordingView.alpha = 0.0;
@@ -481,6 +507,15 @@ typedef enum {
             _lineCurrentPostion.alpha = 1.0;
             _lineViewProgress.alpha = 1.0;
             _lineView.frame = CGRectMake(20, _lineView.top, self.view.bounds.size.width - 40, 0.5);
+            _closeButton.alpha = 0.0;
+            _backButton.alpha = 1.0;
+            _doneView.alpha = 0.0;
+        } else if(_currentState == StateUploading){
+            _uploadView.alpha = 1.0;
+            _doneView.alpha = 0.0;
+        } else if(_currentState == StateDone){
+            _uploadView.alpha = 0.0;
+            _doneView.alpha = 1.0;
         }
         
     } completion:^(BOOL finished) {
@@ -497,5 +532,17 @@ typedef enum {
     
     _video = [[GPUImageMovie alloc] initWithURL:fileURL];
     [_video startProcessing];
+}
+- (IBAction)backButton:(id)sender {
+    
+    if (_currentState == StatePost) {
+        [self setCurrentState:StatePre];
+        [_videoCamera startCameraCapture];
+    }
+    
+}
+
+- (IBAction)closeButton:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 @end
