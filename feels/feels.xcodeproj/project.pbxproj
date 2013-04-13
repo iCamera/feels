@@ -76,6 +76,8 @@
 		602F42701718EA35009ADE50 /* ArchiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602F426F1718EA35009ADE50 /* ArchiveViewController.m */; };
 		602F427317190A9C009ADE50 /* placeholder_archive.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F427117190A9C009ADE50 /* placeholder_archive.png */; };
 		602F427417190A9C009ADE50 /* placeholder_archive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F427217190A9C009ADE50 /* placeholder_archive@2x.png */; };
+		602F428117193BB9009ADE50 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F428017193BB9009ADE50 /* Icon.png */; };
+		602F428317193BC1009ADE50 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F428217193BC1009ADE50 /* Icon@2x.png */; };
 		D13214421718A888004E0C87 /* GeosansLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D13214401718A888004E0C87 /* GeosansLight.ttf */; };
 		D13214431718A888004E0C87 /* ITCAvantGardeStd-XLt.otf in Resources */ = {isa = PBXBuildFile; fileRef = D13214411718A888004E0C87 /* ITCAvantGardeStd-XLt.otf */; };
 		D13214461718BD8C004E0C87 /* UIFont+Feels.m in Sources */ = {isa = PBXBuildFile; fileRef = D13214451718BD8C004E0C87 /* UIFont+Feels.m */; };
@@ -256,6 +258,8 @@
 		602F426F1718EA35009ADE50 /* ArchiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArchiveViewController.m; path = Classes/Root/ArchiveViewController.m; sourceTree = "<group>"; };
 		602F427117190A9C009ADE50 /* placeholder_archive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder_archive.png; sourceTree = "<group>"; };
 		602F427217190A9C009ADE50 /* placeholder_archive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder_archive@2x.png"; sourceTree = "<group>"; };
+		602F428017193BB9009ADE50 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../Icon.png; sourceTree = "<group>"; };
+		602F428217193BC1009ADE50 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "../Icon@2x.png"; sourceTree = "<group>"; };
 		D13214401718A888004E0C87 /* GeosansLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GeosansLight.ttf; sourceTree = "<group>"; };
 		D13214411718A888004E0C87 /* ITCAvantGardeStd-XLt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-XLt.otf"; sourceTree = "<group>"; };
 		D13214441718BD8C004E0C87 /* UIFont+Feels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Feels.h"; sourceTree = "<group>"; };
@@ -477,6 +481,8 @@
 				295186AF17173644007E09F5 /* Default.png */,
 				295186B117173644007E09F5 /* Default@2x.png */,
 				295186B317173644007E09F5 /* Default-568h@2x.png */,
+				602F428217193BC1009ADE50 /* Icon@2x.png */,
+				602F428017193BB9009ADE50 /* Icon.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1006,6 +1012,8 @@
 				602F426D1718CFD2009ADE50 /* record_button@2x.png in Resources */,
 				602F427317190A9C009ADE50 /* placeholder_archive.png in Resources */,
 				602F427417190A9C009ADE50 /* placeholder_archive@2x.png in Resources */,
+				602F428117193BB9009ADE50 /* Icon.png in Resources */,
+				602F428317193BC1009ADE50 /* Icon@2x.png in Resources */,
 				6010AF691718E6B40092D50A /* geogtq-rg-webfont.ttf in Resources */,
 				6010AF6B1718E79C0092D50A /* bottom_shadow@2x.png in Resources */,
 				6010AF6D1718E7AC0092D50A /* bottom_shadow.png in Resources */,
