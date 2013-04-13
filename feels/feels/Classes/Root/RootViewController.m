@@ -190,6 +190,8 @@
             _menuView.left = -7;
             _vidPlaceholderImage.left = -60;
             _fadeView.alpha = 1;
+            _archiveLabel.text = @"STREAM";
+            _menuArrow.transform = CGAffineTransformMakeRotation(0);
         }];
     } else {
         [UIView animateWithDuration:0.6 animations:^{
@@ -197,6 +199,8 @@
             _menuView.left = self.view.height - _menuView.width +7;
             _vidPlaceholderImage.left = 0;
             _fadeView.alpha = 0;
+            _archiveLabel.text = @"ARCHIVE";
+            _menuArrow.transform = CGAffineTransformMakeRotation(M_PI);
         }];
     }
     
