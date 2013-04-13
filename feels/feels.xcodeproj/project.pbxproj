@@ -66,6 +66,13 @@
 		6010AF611718D7060092D50A /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 292295D21718957A00362325 /* libGPUImage.a */; };
 		6010AF521718D0050092D50A /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6010AF501718CFFD0092D50A /* libGPUImage.a */; };
 		6010AF531718D02B0092D50A /* FeelsFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BEA0EF1718A1F200F3A073 /* FeelsFilter.m */; };
+		602F42601718C9DD009ADE50 /* UILabel+Feels.m in Sources */ = {isa = PBXBuildFile; fileRef = 602F425F1718C9DD009ADE50 /* UILabel+Feels.m */; };
+		602F42681718CFD2009ADE50 /* menu_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F42621718CFD2009ADE50 /* menu_arrow.png */; };
+		602F42691718CFD2009ADE50 /* menu_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F42631718CFD2009ADE50 /* menu_arrow@2x.png */; };
+		602F426A1718CFD2009ADE50 /* menu_seperator.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F42641718CFD2009ADE50 /* menu_seperator.png */; };
+		602F426B1718CFD2009ADE50 /* menu_seperator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F42651718CFD2009ADE50 /* menu_seperator@2x.png */; };
+		602F426C1718CFD2009ADE50 /* record_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F42661718CFD2009ADE50 /* record_button.png */; };
+		602F426D1718CFD2009ADE50 /* record_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F42671718CFD2009ADE50 /* record_button@2x.png */; };
 		D13214421718A888004E0C87 /* GeosansLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D13214401718A888004E0C87 /* GeosansLight.ttf */; };
 		D13214431718A888004E0C87 /* ITCAvantGardeStd-XLt.otf in Resources */ = {isa = PBXBuildFile; fileRef = D13214411718A888004E0C87 /* ITCAvantGardeStd-XLt.otf */; };
 		D13214461718BD8C004E0C87 /* UIFont+Feels.m in Sources */ = {isa = PBXBuildFile; fileRef = D13214451718BD8C004E0C87 /* UIFont+Feels.m */; };
@@ -229,6 +236,14 @@
 		6010AF301718BE040092D50A /* lookup_nashville.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup_nashville.png; sourceTree = "<group>"; };
 		6010AF351718C3550092D50A /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
 		6010AF501718CFFD0092D50A /* libGPUImage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGPUImage.a; sourceTree = "<group>"; };
+		602F425E1718C9DD009ADE50 /* UILabel+Feels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Feels.h"; sourceTree = "<group>"; };
+		602F425F1718C9DD009ADE50 /* UILabel+Feels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Feels.m"; sourceTree = "<group>"; };
+		602F42621718CFD2009ADE50 /* menu_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_arrow.png; sourceTree = "<group>"; };
+		602F42631718CFD2009ADE50 /* menu_arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_arrow@2x.png"; sourceTree = "<group>"; };
+		602F42641718CFD2009ADE50 /* menu_seperator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_seperator.png; sourceTree = "<group>"; };
+		602F42651718CFD2009ADE50 /* menu_seperator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_seperator@2x.png"; sourceTree = "<group>"; };
+		602F42661718CFD2009ADE50 /* record_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = record_button.png; sourceTree = "<group>"; };
+		602F42671718CFD2009ADE50 /* record_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "record_button@2x.png"; sourceTree = "<group>"; };
 		D13214401718A888004E0C87 /* GeosansLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GeosansLight.ttf; sourceTree = "<group>"; };
 		D13214411718A888004E0C87 /* ITCAvantGardeStd-XLt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-XLt.otf"; sourceTree = "<group>"; };
 		D13214441718BD8C004E0C87 /* UIFont+Feels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Feels.h"; sourceTree = "<group>"; };
@@ -501,6 +516,7 @@
 		29518701171753B2007E09F5 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				602F425A1718C964009ADE50 /* UILabel */,
 				D13214471718BDB3004E0C87 /* UIFont */,
 				2951870617175420007E09F5 /* UIView */,
 				29518702171753C4007E09F5 /* NSTimer */,
@@ -570,6 +586,28 @@
 			name = AFNetwork;
 			sourceTree = "<group>";
 		};
+		602F425A1718C964009ADE50 /* UILabel */ = {
+			isa = PBXGroup;
+			children = (
+				602F425E1718C9DD009ADE50 /* UILabel+Feels.h */,
+				602F425F1718C9DD009ADE50 /* UILabel+Feels.m */,
+			);
+			name = UILabel;
+			sourceTree = "<group>";
+		};
+		602F42611718CFD2009ADE50 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				602F42621718CFD2009ADE50 /* menu_arrow.png */,
+				602F42631718CFD2009ADE50 /* menu_arrow@2x.png */,
+				602F42641718CFD2009ADE50 /* menu_seperator.png */,
+				602F42651718CFD2009ADE50 /* menu_seperator@2x.png */,
+				602F42661718CFD2009ADE50 /* record_button.png */,
+				602F42671718CFD2009ADE50 /* record_button@2x.png */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
 		D132143F1718A888004E0C87 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -601,6 +639,7 @@
 			isa = PBXGroup;
 			children = (
 				D19682FB171898420072FD78 /* Generic */,
+				602F42611718CFD2009ADE50 /* Menu */,
 			);
 			path = Graphcis;
 			sourceTree = "<group>";
@@ -910,6 +949,12 @@
 				D19682FF171898420072FD78 /* main_picture@2x.jpg in Resources */,
 				D13214421718A888004E0C87 /* GeosansLight.ttf in Resources */,
 				D13214431718A888004E0C87 /* ITCAvantGardeStd-XLt.otf in Resources */,
+				602F42681718CFD2009ADE50 /* menu_arrow.png in Resources */,
+				602F42691718CFD2009ADE50 /* menu_arrow@2x.png in Resources */,
+				602F426A1718CFD2009ADE50 /* menu_seperator.png in Resources */,
+				602F426B1718CFD2009ADE50 /* menu_seperator@2x.png in Resources */,
+				602F426C1718CFD2009ADE50 /* record_button.png in Resources */,
+				602F426D1718CFD2009ADE50 /* record_button@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -981,6 +1026,7 @@
 				D19682F91718937C0072FD78 /* RootViewController.m in Sources */,
 				D13214461718BD8C004E0C87 /* UIFont+Feels.m in Sources */,
 				6010AF531718D02B0092D50A /* FeelsFilter.m in Sources */,
+				602F42601718C9DD009ADE50 /* UILabel+Feels.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
