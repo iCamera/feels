@@ -83,6 +83,8 @@ typedef enum {
 -(void)viewDidLoad{
     [super viewDidLoad];
     
+    _uploadSuccessLabel.font = [UIFont GeoSansLight:20.0];
+    
     _procentLabel.font = [UIFont  AvantGardeExtraLight:_procentLabel.font.pointSize];
     _uploadDescLabel.font = [UIFont GeogrotesqueGardeExtraLight:8];
     

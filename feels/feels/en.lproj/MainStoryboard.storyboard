@@ -362,15 +362,15 @@
                                 <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="AO7-nf-hzA">
-                                        <rect key="frame" x="194" y="117" width="184" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="UPLOAD SUCCESS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="AO7-nf-hzA">
+                                        <rect key="frame" x="194" y="107" width="184" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -395,6 +395,7 @@
                         <outlet property="startRecordingLabel" destination="fAK-zw-NrY" id="A04-fk-vsG"/>
                         <outlet property="tapLabel" destination="l7n-Nb-BSl" id="213-OM-qEx"/>
                         <outlet property="uploadDescLabel" destination="6Tu-ji-pnO" id="x64-Wl-R77"/>
+                        <outlet property="uploadSuccessLabel" destination="AO7-nf-hzA" id="TYN-ZX-3Z1"/>
                         <outlet property="uploadView" destination="3qg-qu-E3s" id="kl9-21-ukB"/>
                     </connections>
                 </viewController>
