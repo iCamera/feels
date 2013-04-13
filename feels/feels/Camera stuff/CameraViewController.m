@@ -15,20 +15,39 @@
 #define videoWidth 1280
 #define videoHeight 720
 
-@interface CameraViewController()
+typedef enum {
+    StateUnknown,
+    StatePre,
+    StateRecording,
+    StatePost,
+    StateUploading,
+} State;
+
+@interface CameraViewController()<GPUImageMovieDelegate>
 @property (strong, nonatomic)  GPUImageView *gpuImageView;
 @property (strong, nonatomic) UIImageView *imageView;
 @property(nonatomic,strong) FeelsFilter *filter;
 @property(nonatomic,assign) int changeCounter;
+
+@property(nonatomic,assign) State currentState;
+
 @property(nonatomic,assign) BOOL recording;
 @property (weak, nonatomic) IBOutlet UILabel *startRecordingLabel;
 @property (weak, nonatomic) IBOutlet UILabel *tapLabel;
 @property (weak, nonatomic) IBOutlet UIView *preRecordingView;
 
+@property (strong, nonatomic) UIView *lineView;
+@property (strong, nonatomic) UIView *lineViewProgress;
+@property (strong, nonatomic) UIView *lineCurrentPostion;
+
+
 @property (weak, nonatomic) IBOutlet UIView *recordingView;
 @property (weak, nonatomic) IBOutlet UILabel *recordingTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *recordingTapLabel;
 
+@property (weak, nonatomic) IBOutlet UIView *postView;
+@property (weak, nonatomic) IBOutlet UILabel *postTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *postTapLabel;
 
 @end
 
@@ -40,18 +59,33 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     
+    _lineView = [[UIView alloc] initWithFrame:CGRectMake((self.view.width-144)/2, 296, 144, 0.5)];
+    _lineView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
+
+    _lineViewProgress = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.5)];
+    _lineViewProgress.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
+    [_lineView addSubview:_lineViewProgress];
+    
+    _lineCurrentPostion = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.5)];
+    _lineCurrentPostion.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
+    [_lineView addSubview:_lineCurrentPostion];
+    
+    [self.view addSubview:_lineView];
+
     {
         _startRecordingLabel.font = [UIFont GeoSansLight:_startRecordingLabel.font.pointSize];
         _tapLabel.font = [UIFont GeogrotesqueGardeExtraLight:_tapLabel.font.pointSize];
-        
-        UIView *v = [[UIView alloc] initWithFrame:CGRectMake((_tapLabel.superview.width-144)/2, _startRecordingLabel.bottom - 2, 144, 0.5)];
-        v.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
-        v.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-        [_tapLabel.superview addSubview:v];
+    
     }
 
     {
-        _startRecordingLabel.font = [UIFont AvantGardeExtraLight:_startRecordingLabel.font.pointSize];
+        _recordingTimeLabel.font = [UIFont AvantGardeExtraLight:_startRecordingLabel.font.pointSize];
+        _recordingTapLabel.font = [UIFont GeogrotesqueGardeExtraLight:_tapLabel.font.pointSize];
+    }
+    
+    {
+        _postTitleLabel.font = [UIFont AvantGardeExtraLight:_postTitleLabel.font.pointSize];
+        _postTapLabel.font = [UIFont GeogrotesqueGardeExtraLight:_postTapLabel.font.pointSize];
     }
     
     _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1280x720 cameraPosition:AVCaptureDevicePositionBack];
@@ -91,6 +125,12 @@
 
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    [self setCurrentState:StatePre];
+}
+
 -(void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
     _gpuImageView.frame = self.view.bounds;
@@ -103,11 +143,16 @@
 
 -(void)tap{
 
-    if (_recording) {
-        [self stopRecording];
-    } else {
-        [self startRecording];
+    if (_currentState == StateRecording) {
+        [self setCurrentState:StatePost];
+        
+    } else if (_currentState == StatePre){
+        [self setCurrentState:StateRecording];
+    } else if (_currentState == StatePost){
+    
     }
+    
+
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -210,44 +255,104 @@
     [_filter removeTarget:_movieWriter];
     _videoCamera.audioEncodingTarget = nil;
     [_movieWriter finishRecordingWithCompletionHandler:^{
-        NSLog(@"Movie completed");
 
-        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
         NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
         NSURL* fileURL = [NSURL fileURLWithPath:localVid];
+        
+        _video = [[GPUImageMovie alloc] initWithURL:fileURL];
+        _video.delegate = self;
+        [_videoCamera stopCameraCapture];
+        [_video startProcessing];
 
-        __block NSError *error = nil;
-        NSString *location = @"Östermalm, Stockholm";
-        NSString *author = [[AppManager sharedManager] author];
-        NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];
-        NSMutableURLRequest *urlRequest = [[APIClient shareClient] multipartFormRequestWithMethod:@"POST" path:@"/ahd/upload" parameters:@{ @"location":location, @"author":author, @"timestamp":@(timestamp) } constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-            [formData appendPartWithFileURL:fileURL name:@"file" error:&error];
-        }];
-        
-        if (!error) {
-            AFHTTPRequestOperation *operation = [[APIClient shareClient] HTTPRequestOperationWithRequest:urlRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSLog(@"Success: %@", responseObject);
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"Error: %@ %@", operation.responseString, [error localizedDescription]);
-            }];
-            
-            
-            [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-                NSLog(@"Uploading: %.0f%%", ((float)totalBytesWritten/(float)totalBytesExpectedToWrite)*100.0);
-            }];
-            [operation start];
-        }
-        
-//        [library writeVideoAtPathToSavedPhotosAlbum:fileURL completionBlock:^(NSURL *assetURL, NSError *error) {
-//            if (!error) {
-//                NSLog(@"Video Saved - %@",assetURL);
-//            } else {
-//                NSLog(@"%@: Error saving context: %@", [self class], [error localizedDescription]);
-//            }
-//        }];
         
     }];
     
 }
 
+-(void)upload{
+    NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
+    NSURL* fileURL = [NSURL fileURLWithPath:localVid];
+    
+    __block NSError *error = nil;
+    NSString *location = @"Östermalm, Stockholm";
+    NSString *author = [[AppManager sharedManager] author];
+    NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];
+    NSMutableURLRequest *urlRequest = [[APIClient shareClient] multipartFormRequestWithMethod:@"POST" path:@"/ahd/upload" parameters:@{ @"location":location, @"author":author, @"timestamp":@(timestamp) } constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileURL:fileURL name:@"file" error:&error];
+    }];
+    
+    if (!error) {
+        AFHTTPRequestOperation *operation = [[APIClient shareClient] HTTPRequestOperationWithRequest:urlRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"Success: %@", responseObject);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@ %@", operation.responseString, [error localizedDescription]);
+        }];
+        
+        
+        [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+            NSLog(@"Uploading: %.0f%%", ((float)totalBytesWritten/(float)totalBytesExpectedToWrite)*100.0);
+        }];
+        [operation start];
+    }
+}
+
+-(void)setCurrentState:(State)currentState{
+    if (currentState != _currentState) {
+        _currentState = currentState;
+        [self updateForCurrentState];
+    } else {
+        _currentState = currentState;
+    }
+    
+}
+
+-(void)updateForCurrentState{
+    
+    [UIView animateWithDuration:0.6 animations:^{
+
+        if (_currentState == StatePre) {
+            _preRecordingView.alpha = 1.0;
+            _postView.alpha = 0.0;
+            _recordingView.alpha = 0.0;
+            
+            _lineCurrentPostion.alpha = 0.0;
+            _lineViewProgress.alpha = 0.0;
+            _lineView.frame = CGRectMake((self.view.bounds.size.width - 144)/2, _lineView.top, 144, 0.5);
+            
+        } else if (_currentState == StateRecording){
+            _preRecordingView.alpha = 0.0;
+            _postView.alpha = 0.0;
+            _recordingView.alpha = 1.0;
+
+            _lineCurrentPostion.alpha = 0.0;
+            _lineViewProgress.alpha = 1.0;
+            
+            _lineView.frame = CGRectMake((self.view.bounds.size.width - 164)/2, _lineView.top, 164, 0.5);
+            
+        } else if (_currentState == StatePost){
+            [self stopRecording];
+            _preRecordingView.alpha = 0.0;
+            _postView.alpha = 1.0;
+            _recordingView.alpha = 0.0;
+            
+            _lineCurrentPostion.alpha = 1.0;
+            _lineViewProgress.alpha = 1.0;
+            _lineView.frame = CGRectMake(20, _lineView.top, self.view.bounds.size.width - 40, 0.5);
+        }
+        
+    } completion:^(BOOL finished) {
+        if (_currentState == StateRecording) {
+            [self startRecording];
+        }
+    }];
+}
+
+
+-(void)didCompletePlayingMovie{
+    NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
+    NSURL* fileURL = [NSURL fileURLWithPath:localVid];
+    
+    _video = [[GPUImageMovie alloc] initWithURL:fileURL];
+    [_video startProcessing];
+}
 @end

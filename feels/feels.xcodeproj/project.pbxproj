@@ -1187,6 +1187,7 @@
 				GCC_PREFIX_HEADER = "feels/feels-Prefix.pch";
 				HEADER_SEARCH_PATHS = "../GPUImage/framework/Source/**";
 				INFOPLIST_FILE = "feels/feels-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -1204,6 +1205,7 @@
 				GCC_PREFIX_HEADER = "feels/feels-Prefix.pch";
 				HEADER_SEARCH_PATHS = "../GPUImage/framework/Source/**";
 				INFOPLIST_FILE = "feels/feels-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
