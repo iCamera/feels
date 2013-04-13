@@ -14,6 +14,7 @@
 #import "VideoModel.h"
 #import "Intense.h"
 #import "NSTimer+Block.h"
+#import "ObjectAL.h"
 
 @interface VideoViewController ()
 
@@ -21,6 +22,7 @@
 @property(nonatomic,strong) VideoPlayerView *nextVideo;
 @property(nonatomic,assign) int lastVideo;
 @property (nonatomic, assign) int currentIndex;
+@property (nonatomic, strong) OALAudioTrack *backgroundTrack;
 
 @end
 
@@ -108,7 +110,6 @@ static BOOL isDoingIt = NO;
     }
     
     if (current) {
-        
         [_nextVideo play];
         _nextVideo.alpha = 0;
     }

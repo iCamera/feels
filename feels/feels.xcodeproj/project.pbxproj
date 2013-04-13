@@ -403,9 +403,6 @@
 		2951869117173643007E09F5 = {
 			isa = PBXGroup;
 			children = (
-				6010AF501718CFFD0092D50A /* libGPUImage.a */,
-				F44E116E171838BB00E9D4EC /* OpenAL.framework */,
-				F44E116C1718386800E9D4EC /* AudioToolbox.framework */,
 				295186A317173643007E09F5 /* feels */,
 				2951869C17173643007E09F5 /* Frameworks */,
 				2951869B17173643007E09F5 /* Products */,
@@ -423,6 +420,9 @@
 		2951869C17173643007E09F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6010AF501718CFFD0092D50A /* libGPUImage.a */,
+				F44E116E171838BB00E9D4EC /* OpenAL.framework */,
+				F44E116C1718386800E9D4EC /* AudioToolbox.framework */,
 				292295CB1718957A00362325 /* GPUImage.xcodeproj */,
 				29F30346171837C5003B7812 /* MobileCoreServices.framework */,
 				29F3034417183789003B7812 /* SystemConfiguration.framework */,
