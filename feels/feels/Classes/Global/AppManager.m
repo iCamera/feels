@@ -37,6 +37,7 @@
     if (self) {
         self.videos = [NSMutableArray array];
         self.startIndex = -1;
+        self.loading = YES;
     }
     return self;
 }
@@ -68,22 +69,23 @@
                 }];
                 
                 if (self.startIndex < 0) {
-                    NSTimeInterval date = self.serverTimeIntervalSince1970 - self.startTimestamp;
-                    NSLog(@"%f", date);
+                    NSTimeInterval date = self.serverTimeIntervalSince1970;
                     
                     if (self.videos.count > 0) {
-                        NSLog(@"%i", (int)(date / 6) % (int)self.videos.count);
+                        self.loading = NO;
+                        self.startIndex = (int)(date / 6) % (int)self.videos.count;
+                        self.play = YES;
                     }
-                    self.startIndex = (int)(date / 6) % (int)self.videos.count;
                 }
             }
+            
         } afterIndex:lastID];
     } repeat:YES];
 }
 
 - (void)fetchVideosWithBlock:(void(^)(NSMutableArray *videos))completeBlock afterIndex:(NSString *)index {
     
-    [[APIClient shareClient] getPath:@"/ahd/stream/0" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[APIClient shareClient] getPath:[NSString stringWithFormat:@"/ahd/stream/%@", index] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSMutableArray *videos = [NSMutableArray array];
         if ([responseObject nullCheckedObjectForKey:@"success"]) {
             for (NSDictionary *dict in responseObject[@"data"]) {

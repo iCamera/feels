@@ -41,7 +41,6 @@
         [operation start];
     }
     */
-    [[AppManager sharedManager] start];
     
     return YES;
 }
