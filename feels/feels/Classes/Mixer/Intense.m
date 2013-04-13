@@ -54,14 +54,12 @@
 
 - (MixerTickBlock)tickBlock {
     return [^{
-        
-        
+        [[OALSimpleAudio sharedInstance] playEffect:@"snare.mp3"];
     } copy];
 }
 
 - (MixerTickBlock)beatBlock {
     return [^{
-        [[OALSimpleAudio sharedInstance] playEffect:@"snare.mp3"];
     } copy];
 }
 
@@ -69,7 +67,7 @@
     
     [[Mixer table] startWithBPM:120];
     //[[OALSimpleAudio sharedInstance] playEffect:@"base.mp3" loop:YES];
-    [_backgroundTrack playFile:@"base.mp3" loops:-1];
+    //[_backgroundTrack playFile:@"base.mp3" loops:-1];
 }
 
 - (void)pause {

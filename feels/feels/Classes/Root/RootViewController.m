@@ -9,6 +9,8 @@
 #import "RootViewController.h"
 #import "ArchiveViewController.h"
 #import "MathHelper.h"
+#import "VideoViewController.h"
+#import "VideoModel.h"
 
 @interface RootViewController ()
 
@@ -28,6 +30,7 @@
 
 @property (nonatomic, strong) ArchiveViewController *archiveViewController;
 @property (nonatomic, assign) BOOL isArchiveMode;
+@property (weak, nonatomic) IBOutlet UIView *videoWrapperView;
 
 @end
 
@@ -73,6 +76,10 @@
     [_vidDateLabel setKerning:kern];
     [_vidLocationLabel setAdjustsLetterSpacingToFitWidth:YES];
     [_vidLocationLabel setAdjustsFontSizeToFitWidth:YES];
+    [_vidDateLabel setAdjustsLetterSpacingToFitWidth:YES];
+    [_vidDateLabel setAdjustsFontSizeToFitWidth:YES];
+    [_vidTimeLabel setAdjustsLetterSpacingToFitWidth:YES];
+    [_vidTimeLabel setAdjustsFontSizeToFitWidth:YES];
     
     CGFloat shOpacity = 0.4;
     CGFloat shRadius = 2.0;
@@ -103,6 +110,34 @@
     /* Gesture recongnizer */
     UIPanGestureRecognizer *panGesturizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(menuPanned:)];
     [_archiveButton addGestureRecognizer:panGesturizer];
+    
+    
+    VideoViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoViewController"];
+    [self addChildViewController:vc];
+    [self.videoWrapperView addSubview:vc.view];
+    vc.view.backgroundColor = [UIColor blackColor];
+    vc.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    [vc setVideoDidChange:^(VideoModel *video) {
+        //NSLog(@"%@", [video.videoURL absoluteString]);
+        _vidLocationLabel.text = [video.location uppercaseString];
+        {
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"hh:mm a"];
+            _vidTimeLabel.text = [[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:video.timestamp]] uppercaseString];
+            [dateFormatter setDateFormat:@"dd LLL yyyy"];
+            _vidDateLabel.text = [[dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:video.timestamp]] uppercaseString];
+            
+            [_vidTimeLabel setKerning:kern];
+            [_vidDateLabel setKerning:kern];
+            [_vidLocationLabel setAdjustsLetterSpacingToFitWidth:YES];
+            [_vidLocationLabel setAdjustsFontSizeToFitWidth:YES];
+            [_vidDateLabel setAdjustsLetterSpacingToFitWidth:YES];
+            [_vidDateLabel setAdjustsFontSizeToFitWidth:YES];
+            [_vidTimeLabel setAdjustsLetterSpacingToFitWidth:YES];
+            [_vidTimeLabel setAdjustsFontSizeToFitWidth:YES];
+        }
+    }];
 }
 
 - (void)viewDidLayoutSubviews {

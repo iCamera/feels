@@ -12,6 +12,7 @@
 #import "AppManager.h"
 #import "KVOR.h"
 #import "VideoModel.h"
+#import "Intense.h"
 #import "NSTimer+Block.h"
 
 @interface VideoViewController ()
@@ -43,6 +44,10 @@
         
         VideoModel *video = [AppManager sharedManager].videos[[AppManager sharedManager].startIndex];
         self.currentIndex = [AppManager sharedManager].startIndex;
+        
+        if (self.videoDidChange) {
+            self.videoDidChange(video);
+        }
         
         VideoPlayerItem *playerItem = [[VideoPlayerItem alloc] init];
         playerItem.mainURL = video.videoURL;
@@ -82,6 +87,7 @@
         [_nextVideo play];
         [_nextVideo pause];
         [_currentVideo play];
+        [[Intense shared] play];
         
         current = YES;
     }];
@@ -101,8 +107,6 @@ static BOOL isDoingIt = NO;
         return;
     }
     
-    NSLog(@"current: %u", current);
-    
     if (current) {
         
         [_nextVideo play];
@@ -111,8 +115,13 @@ static BOOL isDoingIt = NO;
     else {
         [_currentVideo play];
         _currentVideo.alpha = 0;
-        
     }
+    
+    if (self.videoDidChange) {
+        VideoModel *video = [AppManager sharedManager].videos[self.currentIndex];
+        self.videoDidChange(video);
+    }
+    
     [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
         _currentVideo.alpha = current ? 0 : 1;
         _nextVideo.alpha = current ? 1 : 0;
