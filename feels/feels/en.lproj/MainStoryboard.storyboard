@@ -225,6 +225,36 @@
                         <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hfa-4L-O0I">
+                                <rect key="frame" x="0.0" y="0.0" width="60" height="61"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" image="close_button.png">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="closeButton:" destination="2" eventType="touchUpInside" id="xhC-c3-LU3"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="SE5-L7-JdD">
+                                <rect key="frame" x="0.0" y="0.0" width="60" height="61"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" image="back_button.png">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="backButton:" destination="2" eventType="touchUpInside" id="irl-f1-GFK"/>
+                                </connections>
+                            </button>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" id="UCh-cF-zsX">
                                 <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -307,6 +337,41 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
+                            <view userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" id="3qg-qu-E3s">
+                                <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LrY-gf-eug">
+                                        <rect key="frame" x="189" y="103" width="204" height="59"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="UPLOADING SEQUENCE..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6Tu-ji-pnO">
+                                        <rect key="frame" x="147" y="170" width="289" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view alpha="0.0" contentMode="scaleToFill" id="d7L-gC-Ymx">
+                                <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="AO7-nf-hzA">
+                                        <rect key="frame" x="194" y="117" width="184" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -315,16 +380,22 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
+                        <outlet property="backButton" destination="SE5-L7-JdD" id="JEw-w0-3Xr"/>
+                        <outlet property="closeButton" destination="hfa-4L-O0I" id="D3B-uH-XTO"/>
+                        <outlet property="doneView" destination="d7L-gC-Ymx" id="clo-2G-10e"/>
                         <outlet property="postTapLabel" destination="mMR-x3-UGh" id="9QO-jY-vPL"/>
                         <outlet property="postTitleLabel" destination="mU9-bB-xnU" id="RSI-mG-FMt"/>
                         <outlet property="postVideoContainer" destination="UCh-cF-zsX" id="MU7-Em-HaD"/>
                         <outlet property="postView" destination="oVP-Ie-UTI" id="ZKf-9f-AWm"/>
                         <outlet property="preRecordingView" destination="7fd-YV-Ts1" id="5qD-Fm-OPg"/>
+                        <outlet property="procentLabel" destination="LrY-gf-eug" id="4l2-3O-1HB"/>
                         <outlet property="recordingTapLabel" destination="jhC-US-3o1" id="Er3-MS-h9V"/>
                         <outlet property="recordingTimeLabel" destination="S1m-sR-eIp" id="gEv-Km-D4m"/>
                         <outlet property="recordingView" destination="Lv4-bT-iAL" id="dmV-v4-puU"/>
                         <outlet property="startRecordingLabel" destination="fAK-zw-NrY" id="A04-fk-vsG"/>
                         <outlet property="tapLabel" destination="l7n-Nb-BSl" id="213-OM-qEx"/>
+                        <outlet property="uploadDescLabel" destination="6Tu-ji-pnO" id="x64-Wl-R77"/>
+                        <outlet property="uploadView" destination="3qg-qu-E3s" id="kl9-21-ukB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
@@ -370,12 +441,70 @@
         </scene>
     </scenes>
     <resources>
+        <image name="back_button.png" width="15" height="27"/>
         <image name="bottom_shadow.png" width="1" height="57"/>
+        <image name="close_button.png" width="26" height="26"/>
         <image name="menu_arrow.png" width="10" height="19"/>
         <image name="menu_seperator.png" width="54" height="1"/>
         <image name="placeholder_archive.png" width="568" height="320"/>
         <image name="record_button.png" width="63" height="63"/>
     </resources>
+    <classes>
+        <class className="ArchiveViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ArchiveViewController.h"/>
+        </class>
+        <class className="CameraViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CameraViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="backButton:"/>
+                <relationship kind="action" name="closeButton:"/>
+                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="closeButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="doneView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="postTapLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="postTitleLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="postVideoContainer" candidateClass="UIView"/>
+                <relationship kind="outlet" name="postView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="preRecordingView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="procentLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="recordingTapLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="recordingTimeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="recordingView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="startRecordingLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="tapLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="uploadDescLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="uploadSuccessLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="uploadView" candidateClass="UIView"/>
+            </relationships>
+        </class>
+        <class className="MixerController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MixerController.h"/>
+        </class>
+        <class className="RootViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RootViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="archiveButtonTapped:"/>
+                <relationship kind="action" name="createButtonTapped:"/>
+                <relationship kind="action" name="timeButtonTapped:"/>
+                <relationship kind="outlet" name="archiveButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="archiveLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="createLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="fadeView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="menuArrow" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="menuView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="timeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="timeUnitLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="vidDateLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="vidLocationLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="vidPlaceholderImage" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="vidTimeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="videoWrapperView" candidateClass="UIView"/>
+            </relationships>
+        </class>
+        <class className="VideoViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/VideoViewController.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
