@@ -59,24 +59,35 @@
 }
 
 - (void)start {
-    [self startGettingPoints];
+    [self startGettingPoints:1.0/10];
     [[AppManager sharedManager] syncServerWithCompleteBlock:^{
         [self startFetchingVideos];
         self.startTimestamp = self.serverTimeIntervalSince1970;
     }];
 }
 
-- (void)startGettingPoints {
-    self.getPointsTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 completion:^{
+- (void)startGettingPoints:(float)delay {
+    [self.getPointsTimer invalidate];
+    self.getPointsTimer = nil;
+    self.getPointsTimer = [NSTimer scheduledTimerWithTimeInterval:delay completion:^{
         [self getPoints];
     } repeat:YES];
-    [self getPoints];
+    [[NSRunLoop currentRunLoop] addTimer:self.getPointsTimer forMode:NSRunLoopCommonModes];
 }
 
 - (void)getPoints {
     if (self.points >= 18000)
         return;
     
+    int oldPoints = self.points;
+    int increment = 1;
+    if (self.points == 6000) {
+        [self startGettingPoints:1.0/5];
+    } else if (self.points == 12000) {
+        [self startGettingPoints:1.0/2];
+    }
+    
+    /*
     int increment;
     if (self.points < 6000) {
         increment = 10;
@@ -84,15 +95,21 @@
         increment = 5;
     } else {
         increment = 2;
-    }
+    }*/
     
-    int oldPoints = self.points;
+    //int oldPoints = self.points;
     self.points += increment;
-    
     
     if (oldPoints/1000 - self.points/1000) {
         //User got a new second!
         self.seconds = self.points / 1000;
+    }
+}
+
+- (void)addPointsFromSeconds:(int)seconds {
+    self.points += seconds*2;
+    if (self.points > 18000) {
+        self.points = 18000;
     }
 }
 

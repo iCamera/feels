@@ -13,5 +13,6 @@
 #define kLastUpdate @"kLastUpdate"
 #define kLaunchedBefore @"kLaunchedBefore"
 #define kUploadedVideos @"kUploadedVideos"
+#define kClosedAppTimeStamp @"kClosedAppTimeStamp"
 
 #endif
