@@ -16,12 +16,45 @@
                                 <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                             </imageView>
-                            <view contentMode="scaleToFill" id="m8i-AP-zOl" userLabel="Menu View">
-                                <rect key="frame" x="476" y="0.0" width="92" height="320"/>
+                            <view alpha="0.80000000000000004" contentMode="scaleToFill" id="Jix-9g-Q4j" userLabel="Details View">
+                                <rect key="frame" x="7" y="224" width="160" height="96"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="09:30 AM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ed7-Xe-anD">
+                                        <rect key="frame" x="5" y="4" width="150" height="47"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="32"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="13 APR 2013" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IP6-H0-SGn">
+                                        <rect key="frame" x="0.0" y="37" width="160" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="25"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="STOCKHOLM, SWEDEN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" adjustsLetterSpacingToFitWidth="YES" id="SaU-k9-IYO">
+                                        <rect key="frame" x="6" y="57" width="150" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view alpha="0.0" contentMode="scaleToFill" id="wFk-vg-SmY" userLabel="Fade View">
+                                <rect key="frame" x="0.0" y="0.0" width="568" height="333"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" id="m8i-AP-zOl" userLabel="Menu View">
+                                <rect key="frame" x="480" y="0.0" width="95" height="320"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
                                     <view contentMode="scaleToFill" id="n43-H3-4Zm">
-                                        <rect key="frame" x="7" y="0.0" width="85" height="320"/>
+                                        <rect key="frame" x="6" y="0.0" width="86" height="320"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="SECONDS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aeB-bH-jzS">
@@ -32,7 +65,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="15" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cZE-YX-M7g">
-                                                <rect key="frame" x="14" y="19" width="60" height="35"/>
+                                                <rect key="frame" x="12" y="19" width="60" height="35"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="19"/>
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -112,44 +145,26 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     </view>
-                                    <view contentMode="scaleToFill" id="zxE-MJ-JSb">
-                                        <rect key="frame" x="4" y="0.0" width="7" height="320"/>
+                                    <view contentMode="scaleToFill" id="zxE-MJ-JSb" userLabel="Left big shade">
+                                        <rect key="frame" x="3" y="0.0" width="7" height="320"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
                                     </view>
-                                    <view contentMode="scaleToFill" id="PJx-nR-2NT">
-                                        <rect key="frame" x="7" y="0.0" width="2" height="320"/>
+                                    <view contentMode="scaleToFill" id="PJx-nR-2NT" userLabel="Left small shade">
+                                        <rect key="frame" x="6" y="0.0" width="2" height="320"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
                                     </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view alpha="0.80000000000000004" contentMode="scaleToFill" id="Jix-9g-Q4j" userLabel="Details View">
-                                <rect key="frame" x="7" y="224" width="160" height="96"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="09:30 AM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ed7-Xe-anD">
-                                        <rect key="frame" x="5" y="4" width="150" height="47"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="32"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="13 APR 2013" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IP6-H0-SGn">
-                                        <rect key="frame" x="0.0" y="37" width="160" height="35"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="25"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="STOCKHOLM, SWEDEN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" adjustsLetterSpacingToFitWidth="YES" id="SaU-k9-IYO">
-                                        <rect key="frame" x="6" y="57" width="150" height="35"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <view contentMode="scaleToFill" id="d5S-Cn-PQl" userLabel="Right big shade">
+                                        <rect key="frame" x="88" y="0.0" width="7" height="320"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" id="QAx-UJ-TB0" userLabel="Right small shade">
+                                        <rect key="frame" x="90" y="0.0" width="2" height="320"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
@@ -162,17 +177,48 @@
                     <connections>
                         <outlet property="archiveLabel" destination="Wug-j6-kgy" id="P8l-FT-sqN"/>
                         <outlet property="createLabel" destination="KiK-BA-0hg" id="mph-s3-vrp"/>
+                        <outlet property="fadeView" destination="wFk-vg-SmY" id="X5a-oO-GlX"/>
                         <outlet property="menuArrow" destination="YBf-hP-iKl" id="T4s-yD-tdy"/>
+                        <outlet property="menuView" destination="m8i-AP-zOl" id="Bkx-g6-1Bk"/>
                         <outlet property="timeLabel" destination="cZE-YX-M7g" id="dK6-Y9-0WG"/>
                         <outlet property="timeUnitLabel" destination="aeB-bH-jzS" id="2cU-Px-fx2"/>
                         <outlet property="vidDateLabel" destination="IP6-H0-SGn" id="MJL-WE-Ehv"/>
                         <outlet property="vidLocationLabel" destination="SaU-k9-IYO" id="3PU-tK-iyB"/>
+                        <outlet property="vidPlaceholderImage" destination="SEN-cU-NW8" id="LaA-DF-1QT"/>
                         <outlet property="vidTimeLabel" destination="ed7-Xe-anD" id="A61-Ul-Rrz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uIB-Wh-0bM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="19" y="-361"/>
+        </scene>
+        <!--Archive View Controller-->
+        <scene sceneID="zVN-pY-F6K">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XH3-zx-Vsk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController storyboardIdentifier="ArchiveViewController" id="ejj-dJ-F8Z" userLabel="Archive View Controller" customClass="ArchiveViewController" sceneMemberID="viewController">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="dKx-UE-bSs">
+                        <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="ARCHIVE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8JP-WA-HEk">
+                                <rect key="frame" x="-3" y="85" width="574" height="150"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.085717401035938029" green="0.44389748086734693" blue="0.43908037992323218" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="100"/>
+                                <color key="textColor" red="0.099494992546226624" green="0.51524633290816324" blue="0.50965496619922424" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <size key="shadowOffset" width="0.0" height="1"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="0.50196081399917603" alpha="1" colorSpace="calibratedRGB"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="636" y="-361"/>
         </scene>
         <!--Camera View Controller-->
         <scene sceneID="5">
@@ -225,6 +271,9 @@
         <image name="record_button.png" width="63" height="63"/>
     </resources>
     <classes>
+        <class className="ArchiveViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ArchiveViewController.h"/>
+        </class>
         <class className="CameraViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/CameraViewController.h"/>
         </class>
@@ -242,11 +291,14 @@
                 <relationship kind="action" name="timeButtonTapped:"/>
                 <relationship kind="outlet" name="archiveLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="createLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="fadeView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="menuArrow" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="menuView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="timeLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="timeUnitLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="vidDateLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="vidLocationLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="vidPlaceholderImage" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="vidTimeLabel" candidateClass="UILabel"/>
             </relationships>
         </class>

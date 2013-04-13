@@ -7,18 +7,25 @@
 //
 
 #import "RootViewController.h"
+#import "ArchiveViewController.h"
 
 @interface RootViewController ()
 
+@property (weak, nonatomic) IBOutlet UIView *menuView;
 @property (weak, nonatomic) IBOutlet UILabel *timeUnitLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *createLabel;
 @property (weak, nonatomic) IBOutlet UILabel *archiveLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *menuArrow;
 
+@property (weak, nonatomic) IBOutlet UIImageView *vidPlaceholderImage;
 @property (weak, nonatomic) IBOutlet UILabel *vidTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *vidDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *vidLocationLabel;
+@property (weak, nonatomic) IBOutlet UIView *fadeView;
+
+@property (nonatomic, strong) ArchiveViewController *archiveViewController;
+@property (nonatomic, assign) BOOL isArchiveMode;
 
 @end
 
@@ -28,6 +35,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
     }
     return self;
 }
@@ -82,6 +90,19 @@
     _vidLocationLabel.layer.shadowOpacity = shOpacity;
     _vidLocationLabel.layer.shadowRadius = shRadius;
     _vidLocationLabel.layer.shadowOffset = shOffset;
+    
+    /* Archive controller */
+    self.archiveViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ArchiveViewController"];
+    [self addChildViewController:self.archiveViewController];
+    self.archiveViewController.view.origin = CGPointMake(self.view.height, 0);
+    [self.view addSubview:self.archiveViewController.view];
+    [self.view bringSubviewToFront:_menuView];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    self.archiveViewController.view.bounds = self.view.bounds;
+    self.archiveViewController.view.origin = CGPointMake(self.view.height, 0);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -98,6 +119,23 @@
 }
 
 - (IBAction)archiveButtonTapped:(id)sender {
-    NSLog(@"BRING OUT THAT FCKR");
+    if (_isArchiveMode) {
+        [UIView animateWithDuration:0.6 animations:^{
+            self.archiveViewController.view.origin = CGPointMake(self.view.height, 0);
+            _menuView.left = self.view.height - _menuView.width +7;
+            _vidPlaceholderImage.left = 0;
+            _fadeView.alpha = 0;
+        }];
+    } else {
+        [UIView animateWithDuration:0.6 animations:^{
+            self.archiveViewController.view.origin = CGPointMake(0, 0);
+            _menuView.left = -10;
+            _vidPlaceholderImage.left = -40;
+            _fadeView.alpha = 1;
+        }];
+    }
+    
+    _isArchiveMode = !_isArchiveMode;
 }
+
 @end
