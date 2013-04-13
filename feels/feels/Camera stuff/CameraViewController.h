@@ -12,6 +12,7 @@
 @interface CameraViewController : UIViewController
 
 @property(nonatomic,strong) GPUImageVideoCamera *videoCamera;
+@property(nonatomic,strong) GPUImageMovie *video;
 @property(nonatomic,strong) GPUImageMovieWriter *movieWriter;
 
 

@@ -34,6 +34,7 @@
             }
         }
         
+        
 
         _captureSession = [[AVCaptureSession alloc] init];
         

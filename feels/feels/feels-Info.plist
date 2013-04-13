@@ -26,6 +26,7 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>geogtq-rg-webfont.ttf</string>
 		<string>GeosansLight.ttf</string>
 		<string>ITCAvantGardeStd-XLt.otf</string>
 	</array>
@@ -40,7 +41,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
 	</array>
 </dict>
 </plist>

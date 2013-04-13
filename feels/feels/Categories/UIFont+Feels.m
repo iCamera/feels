@@ -18,4 +18,8 @@
     return [UIFont fontWithName:@"ITCAvantGardeStd-XLt" size:size];
 }
 
++ (UIFont *)GeogrotesqueGardeExtraLight:(float)size {
+    return [UIFont fontWithName:@"Geogrotesque" size:size];
+}
+
 @end
