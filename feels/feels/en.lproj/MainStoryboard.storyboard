@@ -442,70 +442,14 @@
         </scene>
     </scenes>
     <resources>
-        <image name="back_button.png" width="15" height="27"/>
-        <image name="bottom_shadow.png" width="1" height="57"/>
-        <image name="close_button.png" width="26" height="26"/>
-        <image name="menu_arrow.png" width="10" height="19"/>
-        <image name="menu_seperator.png" width="54" height="1"/>
-        <image name="placeholder_archive.png" width="568" height="320"/>
-        <image name="record_button.png" width="63" height="63"/>
+        <image name="back_button.png" width="16" height="16"/>
+        <image name="bottom_shadow.png" width="16" height="16"/>
+        <image name="close_button.png" width="16" height="16"/>
+        <image name="menu_arrow.png" width="16" height="16"/>
+        <image name="menu_seperator.png" width="16" height="16"/>
+        <image name="placeholder_archive.png" width="16" height="16"/>
+        <image name="record_button.png" width="16" height="16"/>
     </resources>
-    <classes>
-        <class className="ArchiveViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ArchiveViewController.h"/>
-        </class>
-        <class className="CameraViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CameraViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="backButton:"/>
-                <relationship kind="action" name="closeButton:"/>
-                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="closeButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="doneView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="postTapLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="postTitleLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="postVideoContainer" candidateClass="UIView"/>
-                <relationship kind="outlet" name="postView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="preRecordingView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="procentLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="recordingTapLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="recordingTimeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="recordingView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="startRecordingLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="tapLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="uploadDescLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="uploadSuccessLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="uploadView" candidateClass="UIView"/>
-            </relationships>
-        </class>
-        <class className="MixerController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MixerController.h"/>
-        </class>
-        <class className="RootViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/RootViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="archiveButtonTapped:"/>
-                <relationship kind="action" name="createButtonTapped:"/>
-                <relationship kind="action" name="timeButtonTapped:"/>
-                <relationship kind="outlet" name="archiveButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="archiveLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="createLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="fadeView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="menuArrow" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="menuView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="timeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="timeUnitLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="vidDateLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="vidLocationLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="vidPlaceholderImage" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="vidTimeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="videoWrapperView" candidateClass="UIView"/>
-            </relationships>
-        </class>
-        <class className="VideoViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/VideoViewController.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

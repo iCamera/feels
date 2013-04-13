@@ -121,7 +121,7 @@ typedef enum {
         _postTapLabel.font = [UIFont GeogrotesqueGardeExtraLight:_postTapLabel.font.pointSize];
     }
     
-    videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPresetiFrame960x540 cameraPosition:AVCaptureDevicePositionBack];
+    _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPresetiFrame960x540 cameraPosition:AVCaptureDevicePositionBack];
     
     
     _videoCamera.outputImageOrientation = UIInterfaceOrientationLandscapeLeft;
@@ -581,6 +581,7 @@ typedef enum {
     if (_currentState == StatePost) {
         [self setCurrentState:StatePre];
         [_videoCamera startCameraCapture];
+        [_postVideoContainer removeFromSuperview];
     }
     
 }
