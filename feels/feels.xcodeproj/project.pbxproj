@@ -70,6 +70,8 @@
 		6010AF7E17195C780092D50A /* lookup_toaster.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF2F1718BE040092D50A /* lookup_toaster.png */; };
 		6010AF7F17195C780092D50A /* lookup_nashville.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF301718BE040092D50A /* lookup_nashville.png */; };
 		6010AF8017195C780092D50A /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF351718C3550092D50A /* test.png */; };
+		6010AF83171962FD0092D50A /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6010AF82171962FD0092D50A /* LocationManager.m */; };
+		6010AF85171963750092D50A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6010AF84171963750092D50A /* CoreLocation.framework */; };
 		602F42601718C9DD009ADE50 /* UILabel+Feels.m in Sources */ = {isa = PBXBuildFile; fileRef = 602F425F1718C9DD009ADE50 /* UILabel+Feels.m */; };
 		602F42681718CFD2009ADE50 /* menu_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F42621718CFD2009ADE50 /* menu_arrow.png */; };
 		602F42691718CFD2009ADE50 /* menu_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F42631718CFD2009ADE50 /* menu_arrow@2x.png */; };
@@ -250,6 +252,9 @@
 		6010AF6F1718EBDC0092D50A /* close_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close_button@2x.png"; sourceTree = "<group>"; };
 		6010AF761719458E0092D50A /* back_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_button.png; sourceTree = "<group>"; };
 		6010AF771719458E0092D50A /* back_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_button@2x.png"; sourceTree = "<group>"; };
+		6010AF81171962FD0092D50A /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
+		6010AF82171962FD0092D50A /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
+		6010AF84171963750092D50A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		602F425E1718C9DD009ADE50 /* UILabel+Feels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Feels.h"; sourceTree = "<group>"; };
 		602F425F1718C9DD009ADE50 /* UILabel+Feels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Feels.m"; sourceTree = "<group>"; };
 		602F42621718CFD2009ADE50 /* menu_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_arrow.png; sourceTree = "<group>"; };
@@ -372,6 +377,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6010AF85171963750092D50A /* CoreLocation.framework in Frameworks */,
 				6010AF611718D7060092D50A /* libGPUImage.a in Frameworks */,
 				F44E116F171838BB00E9D4EC /* OpenAL.framework in Frameworks */,
 				F44E116D1718386800E9D4EC /* AudioToolbox.framework in Frameworks */,
@@ -406,6 +412,10 @@
 		2951869117173643007E09F5 = {
 			isa = PBXGroup;
 			children = (
+				6010AF84171963750092D50A /* CoreLocation.framework */,
+				6010AF501718CFFD0092D50A /* libGPUImage.a */,
+				F44E116E171838BB00E9D4EC /* OpenAL.framework */,
+				F44E116C1718386800E9D4EC /* AudioToolbox.framework */,
 				295186A317173643007E09F5 /* feels */,
 				2951869C17173643007E09F5 /* Frameworks */,
 				2951869B17173643007E09F5 /* Products */,
@@ -773,6 +783,8 @@
 		F44E110C1718385A00E9D4EC /* External */ = {
 			isa = PBXGroup;
 			children = (
+				6010AF81171962FD0092D50A /* LocationManager.h */,
+				6010AF82171962FD0092D50A /* LocationManager.m */,
 				F44E110D1718385A00E9D4EC /* ObjectAL */,
 			);
 			path = External;
@@ -1106,6 +1118,7 @@
 				F44760BB1718E56C007C6B18 /* KVOR.m in Sources */,
 				F44760BC1718E56C007C6B18 /* KVORTaskObserver.m in Sources */,
 				602F42701718EA35009ADE50 /* ArchiveViewController.m in Sources */,
+				6010AF83171962FD0092D50A /* LocationManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

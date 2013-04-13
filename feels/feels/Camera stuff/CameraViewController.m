@@ -15,9 +15,9 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "NSTimer+Block.h"
 #import "UILabel+Feels.h"
-
-#define videoWidth 1280
-#define videoHeight 720
+#import "LocationManager.h"
+#define videoWidth 960
+#define videoHeight 540
 
 typedef enum {
     StateUnknown,
@@ -75,6 +75,8 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *uploadTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *uploadDateLabel;
 
+@property (strong,nonatomic)  CLGeocoder *geoCoder;
+@property (strong,nonatomic)  NSString *placeString;
 - (IBAction)backButton:(id)sender;
 - (IBAction)closeButton:(id)sender;
 
@@ -87,6 +89,8 @@ typedef enum {
 
 -(void)viewDidLoad{
     [super viewDidLoad];
+    _geoCoder = [[CLGeocoder alloc] init];
+    [[LocationManager sharedManager] startTracking];
     
     _uploadSuccessLabel.font = [UIFont GeoSansLight:20.0];
     _uploadDescriptionLabel.font = [UIFont GeogrotesqueGardeExtraLight:_uploadDescriptionLabel.font.pointSize];
@@ -132,7 +136,7 @@ typedef enum {
         _postTapLabel.font = [UIFont GeogrotesqueGardeExtraLight:_postTapLabel.font.pointSize];
     }
     
-    _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1280x720 cameraPosition:AVCaptureDevicePositionBack];
+    _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPresetiFrame960x540 cameraPosition:AVCaptureDevicePositionBack];
     
     
     _videoCamera.outputImageOrientation = UIInterfaceOrientationLandscapeLeft;
@@ -159,7 +163,7 @@ typedef enum {
     NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
     unlink([pathToMovie UTF8String]); // If a file already exists, AVAssetWriter won't let you record new frames, so delete the old movie
     NSURL *movieURL = [NSURL fileURLWithPath:pathToMovie];
-    _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(1280.0, 720.0)];
+    _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(960.0, 540.0)];
     
     [_filter addTarget:_movieWriter];
     
@@ -173,6 +177,11 @@ typedef enum {
     [super viewDidAppear:animated];
     [_videoCamera startCameraCapture];
     [self setCurrentState:StatePre];
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [[LocationManager sharedManager] stopTracking];
 }
 
 -(void)viewDidLayoutSubviews{
@@ -223,36 +232,44 @@ typedef enum {
         
         if (dragValue < 0.25) {
             [_videoCamera removeTarget:_filter];
+      [_filter removeTarget:_movieWriter];            
             _filter = [[FeelsFilter alloc] init];
             UIImage *i = [self blendImage:@"lookup" andImage2:@"lookup_xpro" first:map(dragValue, 0.0, 0.25, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
             
             [_filter addTarget:_gpuImageView];
+            [_filter addTarget:_movieWriter];            
             [_videoCamera addTarget:_filter];
             
         } else if (dragValue < 0.50){
             [_videoCamera removeTarget:_filter];
+      [_filter removeTarget:_movieWriter];
             _filter = [[FeelsFilter alloc] init];
             UIImage *i = [self blendImage:@"lookup_xpro" andImage2:@"lookup_toaster" first:map(dragValue, 0.25, 0.50, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
             
             [_filter addTarget:_gpuImageView];
+            [_filter addTarget:_movieWriter];            
             [_videoCamera addTarget:_filter];
         } else if (dragValue < 0.75){
+      [_filter removeTarget:_movieWriter];
             [_videoCamera removeTarget:_filter];
             _filter = [[FeelsFilter alloc] init];
             UIImage *i = [self blendImage:@"lookup_toaster" andImage2:@"lookup_nashville" first:map(dragValue, 0.50, 0.75, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
             
             [_filter addTarget:_gpuImageView];
+            [_filter addTarget:_movieWriter];            
             [_videoCamera addTarget:_filter];
         } else {
             [_videoCamera removeTarget:_filter];
+            [_filter removeTarget:_movieWriter];
             _filter = [[FeelsFilter alloc] init];
             UIImage *i = [self blendImage:@"lookup_nashville" andImage2:@"lookup" first:map(dragValue, 0.75, 1.0, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
             
             [_filter addTarget:_gpuImageView];
+            [_filter addTarget:_movieWriter];
             [_videoCamera addTarget:_filter];
         }
     } else if (_currentState == StatePost){
@@ -355,6 +372,9 @@ typedef enum {
     _recording = NO;
     [_filter removeTarget:_movieWriter];
     
+   
+    _videoCamera.audioEncodingTarget = nil;
+
     [_movieWriter finishRecordingWithCompletionHandler:^{
         
         NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
@@ -362,6 +382,8 @@ typedef enum {
         
         
         
+     
+        [_filter removeTarget:_movieWriter];
         _playerItem = [AVPlayerItem playerItemWithURL:fileURL];
         //AVPlayer *avPlayer = [[AVPlayer playerWithURL:[NSURL URLWithString:url]] retain];
         _avPlayer = [AVPlayer playerWithPlayerItem:_playerItem];
@@ -449,7 +471,8 @@ typedef enum {
     NSURL* fileURL = [NSURL fileURLWithPath:localVid];
     
     __block NSError *error = nil;
-    NSString *location = @"Östermalm, Stockholm";
+    NSString *location = (_placeString) ? _placeString : [@"[Unknown location]" uppercaseString];
+    NSLog(@"%@",location);
     NSString *author = [[AppManager sharedManager] author];
     NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];
     NSMutableURLRequest *urlRequest = [[APIClient shareClient] multipartFormRequestWithMethod:@"POST" path:@"/ahd/upload" parameters:@{ @"location":location, @"author":author, @"timestamp":@(timestamp) } constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
@@ -524,9 +547,13 @@ typedef enum {
             
             _lineView.frame = CGRectMake((self.view.bounds.size.width - 164)/2, _lineView.top, 164, 0.5);
             _closeButton.alpha = 0.0;
-            _backButton.alpha = 0.0;
+            _backButton.alpha = 1.0;
             _doneView.alpha = 0.0;
         } else if (_currentState == StatePost){
+            [_geoCoder reverseGeocodeLocation:[LocationManager sharedManager].locationManager.location  completionHandler: ^(NSArray *placemarks, NSError *error) {
+                CLPlacemark *placemark = [placemarks objectAtIndex:0];
+                _placeString = [[NSString stringWithFormat:@"%@, %@",[placemark.addressDictionary valueForKey:@"City"],[placemark.addressDictionary valueForKey:@"SubLocality"]] uppercaseString];
+            }];
             _uploadView.alpha = 0.0;
             _preRecordingView.alpha = 0.0;
             _postView.alpha = 1.0;
@@ -541,11 +568,12 @@ typedef enum {
         } else if(_currentState == StateUploading){
             _uploadView.alpha = 1.0;
             _doneView.alpha = 0.0;
+            _postView.alpha = 0.0;
+            _backButton.alpha = 0.0;
         } else if(_currentState == StateDone){
             _uploadView.alpha = 0.0;
             _doneView.alpha = 1.0;
-            _postTitleLabel.alpha = 0;
-            _postView.alpha = 0;
+            _postView.alpha = 0.0;            
         }
         
     } completion:^(BOOL finished) {
@@ -568,6 +596,7 @@ typedef enum {
     if (_currentState == StatePost) {
         [self setCurrentState:StatePre];
         [_videoCamera startCameraCapture];
+        [_postVideoContainer removeFromSuperview];
     }
     
 }
