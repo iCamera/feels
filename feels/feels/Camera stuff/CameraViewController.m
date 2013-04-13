@@ -29,7 +29,7 @@ typedef enum {
     StateDone,
 } State;
 
-@interface CameraViewController()<GPUImageMovieDelegate>
+@interface CameraViewController()<GPUImageMovieDelegate,UIAlertViewDelegate>
 @property (strong, nonatomic)  GPUImageView *gpuImageView;
 @property (strong, nonatomic) UIImageView *imageView;
 @property(nonatomic,strong) FeelsFilter *filter;
@@ -522,6 +522,8 @@ typedef enum {
             
             [self setCurrentState:StateDone];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            UIAlertView *a = [[UIAlertView alloc] initWithTitle:@"Fel fel fel!" message:@"Det blev fel!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            [a show];
             NSLog(@"Error: %@ %@", operation.responseString, [error localizedDescription]);
         }];
         
@@ -639,5 +641,10 @@ typedef enum {
 
 - (IBAction)closeButton:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - UIAlertViewDelegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+
 }
 @end
