@@ -17,7 +17,6 @@
 @property (strong, nonatomic)  GPUImageView *gpuImageView;
 @property (strong, nonatomic) UIImageView *imageView;
 @property(nonatomic,strong) FeelsFilter *filter;
-@property(nonatomic,strong) FeelsFilter *filter2;
 @property(nonatomic,assign) int changeCounter;
 
 @end
@@ -36,7 +35,7 @@
     //    videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1280x720 cameraPosition:AVCaptureDevicePositionBack];
     //    videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1920x1080 cameraPosition:AVCaptureDevicePositionBack];
     
-    _videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
+    _videoCamera.outputImageOrientation = UIInterfaceOrientationLandscapeLeft;
     _videoCamera.horizontallyMirrorFrontFacingCamera = NO;
     _videoCamera.horizontallyMirrorRearFacingCamera = NO;
     
@@ -47,10 +46,6 @@
     _filter = [[FeelsFilter alloc] init];
     UIImage *i = [self blendImage:@"test" andImage2:@"lookup_xpro" first:0.0 second:0.0];
     [_filter setSourceImage:i];
-    
-    _filter2 = [[FeelsFilter alloc] init];
-    UIImage *image = [self blendImage:@"test" andImage2:@"lookup_xpro" first:1.0 second:0.0];
-    [_filter2 setSourceImage:image];
     
     //    filter = [[GPUImageTiltShiftFilter alloc] init];
     //    [(GPUImageTiltShiftFilter *)filter setTopFocusLevel:0.65];
@@ -64,12 +59,12 @@
     
     [_videoCamera addTarget:_filter];
 
-    _gpuImageView = [[GPUImageView alloc] initWithFrame:self.view.frame];
+    _gpuImageView = [[GPUImageView alloc] initWithFrame:self.view.bounds];
     [_filter addTarget:_gpuImageView];
-    [_filter2 addTarget:_gpuImageView];
+
     [self.view addSubview:_gpuImageView];
     //    filterView.fillMode = kGPUImageFillModeStretch;
-    //    filterView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
+    _gpuImageView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
     
     // Record a movie for 10 s and store it in /Documents, visible via iTunes file sharing
     
@@ -121,24 +116,11 @@
 
 -(void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
+    _gpuImageView.frame = self.view.bounds;
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
 
-    
-//    if (_stringMax) {
-//        _stringMax = NO;
-//        [_videoCamera removeTarget:_filter];
-//        [_videoCamera addTarget:_filter2];
-//    } else {
-//        _stringMax = YES;
-//        [_videoCamera removeTarget:_filter2];
-//        [_videoCamera addTarget:_filter];
-//        
-//    }
-//    
-
-//  [_filter setSourceImage:[UIImage imageNamed:@"lookup_miss_etikate"]];
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -149,7 +131,7 @@
     }
     _changeCounter = 0;
     
-    float dragValue = [[touches anyObject] locationInView:self.view].y/self.view.height;
+    float dragValue = [[touches anyObject] locationInView:self.view].x/self.view.width;
 
     
     if (dragValue < 0.25) {
