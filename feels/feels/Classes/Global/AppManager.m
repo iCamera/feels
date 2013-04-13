@@ -13,7 +13,7 @@
 #import "VideoModel.h"
 #import "NSTimer+Block.h"
 
-@interface AppManager ()
+@interface AppManager () <UIAlertViewDelegate>
 @property (nonatomic, strong) TimeHolder *currentTimeHolder;
 @property (nonatomic, readonly) NSTimeInterval time;
 @property (nonatomic, strong) NSTimer *videoFetchingTimer;
@@ -109,7 +109,7 @@
         
         completeBlock(videos);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", operation.responseString);
+        
     }];
 }
 

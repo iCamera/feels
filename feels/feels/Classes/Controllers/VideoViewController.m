@@ -49,14 +49,14 @@
 }
 
 -(void)appear{
-    [[OALSimpleAudio sharedInstance] playBg:@"home.mp3" loop:YES];;
-    if (_disappearTime > 0) {
-        
+    [[OALSimpleAudio sharedInstance] playBg:@"home.mp3" loop:YES];
+    if ([AppManager sharedManager].disappearTime > 0) {
         
         double now = [[NSDate date] timeIntervalSince1970];
         
-        double secs = now - _disappearTime;
+        double secs = now - [AppManager sharedManager].disappearTime;
         int clips = secs/6;
+        [AppManager sharedManager].disappearTime = 0;
         
         _currentIndex += clips;
         _currentIndex = [self nextIndex];
@@ -90,7 +90,7 @@
     [_currentVideo pause];
     [_nextVideo pause];
     
-    _disappearTime = [[NSDate date] timeIntervalSince1970];
+    [AppManager sharedManager].disappearTime = [[NSDate date] timeIntervalSince1970];
 }
 
 - (void)applicationDidEnterBackground:(NSNotification*)n {

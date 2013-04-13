@@ -426,7 +426,19 @@ typedef enum {
     if (!error) {
         AFHTTPRequestOperation *operation = [[APIClient shareClient] HTTPRequestOperationWithRequest:urlRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"Success: %@", responseObject);
+            
+            NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+            double secs = now - [AppManager sharedManager].disappearTime;
+            
+            int numberOfClips = secs/6;
+            int newIndex = (numberOfClips + [AppManager sharedManager].currentIndex) % [AppManager sharedManager].videos.count;
+            
+            double yourTime = ([AppManager sharedManager].videos.count - newIndex) * 6;
+            NSDate *date = [NSDate dateWithTimeIntervalSinceNow:yourTime];
+            NSLog(@"Your clip will air: %@", date);
+            
             [self dismissViewControllerAnimated:YES completion:nil];
+            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@ %@", operation.responseString, [error localizedDescription]);
         }];
