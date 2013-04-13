@@ -12,6 +12,8 @@
 #import "MathHelper.h"
 #import "VideoViewController.h"
 #import "VideoModel.h"
+#import "KVOR.h"
+#import "AppManager.h"
 
 @interface RootViewController ()
 
@@ -59,6 +61,7 @@
     
     [_timeLabel setFont:[UIFont AvantGardeExtraLight:27]];
     [_timeLabel setTextColor:[UIColor colorWithRed:0.388 green:0.384 blue:0.365 alpha:1]];
+    _timeLabel.text = [NSString stringWithFormat:@"%d", [AppManager sharedManager].seconds];
     
     [_createLabel setFont:[UIFont GeoSansLight:17]];
     [_createLabel setTextColor:[UIColor colorWithRed:0.388 green:0.384 blue:0.365 alpha:1]];
@@ -164,6 +167,11 @@
     
     
     [_videoViewController setVideoDidChange:b];
+    
+    [KVOR target:[AppManager sharedManager] keyPath:@"seconds" task:^(NSString *keyPath, NSDictionary *change) {
+        //BAM!
+        self.timeLabel.text = [NSString stringWithFormat:@"%d", [AppManager sharedManager].seconds];
+    }];
 }
 
 

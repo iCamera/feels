@@ -17,6 +17,9 @@
 @property (nonatomic, assign) int currentIndex;
 @property (nonatomic, assign) double disappearTime;
 
+@property (nonatomic, assign) int points;
+@property (nonatomic, assign) int seconds;
+
 @property (nonatomic, assign) BOOL loading;
 @property (nonatomic, assign) BOOL play;
 
