@@ -80,6 +80,8 @@
 		602F427417190A9C009ADE50 /* placeholder_archive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F427217190A9C009ADE50 /* placeholder_archive@2x.png */; };
 		602F428117193BB9009ADE50 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F428017193BB9009ADE50 /* Icon.png */; };
 		602F428317193BC1009ADE50 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F428217193BC1009ADE50 /* Icon@2x.png */; };
+		602F428E171972BE009ADE50 /* HCAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 602F428D171972BE009ADE50 /* HCAnimator.m */; };
+		602F4291171972D9009ADE50 /* HCTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 602F4290171972D9009ADE50 /* HCTimingFunction.m */; };
 		D13214421718A888004E0C87 /* GeosansLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D13214401718A888004E0C87 /* GeosansLight.ttf */; };
 		D13214431718A888004E0C87 /* ITCAvantGardeStd-XLt.otf in Resources */ = {isa = PBXBuildFile; fileRef = D13214411718A888004E0C87 /* ITCAvantGardeStd-XLt.otf */; };
 		D13214461718BD8C004E0C87 /* UIFont+Feels.m in Sources */ = {isa = PBXBuildFile; fileRef = D13214451718BD8C004E0C87 /* UIFont+Feels.m */; };
@@ -268,6 +270,10 @@
 		602F428017193BB9009ADE50 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../Icon.png; sourceTree = "<group>"; };
 		602F428217193BC1009ADE50 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "../Icon@2x.png"; sourceTree = "<group>"; };
 		602F428517195335009ADE50 /* Defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Defines.h; sourceTree = "<group>"; };
+		602F428C171972BE009ADE50 /* HCAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCAnimator.h; sourceTree = "<group>"; };
+		602F428D171972BE009ADE50 /* HCAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCAnimator.m; sourceTree = "<group>"; };
+		602F428F171972D9009ADE50 /* HCTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCTimingFunction.h; sourceTree = "<group>"; };
+		602F4290171972D9009ADE50 /* HCTimingFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCTimingFunction.m; sourceTree = "<group>"; };
 		D13214401718A888004E0C87 /* GeosansLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GeosansLight.ttf; sourceTree = "<group>"; };
 		D13214411718A888004E0C87 /* ITCAvantGardeStd-XLt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-XLt.otf"; sourceTree = "<group>"; };
 		D13214441718BD8C004E0C87 /* UIFont+Feels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Feels.h"; sourceTree = "<group>"; };
@@ -642,6 +648,17 @@
 			path = Menu;
 			sourceTree = "<group>";
 		};
+		602F4289171972AB009ADE50 /* HCAnimator */ = {
+			isa = PBXGroup;
+			children = (
+				602F428C171972BE009ADE50 /* HCAnimator.h */,
+				602F428D171972BE009ADE50 /* HCAnimator.m */,
+				602F428F171972D9009ADE50 /* HCTimingFunction.h */,
+				602F4290171972D9009ADE50 /* HCTimingFunction.m */,
+			);
+			name = HCAnimator;
+			sourceTree = "<group>";
+		};
 		D132143F1718A888004E0C87 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -735,6 +752,7 @@
 		F44760B41718E56C007C6B18 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				602F4289171972AB009ADE50 /* HCAnimator */,
 				F44760B51718E56C007C6B18 /* KVOR */,
 			);
 			path = External;
@@ -1118,6 +1136,8 @@
 				F44760BB1718E56C007C6B18 /* KVOR.m in Sources */,
 				F44760BC1718E56C007C6B18 /* KVORTaskObserver.m in Sources */,
 				602F42701718EA35009ADE50 /* ArchiveViewController.m in Sources */,
+				602F428E171972BE009ADE50 /* HCAnimator.m in Sources */,
+				602F4291171972D9009ADE50 /* HCTimingFunction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
