@@ -14,6 +14,7 @@
 #import "AppManager.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "NSTimer+Block.h"
+#import "UILabel+Feels.h"
 #import "LocationManager.h"
 #define videoWidth 960
 #define videoHeight 540
@@ -70,6 +71,10 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *uploadDescLabel;
 @property (weak, nonatomic) IBOutlet UIView *doneView;
 @property (weak, nonatomic) IBOutlet UILabel *uploadSuccessLabel;
+@property (weak, nonatomic) IBOutlet UILabel *uploadDescriptionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *uploadTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *uploadDateLabel;
+
 @property (strong,nonatomic)  CLGeocoder *geoCoder;
 @property (strong,nonatomic)  NSString *placeString;
 - (IBAction)backButton:(id)sender;
@@ -88,6 +93,16 @@ typedef enum {
     [[LocationManager sharedManager] startTracking];
     
     _uploadSuccessLabel.font = [UIFont GeoSansLight:20.0];
+    _uploadDescriptionLabel.font = [UIFont GeogrotesqueGardeExtraLight:_uploadDescriptionLabel.font.pointSize];
+    [_uploadTimeLabel setFont:[UIFont AvantGardeExtraLight:32]];
+    [_uploadDateLabel setFont:[UIFont AvantGardeExtraLight:25]];
+    
+    [_uploadTimeLabel setKerning:1.1];
+    [_uploadDateLabel setKerning:1.1];
+    [_uploadTimeLabel setAdjustsLetterSpacingToFitWidth:YES];
+    [_uploadTimeLabel setAdjustsFontSizeToFitWidth:YES];
+    [_uploadDateLabel setAdjustsLetterSpacingToFitWidth:YES];
+    [_uploadDateLabel setAdjustsFontSizeToFitWidth:YES];
     
     _procentLabel.font = [UIFont  AvantGardeExtraLight:_procentLabel.font.pointSize];
     _uploadDescLabel.font = [UIFont GeogrotesqueGardeExtraLight:8];
@@ -561,7 +576,8 @@ typedef enum {
         } else if(_currentState == StateDone){
             _uploadView.alpha = 0.0;
             _doneView.alpha = 1.0;
-            _postView.alpha = 0.0;            
+            _postTitleLabel.alpha = 0;
+            _postView.alpha = 0;
         }
         
     } completion:^(BOOL finished) {

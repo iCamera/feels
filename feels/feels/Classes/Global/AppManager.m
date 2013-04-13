@@ -105,7 +105,7 @@
 
 - (void)fetchVideos {
     VideoModel *videoModel = [self.videos lastObject];
-    NSString *lastID = videoModel.ID ?: @"0";
+    NSString *lastID = [NSString stringWithFormat:@"%i", videoModel.index+1] ?: @"0";
     
     [self fetchVideosWithBlock:^(NSMutableArray *videos) {
         if ([videos count] > 0) {
