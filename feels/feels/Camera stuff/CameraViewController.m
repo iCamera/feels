@@ -306,13 +306,7 @@ typedef enum {
     _videoCamera.audioEncodingTarget = nil;
     _canStopRecording = NO;
     _recordingTapLabel.alpha = 0.0;
-    _stopRecTimer = [NSTimer scheduledTimerWithTimeInterval:6.0 completion:^{
-        _canStopRecording = YES;
-        
-        [UIView animateWithDuration:0.6 animations:^{
-            _recordingTapLabel.alpha = 1.0;
-        }];
-    } repeat:YES];
+
     
     _recording = YES;
     double delayToStartRecording = 0.0;
@@ -328,6 +322,15 @@ typedef enum {
             int nowTime = [[NSDate date] timeIntervalSince1970];
             int diff = nowTime - startTime;
             _recordingTimeLabel.text = [NSString stringWithFormat:@"00:%02d",diff];
+        } repeat:YES];
+        
+        
+        _stopRecTimer = [NSTimer scheduledTimerWithTimeInterval:6.0 completion:^{
+            _canStopRecording = YES;
+            
+            [UIView animateWithDuration:0.6 animations:^{
+                _recordingTapLabel.alpha = 1.0;
+            }];
         } repeat:YES];
         
         
@@ -579,9 +582,17 @@ typedef enum {
 - (IBAction)backButton:(id)sender {
     
     if (_currentState == StatePost) {
+        NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
+        NSURL* fileURL = [NSURL fileURLWithPath:localVid];
+        unlink([localVid UTF8String]);
         [self setCurrentState:StatePre];
         [_videoCamera startCameraCapture];
         [_postVideoContainer removeFromSuperview];
+        [_filter removeTarget:_movieWriter];
+        [_movieWriter cancelRecording];
+        _movieWriter = nil;
+        _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:fileURL size:CGSizeMake(960.0, 540.0)];
+        [_filter addTarget:_movieWriter];
     }
     
 }
