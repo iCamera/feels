@@ -27,6 +27,27 @@
 	// Do any additional setup after loading the view.
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped)];
     [self.view addGestureRecognizer:tgr];
+    
+
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    BOOL b = YES;
+    int i = 1;
+    while (b) {
+        NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Documents/Movie_out%i.mp4",i]];
+        NSURL *fileURL = [NSURL fileURLWithPath:localVid];
+        NSLog(@"%@",fileURL);
+        BOOL trams = [[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"Documents/Movie_out%i.mp4",i]];
+        
+        if (!trams) {
+            b = NO;
+        }
+        
+        i++;
+    }
 }
 
 - (void)didReceiveMemoryWarning

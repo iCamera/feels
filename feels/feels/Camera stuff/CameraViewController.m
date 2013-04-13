@@ -16,6 +16,7 @@
 #import "NSTimer+Block.h"
 #import "UILabel+Feels.h"
 #import "LocationManager.h"
+#include <sys/xattr.h>
 #define videoWidth 960
 #define videoHeight 540
 
@@ -159,8 +160,10 @@ typedef enum {
     [self.view insertSubview:_gpuImageView atIndex:0];
     //    filterView.fillMode = kGPUImageFillModeStretch;
     _gpuImageView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
-    
     NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
+    BOOL v = [self addSkipBackupAttributeToKey:pathToMovie];
+    NSLog(@"palla : %d",v);
+
     unlink([pathToMovie UTF8String]); // If a file already exists, AVAssetWriter won't let you record new frames, so delete the old movie
     NSURL *movieURL = [NSURL fileURLWithPath:pathToMovie];
     _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(960.0, 540.0)];
@@ -171,6 +174,20 @@ typedef enum {
     
     [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)]];
     
+}
+
+- (BOOL)addSkipBackupAttributeToKey:(NSString*)key {
+    
+	NSString* cachePath = key;
+    NSURL *url = [NSURL fileURLWithPath:cachePath];
+    
+    const char* filePath = [[url path] fileSystemRepresentation];
+    
+    const char* attrName = "com.apple.MobileBackup";
+    u_int8_t attrValue = 1;
+    
+    int result = setxattr(filePath, attrName, &attrValue, sizeof(attrValue), 0, 0);
+    return result == 0;
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -417,9 +434,14 @@ typedef enum {
 - (void)export {
     NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
     NSURL* fileURL = [NSURL fileURLWithPath:localVid];
-    
-    NSString *outLocalVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie_out.mp4"];
+    int i = [[NSUserDefaults standardUserDefaults] integerForKey:kUploadedVideos];
+    i++;
+    NSString *outLocalVid = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Documents/Movie_out%i.mp4",i]];
     NSURL* outFileURL = [NSURL fileURLWithPath:outLocalVid];
+    
+    NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Documents/Movie_out%i.mp4",i]];
+    BOOL v = [self addSkipBackupAttributeToKey:pathToMovie];
+    NSLog(@"palla_out : %d",v);
     
     unlink([outLocalVid UTF8String]);
     
@@ -485,7 +507,9 @@ typedef enum {
     if (!error) {
         AFHTTPRequestOperation *operation = [[APIClient shareClient] HTTPRequestOperationWithRequest:urlRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"Success: %@", responseObject);
-            
+            int i = [[NSUserDefaults standardUserDefaults] integerForKey:kUploadedVideos];
+            i++;
+            [[NSUserDefaults standardUserDefaults] setInteger:i forKey:kUploadedVideos];
             NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
             double secs = now - [AppManager sharedManager].disappearTime;
             
