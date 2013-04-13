@@ -15,8 +15,8 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "NSTimer+Block.h"
 #import "LocationManager.h"
-#define videoWidth 640
-#define videoHeight 480
+#define videoWidth 960
+#define videoHeight 540
 
 typedef enum {
     StateUnknown,
@@ -70,6 +70,8 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *uploadDescLabel;
 @property (weak, nonatomic) IBOutlet UIView *doneView;
 @property (weak, nonatomic) IBOutlet UILabel *uploadSuccessLabel;
+@property (strong,nonatomic)  CLGeocoder *geoCoder;
+@property (strong,nonatomic)  NSString *placeString;
 - (IBAction)backButton:(id)sender;
 - (IBAction)closeButton:(id)sender;
 
@@ -82,8 +84,8 @@ typedef enum {
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-    
-//    [[LocationManager sharedManager] ]
+    _geoCoder = [[CLGeocoder alloc] init];
+    [[LocationManager sharedManager] startTracking];
     
     _uploadSuccessLabel.font = [UIFont GeoSansLight:20.0];
     
@@ -119,7 +121,7 @@ typedef enum {
         _postTapLabel.font = [UIFont GeogrotesqueGardeExtraLight:_postTapLabel.font.pointSize];
     }
     
-    _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionBack];
+    _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPresetiFrame960x540 cameraPosition:AVCaptureDevicePositionBack];
 
     _videoCamera.outputImageOrientation = UIInterfaceOrientationLandscapeLeft;
     _videoCamera.horizontallyMirrorFrontFacingCamera = NO;
@@ -145,7 +147,7 @@ typedef enum {
     NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
     unlink([pathToMovie UTF8String]); // If a file already exists, AVAssetWriter won't let you record new frames, so delete the old movie
     NSURL *movieURL = [NSURL fileURLWithPath:pathToMovie];
-    _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(640.0, 480.0)];
+    _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(960.0, 540.0)];
 
     [_filter addTarget:_movieWriter];
     
@@ -159,6 +161,11 @@ typedef enum {
     [super viewDidAppear:animated];
     [_videoCamera startCameraCapture];    
     [self setCurrentState:StatePre];
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [[LocationManager sharedManager] stopTracking];
 }
 
 -(void)viewDidLayoutSubviews{
@@ -442,7 +449,8 @@ typedef enum {
     NSURL* fileURL = [NSURL fileURLWithPath:localVid];
     
     __block NSError *error = nil;
-    NSString *location = @"Östermalm, Stockholm";
+    NSString *location = (_placeString) ? _placeString : [@"[Unknown location]" uppercaseString];
+    NSLog(@"%@",location);
     NSString *author = [[AppManager sharedManager] author];
     NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];
     NSMutableURLRequest *urlRequest = [[APIClient shareClient] multipartFormRequestWithMethod:@"POST" path:@"/ahd/upload" parameters:@{ @"location":location, @"author":author, @"timestamp":@(timestamp) } constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
@@ -506,9 +514,13 @@ typedef enum {
             
             _lineView.frame = CGRectMake((self.view.bounds.size.width - 164)/2, _lineView.top, 164, 0.5);
             _closeButton.alpha = 0.0;
-            _backButton.alpha = 0.0;
+            _backButton.alpha = 1.0;
             _doneView.alpha = 0.0;
         } else if (_currentState == StatePost){
+            [_geoCoder reverseGeocodeLocation:[LocationManager sharedManager].locationManager.location  completionHandler: ^(NSArray *placemarks, NSError *error) {
+                CLPlacemark *placemark = [placemarks objectAtIndex:0];
+                _placeString = [[NSString stringWithFormat:@"%@, %@",[placemark.addressDictionary valueForKey:@"City"],[placemark.addressDictionary valueForKey:@"SubLocality"]] uppercaseString];
+            }];
             _uploadView.alpha = 0.0;
             _preRecordingView.alpha = 0.0;
             _postView.alpha = 1.0;

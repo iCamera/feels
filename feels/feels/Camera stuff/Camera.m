@@ -59,7 +59,7 @@
             NSLog(@"Couldn't add video output");
         }
         
-        [_captureSession setSessionPreset:AVCaptureSessionPreset640x480];
+        [_captureSession setSessionPreset:AVCaptureSessionPresetiFrame960x540];
 
     }
     return self;

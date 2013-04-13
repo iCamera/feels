@@ -36,8 +36,8 @@
 
 		CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
 
-        _fboHeight = 480;
-        _fboWidht = 640;
+        _fboHeight = 540.0;
+        _fboWidht = 960.0;
 
 		
 		eaglLayer.opaque = YES;
