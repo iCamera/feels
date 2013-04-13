@@ -15,6 +15,7 @@
 @property (nonatomic, assign) double startSecondTimeInterval;
 @property (nonatomic, assign) int startIndex;
 @property (nonatomic, assign) int currentIndex;
+@property (nonatomic, assign) double disappearTime;
 
 @property (nonatomic, assign) BOOL loading;
 @property (nonatomic, assign) BOOL play;

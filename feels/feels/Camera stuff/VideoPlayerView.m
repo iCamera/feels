@@ -454,6 +454,7 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
     AVPlayer *player = [self playerForCurrentPlayerItem];
     
     
+    
     // 1. Shutdown
     if (playerItem) {
         

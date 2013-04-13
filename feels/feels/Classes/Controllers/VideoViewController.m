@@ -14,6 +14,7 @@
 #import "VideoModel.h"
 #import "Intense.h"
 #import "NSTimer+Block.h"
+#import "ObjectAL.h"
 
 @interface VideoViewController ()
 
@@ -21,6 +22,7 @@
 @property(nonatomic,strong) VideoPlayerView *nextVideo;
 @property(nonatomic,assign) int lastVideo;
 @property (nonatomic, assign) int currentIndex;
+@property (nonatomic, strong) OALAudioTrack *backgroundTrack;
 
 @property(nonatomic,assign) double disappearTime;
 
@@ -47,12 +49,14 @@
 }
 
 -(void)appear{
-    NSLog(@"%f",_disappearTime);
-    if (_disappearTime > 0) {
+    [[OALSimpleAudio sharedInstance] playBg:@"home.mp3" loop:YES];
+    if ([AppManager sharedManager].disappearTime > 0) {
+        
         double now = [[NSDate date] timeIntervalSince1970];
         
-        double secs = now - _disappearTime;
+        double secs = now - [AppManager sharedManager].disappearTime;
         int clips = secs/6;
+        [AppManager sharedManager].disappearTime = 0;
         
         _currentIndex += clips;
         _currentIndex = [self nextIndex];
@@ -82,10 +86,11 @@
 }
 
 -(void)disappear{
+    [[OALSimpleAudio sharedInstance] stopBg];
     [_currentVideo pause];
     [_nextVideo pause];
     
-    _disappearTime = [[NSDate date] timeIntervalSince1970];
+    [AppManager sharedManager].disappearTime = [[NSDate date] timeIntervalSince1970];
 }
 
 - (void)applicationDidEnterBackground:(NSNotification*)n {
@@ -99,6 +104,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [[OALSimpleAudio sharedInstance] preloadBg:@"home.mp3"];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationWillResignActiveNotification object:nil];
@@ -183,7 +190,6 @@ static BOOL isDoingIt = NO;
     }
     
     if (current) {
-        
         [_nextVideo play];
         _nextVideo.alpha = 0;
     }

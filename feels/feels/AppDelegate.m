@@ -44,7 +44,6 @@
     
     NSLog(@"%@",[UIFont fontNamesForFamilyName:@"GeosansLight"]);
     
-    
     return YES;
 }
 							

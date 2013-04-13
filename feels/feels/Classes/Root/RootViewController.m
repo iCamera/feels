@@ -209,15 +209,19 @@
         [UIView animateWithDuration:0.6 animations:^{
             self.archiveViewController.view.left = _menuView.width-13;
             _menuView.left = -7;
-            _vidPlaceholderImage.left = -60;
+            _videoWrapperView.left = -120;
             _fadeView.alpha = 1;
+            _archiveLabel.text = @"STREAM";
+            _menuArrow.transform = CGAffineTransformMakeRotation(0);
         }];
     } else {
         [UIView animateWithDuration:0.6 animations:^{
             self.archiveViewController.view.origin = CGPointMake(self.view.height, 0);
             _menuView.left = self.view.height - _menuView.width +7;
-            _vidPlaceholderImage.left = 0;
+            _videoWrapperView.left = 0;
             _fadeView.alpha = 0;
+            _archiveLabel.text = @"ARCHIVE";
+            _menuArrow.transform = CGAffineTransformMakeRotation(M_PI);
         }];
     }
     
@@ -238,7 +242,7 @@
         
         _menuView.left = left;
         self.archiveViewController.view.left = left+_menuView.width-14;
-        _vidPlaceholderImage.left = map(clamp(0, 1, left/(self.view.bounds.size.width - pan.view.width)), 1, 0, 0, -60);
+        _videoWrapperView.left = map(clamp(0, 1, left/(self.view.bounds.size.width - pan.view.width)), 1, 0, 0, -120);
         _fadeView.alpha = map(left/(self.view.bounds.size.width - pan.view.width), 1, 0, 0, 0.9);
         
         } else if ([pan state] == UIGestureRecognizerStateEnded || [pan state] == UIGestureRecognizerStateCancelled){

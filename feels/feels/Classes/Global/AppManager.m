@@ -13,7 +13,7 @@
 #import "VideoModel.h"
 #import "NSTimer+Block.h"
 
-@interface AppManager ()
+@interface AppManager () <UIAlertViewDelegate>
 @property (nonatomic, strong) TimeHolder *currentTimeHolder;
 @property (nonatomic, readonly) NSTimeInterval time;
 @property (nonatomic, strong) NSTimer *videoFetchingTimer;
@@ -38,6 +38,15 @@
         self.videos = [NSMutableArray array];
         self.startIndex = -1;
         self.loading = YES;
+        
+        /* Points / seconds */
+        BOOL hasLaunchedBefore = [[NSUserDefaults standardUserDefaults] boolForKey:kLaunchedBefore];
+        int points = [[NSUserDefaults standardUserDefaults] integerForKey:kUsersAmountOfPoints];
+        if (!hasLaunchedBefore) {
+            points = 6000; //first time
+            [[NSUserDefaults standardUserDefaults] setInteger:points forKey:kUsersAmountOfPoints];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kLaunchedBefore];
+        }
     }
     return self;
 }
@@ -109,7 +118,7 @@
         
         completeBlock(videos);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", operation.responseString);
+        
     }];
 }
 
