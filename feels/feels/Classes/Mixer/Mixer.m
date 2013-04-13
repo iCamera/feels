@@ -38,6 +38,29 @@
     _beat = (float)_bpm/60.0;
     _timing = _beat / 4.0;
     
+    /*
+    [NSThread setThreadPriority:0.1];
+    int step = 0;
+    NSDate *nextBeat = [NSDate date];
+    float dur = 0.0;
+    while(1)
+    {
+        
+        if (dur >= _timing) {
+            if (self.tickBlock) {
+                self.tickBlock();
+            }
+            dur = 0;
+        }
+        
+        NSDate *newNextBeat=[[NSDate alloc] initWithTimeInterval:0.1 sinceDate:nextBeat];
+        nextBeat=newNextBeat;
+        [NSThread sleepUntilDate:nextBeat];
+        dur += 0.1;
+    }
+    */
+    
+    return;
     _timer = [NSTimer scheduledTimerWithTimeInterval:_timing target:self selector:@selector(update:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
     [self update:nil];
