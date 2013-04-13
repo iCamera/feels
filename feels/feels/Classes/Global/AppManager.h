@@ -12,11 +12,15 @@
 
 @property (nonatomic, strong) NSMutableArray *videos;
 @property (nonatomic, assign) double startTimestamp;
+@property (nonatomic, assign) double startSecondTimeInterval;
 @property (nonatomic, assign) int startIndex;
+
+@property (nonatomic, assign) BOOL loading;
+@property (nonatomic, assign) BOOL play;
+
 + (AppManager *)sharedManager;
 
 - (NSString *)author;
-
 - (void)start;
 - (void)syncServerWithCompleteBlock:(void(^)())block;
 - (NSTimeInterval)serverTimeIntervalSince1970;

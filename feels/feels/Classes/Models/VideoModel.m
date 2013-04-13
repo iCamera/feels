@@ -17,7 +17,7 @@
         self.author = [dict nullCheckedObjectForKey:@"author"];
         self.ID = [dict nullCheckedObjectForKey:@"id"];
         
-        NSString *videoURLString = [dict nullCheckedObjectForKey:@"author"];
+        NSString *videoURLString = [dict nullCheckedObjectForKey:@"url"];
         self.videoURL = [NSURL URLWithString:videoURLString];
         self.location = [dict nullCheckedObjectForKey:@"location"];
         self.timestamp = [[dict nullCheckedObjectForKey:@"timestamp"] doubleValue];

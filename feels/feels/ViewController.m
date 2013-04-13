@@ -67,7 +67,7 @@
     [_currentVideo play];
 }
 
--(void)startNextVideo{
+- (void)startNextVideo {
     
     [self playVideo:_nextVideo];
     NSLog(@"play next");
