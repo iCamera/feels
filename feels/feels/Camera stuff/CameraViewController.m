@@ -90,7 +90,7 @@ typedef enum {
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake((self.view.width-144)/2, 296, 144, 0.5)];
     _lineView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
-
+    
     _lineViewProgress = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.5)];
     _lineViewProgress.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
     [_lineView addSubview:_lineViewProgress];
@@ -100,13 +100,13 @@ typedef enum {
     [_lineView addSubview:_lineCurrentPostion];
     
     [self.view addSubview:_lineView];
-
+    
     {
         _startRecordingLabel.font = [UIFont GeoSansLight:_startRecordingLabel.font.pointSize];
         _tapLabel.font = [UIFont GeogrotesqueGardeExtraLight:_tapLabel.font.pointSize];
-    
+        
     }
-
+    
     {
         _recordingTimeLabel.font = [UIFont AvantGardeExtraLight:_startRecordingLabel.font.pointSize];
         _recordingTapLabel.font = [UIFont GeogrotesqueGardeExtraLight:_tapLabel.font.pointSize];
@@ -118,7 +118,7 @@ typedef enum {
     }
     
     _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1280x720 cameraPosition:AVCaptureDevicePositionBack];
-
+    
     
     _videoCamera.outputImageOrientation = UIInterfaceOrientationLandscapeLeft;
     _videoCamera.horizontallyMirrorFrontFacingCamera = NO;
@@ -126,37 +126,37 @@ typedef enum {
     
     //_filter = [[GPUImageSepiaFilter alloc] init];
     
-
+    
     _filter = [[FeelsFilter alloc] init];
     UIImage *i = [self blendImage:@"test" andImage2:@"lookup_xpro" first:0.0 second:0.0];
     [_filter setSourceImage:i];
     
     
     [_videoCamera addTarget:_filter];
-
+    
     _gpuImageView = [[GPUImageView alloc] initWithFrame:self.view.bounds];
     [_filter addTarget:_gpuImageView];
-
+    
     [self.view insertSubview:_gpuImageView atIndex:0];
     //    filterView.fillMode = kGPUImageFillModeStretch;
     _gpuImageView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
-
+    
     NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
     unlink([pathToMovie UTF8String]); // If a file already exists, AVAssetWriter won't let you record new frames, so delete the old movie
     NSURL *movieURL = [NSURL fileURLWithPath:pathToMovie];
     _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(1280.0, 720.0)];
-
+    
     [_filter addTarget:_movieWriter];
     
-   
+    
     
     [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)]];
-
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [_videoCamera startCameraCapture];    
+    [_videoCamera startCameraCapture];
     [self setCurrentState:StatePre];
 }
 
@@ -189,13 +189,13 @@ typedef enum {
 
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-
+    
     
 }
 
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-
+    
     if (_currentState == StatePre) {
         if (_changeCounter < 5) {
             _changeCounter ++;
@@ -241,8 +241,8 @@ typedef enum {
             [_videoCamera addTarget:_filter];
         }
     } else if (_currentState == StatePost){
-
-        float dragValue = [[touches anyObject] locationInView:self.view].x/self.view.width;        
+        
+        float dragValue = [[touches anyObject] locationInView:self.view].x/self.view.width;
         
         NSLog(@"%lld %d",_playerItem.duration.value,_playerItem.duration.timescale);
         float lenght = _playerItem.duration.value/_playerItem.duration.timescale;
@@ -254,11 +254,11 @@ typedef enum {
         NSLog(@"lenght %f %i %i",lenght,frames,start);
         [_avPlayer seekToTime:CMTimeMake((_startTime/30.0) * _playerItem.duration.timescale, _playerItem.duration.timescale) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
         [_avPlayer pause];
-
-
+        
+        
     }
     
-
+    
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -269,7 +269,7 @@ typedef enum {
 -(UIImage *)blendImage:(NSString *)imageName andImage2:(NSString *)image2Name first:(float)first second:(float)second{
     UIImage *bottomImage = [UIImage imageNamed:image2Name];
     UIImage *image = [UIImage imageNamed:imageName];
-
+    
     CGSize newSize = CGSizeMake(512, 512);
     UIGraphicsBeginImageContext( newSize );
     
@@ -286,6 +286,7 @@ typedef enum {
 }
 
 -(void)startRecording{
+    _videoCamera.audioEncodingTarget = nil;
     _canStopRecording = NO;
     _recordingTapLabel.alpha = 0.0;
     _stopRecTimer = [NSTimer scheduledTimerWithTimeInterval:6.0 completion:^{
@@ -311,15 +312,15 @@ typedef enum {
             int diff = nowTime - startTime;
             _recordingTimeLabel.text = [NSString stringWithFormat:@"00:%02d",diff];
         } repeat:YES];
-    
+        
         
         double delayInSeconds = 15.0;
         dispatch_time_t stopTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(stopTime, dispatch_get_main_queue(), ^(void){
             if (_recording) {
-                [self stopRecording];                
+                [self stopRecording];
             }
-
+            
             
         });
     });
@@ -338,24 +339,23 @@ typedef enum {
     
     _recording = NO;
     [_filter removeTarget:_movieWriter];
-    _videoCamera.audioEncodingTarget = nil;
-
+    
     [_movieWriter finishRecordingWithCompletionHandler:^{
         
         NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
         NSURL* fileURL = [NSURL fileURLWithPath:localVid];
-     
-
+        
+        
         
         _playerItem = [AVPlayerItem playerItemWithURL:fileURL];
         //AVPlayer *avPlayer = [[AVPlayer playerWithURL:[NSURL URLWithString:url]] retain];
         _avPlayer = [AVPlayer playerWithPlayerItem:_playerItem];
-
+        
         AVPlayerLayer *avPlayerLayer = [AVPlayerLayer playerLayerWithPlayer:_avPlayer];
         avPlayerLayer.frame = newView.bounds;
-
+        
         [newView.layer addSublayer:avPlayerLayer];
-
+        
         [_postVideoContainer addSubview:newView];
         [_avPlayer play];
         
@@ -364,11 +364,11 @@ typedef enum {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:[_avPlayer currentItem]];
         
         [_videoCamera stopCameraCapture];
-//        _video = [[GPUImageMovie alloc] initWithAsset:asset];
-//        _video.delegate = self;
-//
-//        [_video startProcessing];
-
+        //        _video = [[GPUImageMovie alloc] initWithAsset:asset];
+        //        _video.delegate = self;
+        //
+        //        [_video startProcessing];
+        
         
     }];
     
@@ -380,7 +380,7 @@ typedef enum {
     
     NSString *outLocalVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie_out.mp4"];
     NSURL* outFileURL = [NSURL fileURLWithPath:outLocalVid];
-
+    
     unlink([outLocalVid UTF8String]);
     
     AVAsset *asset = [[AVURLAsset alloc] initWithURL:fileURL options:nil];
@@ -399,7 +399,7 @@ typedef enum {
     
     
     //CMTimeRange timeRange = CMTimeRangeMake(CMTimeMakeWithSeconds((_startTime/30.0) * _playerItem.duration.timescale, _playerItem.duration.timescale),
-                                            //CMTimeMakeWithSeconds(((_startTime + 6)/30.0) * _playerItem.duration.timescale, _playerItem.duration.timescale));
+    //CMTimeMakeWithSeconds(((_startTime + 6)/30.0) * _playerItem.duration.timescale, _playerItem.duration.timescale));
     session.timeRange = timeRange;
     
     [session exportAsynchronouslyWithCompletionHandler:^{
@@ -429,7 +429,7 @@ typedef enum {
     [_avPlayer seekToTime:CMTimeMake((_startTime/30.0) * _playerItem.duration.timescale, _playerItem.duration.timescale) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
 }
 
--(void)upload{
+- (void)upload {
     NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie_out.mp4"];
     NSURL* fileURL = [NSURL fileURLWithPath:localVid];
     
@@ -480,30 +480,30 @@ typedef enum {
 }
 
 -(void)updateForCurrentState{
-        
+    
     
     [UIView animateWithDuration:0.6 animations:^{
-
+        
         if (_currentState == StatePre) {
-            _uploadView.alpha = 0.0;            
+            _uploadView.alpha = 0.0;
             _preRecordingView.alpha = 1.0;
             _postView.alpha = 0.0;
             _recordingView.alpha = 0.0;
             
             _lineCurrentPostion.alpha = 0.0;
             _lineViewProgress.alpha = 0.0;
-
+            
             _lineView.frame = CGRectMake((self.view.bounds.size.width - 144)/2, _lineView.top, 144, 0.5);
-
+            
             _closeButton.alpha = 1.0;
-            _backButton.alpha = 0.0;            
+            _backButton.alpha = 0.0;
             _doneView.alpha = 0.0;
         } else if (_currentState == StateRecording){
             _uploadView.alpha = 0.0;
             _preRecordingView.alpha = 0.0;
             _postView.alpha = 0.0;
             _recordingView.alpha = 1.0;
-
+            
             _lineCurrentPostion.alpha = 0.0;
             _lineViewProgress.alpha = 1.0;
             
