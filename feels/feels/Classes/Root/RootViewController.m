@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *createLabel;
 @property (weak, nonatomic) IBOutlet UILabel *archiveLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *menuArrow;
 
 @property (weak, nonatomic) IBOutlet UILabel *vidTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *vidDateLabel;
@@ -33,6 +34,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    /* MENU */
     [_timeUnitLabel setFont:[UIFont GeoSansLight:11]];
     [_timeUnitLabel setTextColor:[UIColor colorWithRed:0.388 green:0.384 blue:0.365 alpha:1]];
     [_timeUnitLabel setKerning:1.0];
@@ -48,6 +52,9 @@
     [_archiveLabel setTextColor:[UIColor colorWithRed:0.388 green:0.384 blue:0.365 alpha:1]];
     [_archiveLabel setKerning:1.0];
     
+    _menuArrow.transform = CGAffineTransformMakeRotation(-M_PI);
+    
+    /* VIDEO */
     [_vidTimeLabel setFont:[UIFont AvantGardeExtraLight:32]];
     [_vidDateLabel setFont:[UIFont AvantGardeExtraLight:25]];
     [_vidLocationLabel setFont:[UIFont AvantGardeExtraLight:14]];

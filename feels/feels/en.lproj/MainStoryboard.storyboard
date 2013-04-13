@@ -54,7 +54,7 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="menu_arrow.png" id="YBf-hP-iKl">
-                                                <rect key="frame" x="38" y="258" width="10" height="19"/>
+                                                <rect key="frame" x="37" y="258" width="10" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                                             </imageView>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="ARCHIVE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Wug-j6-kgy">
@@ -125,7 +125,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" id="Jix-9g-Q4j" userLabel="Details View">
+                            <view alpha="0.80000000000000004" contentMode="scaleToFill" id="Jix-9g-Q4j" userLabel="Details View">
                                 <rect key="frame" x="7" y="224" width="160" height="96"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -162,6 +162,7 @@
                     <connections>
                         <outlet property="archiveLabel" destination="Wug-j6-kgy" id="P8l-FT-sqN"/>
                         <outlet property="createLabel" destination="KiK-BA-0hg" id="mph-s3-vrp"/>
+                        <outlet property="menuArrow" destination="YBf-hP-iKl" id="T4s-yD-tdy"/>
                         <outlet property="timeLabel" destination="cZE-YX-M7g" id="dK6-Y9-0WG"/>
                         <outlet property="timeUnitLabel" destination="aeB-bH-jzS" id="2cU-Px-fx2"/>
                         <outlet property="vidDateLabel" destination="IP6-H0-SGn" id="MJL-WE-Ehv"/>
@@ -241,6 +242,7 @@
                 <relationship kind="action" name="timeButtonTapped:"/>
                 <relationship kind="outlet" name="archiveLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="createLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="menuArrow" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="timeLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="timeUnitLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="vidDateLabel" candidateClass="UILabel"/>
