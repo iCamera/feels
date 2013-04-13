@@ -24,6 +24,9 @@ typedef void(^DidFinnishPlaying)(VideoPlayerItem *videoItem);
 
 @interface VideoPlayerView : UIView
 
++ (void)setActive:(id)active;
+//+ (void)setActive:(BOOL)active;
+
 @property (nonatomic, strong) VideoPlayerItem *item;
 @property (nonatomic, copy) DidFinnishPlaying didFinnisPlaying;
 

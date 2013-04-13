@@ -426,6 +426,7 @@ typedef enum {
     if (!error) {
         AFHTTPRequestOperation *operation = [[APIClient shareClient] HTTPRequestOperationWithRequest:urlRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"Success: %@", responseObject);
+            [self dismissViewControllerAnimated:YES completion:nil];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@ %@", operation.responseString, [error localizedDescription]);
         }];

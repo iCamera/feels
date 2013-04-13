@@ -13,4 +13,5 @@ typedef void(^VideoDidChange)(VideoModel *videoModel);
 
 @interface VideoViewController : UIViewController
 @property (nonatomic, copy) VideoDidChange videoDidChange;
+@property (nonatomic, assign) BOOL stopPlaying;
 @end
