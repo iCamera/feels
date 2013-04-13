@@ -51,7 +51,9 @@
         _currentVideo = [[VideoPlayerView alloc] init];
         _currentVideo.item = playerItem;
         _currentVideo.frame = self.view.bounds;
-        
+        [_currentVideo seekToTime:[AppManager sharedManager].startSecondTimeInterval completion:^{
+            
+        }];
         id firstBlock = ^(VideoPlayerItem *item){
             [self startNextVideo];
         };

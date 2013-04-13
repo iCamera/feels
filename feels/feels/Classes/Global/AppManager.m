@@ -121,12 +121,12 @@ static inline double calcServerTimeOffset(double  localSent, double  localReceiv
 static inline double calcRequestDelay(double localSent, double localReceived, double serverReceived, double serverSent) {
     return (localReceived - localSent) - (serverSent - serverReceived);
 }
+
 static int count = 0;
 - (void)syncServerWithCompleteBlock:(void(^)())block {
     
+    double localSent = [[NSDate date] timeIntervalSince1970];
     [[APIClient shareClient] getPath:@"/ahd/server/timestamp" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        double localSent = [[NSDate date] timeIntervalSince1970];
         
         if ([responseObject objectForKey:@"success"]) {
             
@@ -162,6 +162,7 @@ static int count = 0;
         NSLog(@"Error: %@", [operation responseString]);
     }];
 }
+
 - (NSTimeInterval)serverTimeIntervalSince1970 {
     double now = [[NSDate date] timeIntervalSince1970];
     return now + _currentTimeHolder.offset;
