@@ -50,7 +50,6 @@
     [[AppManager sharedManager] syncServerWithCompleteBlock:^{
         [self startFetchingVideos];
         self.startTimestamp = self.serverTimeIntervalSince1970;
-        
     }];
 }
 
@@ -74,6 +73,11 @@
                     if (self.videos.count > 0) {
                         self.loading = NO;
                         self.startIndex = (int)(date / 6) % (int)self.videos.count;
+                        
+                        double numberOfClipsPlayed = floor(self.startTimestamp / 6);
+                        double secondsIntoClip = [[NSDate date] timeIntervalSince1970] - (numberOfClipsPlayed*6);
+                        
+                        self.startSecondTimeInterval = secondsIntoClip;
                         self.play = YES;
                     }
                 }

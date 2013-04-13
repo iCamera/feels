@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSMutableArray *videos;
 @property (nonatomic, assign) double startTimestamp;
+@property (nonatomic, assign) double startSecondTimeInterval;
 @property (nonatomic, assign) int startIndex;
 
 @property (nonatomic, assign) BOOL loading;

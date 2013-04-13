@@ -37,14 +37,17 @@
         
         VideoModel *video = [AppManager sharedManager].videos[[AppManager sharedManager].startIndex];
         self.currentIndex = [AppManager sharedManager].startIndex;
-        NSLog(@"%@", video.videoURL);
+        
         VideoPlayerItem *playerItem = [[VideoPlayerItem alloc] init];
         playerItem.mainURL = video.videoURL;
+        
         
         _currentVideo = [[VideoPlayerView alloc] init];
         _currentVideo.item = playerItem;
         _currentVideo.frame = CGRectMake(0, 0, 568, 320);
-        
+        [_currentVideo seekToTime:[AppManager sharedManager].startSecondTimeInterval completion:^{
+            
+        }];
         id firstBlock = ^(VideoPlayerItem *item){
             [self startNextVideo];
         };
@@ -69,8 +72,7 @@
         [_nextVideo setDidFinnisPlaying:secondBlock];
         
         [self.view addSubview:_currentVideo];
-        NSLog(@"%@", nextVideo.videoURL);
-        NSLog(@"Should play");
+        
         [_currentVideo play];
     }];
 }
@@ -78,12 +80,12 @@
 - (void)startNextVideo {
     
     [self playVideo:_nextVideo];
-    NSLog(@"play next");
+    
     self.currentIndex = [self nextIndex];
     VideoModel *video = [AppManager sharedManager].videos[self.currentIndex];
     VideoPlayerItem *item = [[VideoPlayerItem alloc] init];
     item.mainURL = video.videoURL;
-    NSLog(@"next %@",item.mainURL);
+    
     _nextVideo = [[VideoPlayerView alloc] init];
     _nextVideo.item = item;
     _nextVideo.backgroundColor = [UIColor redColor];
@@ -98,7 +100,7 @@
 
 
 -(void)playVideo:(VideoPlayerView *)playerView{
-    NSLog(@"play %@",playerView);
+    
     [_currentVideo removeFromSuperview];
     _currentVideo = nil;
     _currentVideo = playerView;
