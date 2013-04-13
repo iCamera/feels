@@ -12,6 +12,9 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "APIClient.h"
 #import "AppManager.h"
+#import <MediaPlayer/MediaPlayer.h>
+#import "NSTimer+Block.h"
+
 #define videoWidth 1280
 #define videoHeight 720
 
@@ -32,9 +35,13 @@ typedef enum {
 @property(nonatomic,assign) State currentState;
 
 @property(nonatomic,assign) BOOL recording;
+@property(nonatomic,assign) BOOL canStopRecording;
 @property (weak, nonatomic) IBOutlet UILabel *startRecordingLabel;
 @property (weak, nonatomic) IBOutlet UILabel *tapLabel;
 @property (weak, nonatomic) IBOutlet UIView *preRecordingView;
+
+@property (strong, nonatomic) NSTimer *stopRecTimer;
+@property (strong, nonatomic) NSTimer *timeLabelTimer;
 
 @property (strong, nonatomic) UIView *lineView;
 @property (strong, nonatomic) UIView *lineViewProgress;
@@ -48,6 +55,9 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIView *postView;
 @property (weak, nonatomic) IBOutlet UILabel *postTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *postTapLabel;
+
+@property(nonatomic, strong) AVPlayer *avPlayer;
+@property (weak, nonatomic) IBOutlet UIView *postVideoContainer;
 
 @end
 
@@ -136,70 +146,86 @@ typedef enum {
     _gpuImageView.frame = self.view.bounds;
 }
 
+
+-(void)tap{
+    
+    if (_currentState == StateRecording) {
+        if (_canStopRecording) {
+            [self setCurrentState:StatePost];
+            [self performSelectorInBackground:@selector(stopRecording) withObject:nil];
+        }
+        
+    } else if (_currentState == StatePre){
+        [self setCurrentState:StateRecording];
+        
+    } else if (_currentState == StatePost){
+//        [self setCurrentState:StateUploading];
+        [self export];
+    }
+    
+    
+}
+
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
 
     
 }
 
--(void)tap{
-
-    if (_currentState == StateRecording) {
-        [self setCurrentState:StatePost];
-        
-    } else if (_currentState == StatePre){
-        [self setCurrentState:StateRecording];
-    } else if (_currentState == StatePost){
-    
-    }
-    
-
-}
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
 
-    if (_changeCounter < 5) {
-        _changeCounter ++;
-        return;
-    }
-    _changeCounter = 0;
+    if (_currentState == StatePre) {
+        if (_changeCounter < 5) {
+            _changeCounter ++;
+            return;
+        }
+        _changeCounter = 0;
+        
+        float dragValue = [[touches anyObject] locationInView:self.view].x/self.view.width;
+        
+        
+        if (dragValue < 0.25) {
+            [_videoCamera removeTarget:_filter];
+            _filter = [[FeelsFilter alloc] init];
+            UIImage *i = [self blendImage:@"lookup" andImage2:@"lookup_xpro" first:map(dragValue, 0.0, 0.25, 1.0, 0.0) second:0.0];
+            [_filter setSourceImage:i];
+            
+            [_filter addTarget:_gpuImageView];
+            [_videoCamera addTarget:_filter];
+            
+        } else if (dragValue < 0.50){
+            [_videoCamera removeTarget:_filter];
+            _filter = [[FeelsFilter alloc] init];
+            UIImage *i = [self blendImage:@"lookup_xpro" andImage2:@"lookup_toaster" first:map(dragValue, 0.25, 0.50, 1.0, 0.0) second:0.0];
+            [_filter setSourceImage:i];
+            
+            [_filter addTarget:_gpuImageView];
+            [_videoCamera addTarget:_filter];
+        } else if (dragValue < 0.75){
+            [_videoCamera removeTarget:_filter];
+            _filter = [[FeelsFilter alloc] init];
+            UIImage *i = [self blendImage:@"lookup_toaster" andImage2:@"lookup_nashville" first:map(dragValue, 0.50, 0.75, 1.0, 0.0) second:0.0];
+            [_filter setSourceImage:i];
+            
+            [_filter addTarget:_gpuImageView];
+            [_videoCamera addTarget:_filter];
+        } else {
+            [_videoCamera removeTarget:_filter];
+            _filter = [[FeelsFilter alloc] init];
+            UIImage *i = [self blendImage:@"lookup_nashville" andImage2:@"lookup" first:map(dragValue, 0.75, 1.0, 1.0, 0.0) second:0.0];
+            [_filter setSourceImage:i];
+            
+            [_filter addTarget:_gpuImageView];
+            [_videoCamera addTarget:_filter];
+        }
+    } else if (_currentState == StatePost){
     
-    float dragValue = [[touches anyObject] locationInView:self.view].x/self.view.width;
-
-    
-    if (dragValue < 0.25) {
-        [_videoCamera removeTarget:_filter];
-        _filter = [[FeelsFilter alloc] init];
-        UIImage *i = [self blendImage:@"lookup" andImage2:@"lookup_xpro" first:map(dragValue, 0.0, 0.25, 1.0, 0.0) second:0.0];
-        [_filter setSourceImage:i];
-
-        [_filter addTarget:_gpuImageView];
-        [_videoCamera addTarget:_filter];
         
-    } else if (dragValue < 0.50){
-        [_videoCamera removeTarget:_filter];
-        _filter = [[FeelsFilter alloc] init];
-        UIImage *i = [self blendImage:@"lookup_xpro" andImage2:@"lookup_toaster" first:map(dragValue, 0.25, 0.50, 1.0, 0.0) second:0.0];
-        [_filter setSourceImage:i];
         
-        [_filter addTarget:_gpuImageView];
-        [_videoCamera addTarget:_filter];
-    } else if (dragValue < 0.75){
-        [_videoCamera removeTarget:_filter];
-        _filter = [[FeelsFilter alloc] init];
-        UIImage *i = [self blendImage:@"lookup_toaster" andImage2:@"lookup_nashville" first:map(dragValue, 0.50, 0.75, 1.0, 0.0) second:0.0];
-        [_filter setSourceImage:i];
-        
-        [_filter addTarget:_gpuImageView];
-        [_videoCamera addTarget:_filter];
-    } else {
-        [_videoCamera removeTarget:_filter];
-        _filter = [[FeelsFilter alloc] init];
-        UIImage *i = [self blendImage:@"lookup_nashville" andImage2:@"lookup" first:map(dragValue, 0.75, 1.0, 1.0, 0.0) second:0.0];
-        [_filter setSourceImage:i];
-        
-        [_filter addTarget:_gpuImageView];
-        [_videoCamera addTarget:_filter];
     }
+    
+
 }
 
 -(UIImage *)blendImage:(NSString *)imageName andImage2:(NSString *)image2Name first:(float)first second:(float)second{
@@ -222,6 +248,16 @@ typedef enum {
 }
 
 -(void)startRecording{
+    _canStopRecording = NO;
+    _recordingTapLabel.alpha = 0.0;
+    _stopRecTimer = [NSTimer scheduledTimerWithTimeInterval:6.0 completion:^{
+        _canStopRecording = YES;
+        
+        [UIView animateWithDuration:0.6 animations:^{
+            _recordingTapLabel.alpha = 1.0;
+        }];
+    } repeat:YES];
+    
     _recording = YES;
     double delayToStartRecording = 0.0;
     dispatch_time_t startTime = dispatch_time(DISPATCH_TIME_NOW, delayToStartRecording * NSEC_PER_SEC);
@@ -231,19 +267,21 @@ typedef enum {
         _videoCamera.audioEncodingTarget = _movieWriter;
         [_movieWriter startRecording];
         
-        //        NSError *error = nil;
-        //        if (![videoCamera.inputCamera lockForConfiguration:&error])
-        //        {
-        //            NSLog(@"Error locking for configuration: %@", error);
-        //        }
-        //        [videoCamera.inputCamera setTorchMode:AVCaptureTorchModeOn];
-        //        [videoCamera.inputCamera unlockForConfiguration];
+        int startTime = [[NSDate date] timeIntervalSince1970];
+        _timeLabelTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 completion:^{
+            int nowTime = [[NSDate date] timeIntervalSince1970];
+            int diff = nowTime - startTime;
+            _recordingTimeLabel.text = [NSString stringWithFormat:@"00:%02d",diff];
+        } repeat:YES];
+    
         
-        double delayInSeconds = 6.0;
+        double delayInSeconds = 15.0;
         dispatch_time_t stopTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(stopTime, dispatch_get_main_queue(), ^(void){
-            
-            [self stopRecording];
+            if (_recording) {
+                [self stopRecording];                
+            }
+
             
         });
     });
@@ -251,26 +289,106 @@ typedef enum {
 }
 
 -(void)stopRecording{
+    if (!_canStopRecording) return;
+    NSLog(@"stopRecording");
+    [_timeLabelTimer invalidate],_timeLabelTimer = nil;
+    [_stopRecTimer invalidate],_stopRecTimer = nil;
+    
+    UIView *newView = [[UIView alloc] initWithFrame:self.view.bounds];
+    newView.backgroundColor = [UIColor blackColor];
+    [_postVideoContainer addSubview:newView];
+    
     _recording = NO;
     [_filter removeTarget:_movieWriter];
     _videoCamera.audioEncodingTarget = nil;
     [_movieWriter finishRecordingWithCompletionHandler:^{
-
+        
         NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
         NSURL* fileURL = [NSURL fileURLWithPath:localVid];
         
-        _video = [[GPUImageMovie alloc] initWithURL:fileURL];
-        _video.delegate = self;
+
+        
+        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:fileURL];
+        //AVPlayer *avPlayer = [[AVPlayer playerWithURL:[NSURL URLWithString:url]] retain];
+        _avPlayer = [AVPlayer playerWithPlayerItem:playerItem];
+
+        AVPlayerLayer *avPlayerLayer = [AVPlayerLayer playerLayerWithPlayer:_avPlayer];
+        avPlayerLayer.frame = newView.bounds;
+
+        [newView.layer addSublayer:avPlayerLayer];
+
+        [_postVideoContainer addSubview:newView];
+        [_avPlayer play];
+        
+        _avPlayer.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:[_avPlayer currentItem]];
+        
         [_videoCamera stopCameraCapture];
-        [_video startProcessing];
+//        _video = [[GPUImageMovie alloc] initWithAsset:asset];
+//        _video.delegate = self;
+//
+//        [_video startProcessing];
 
         
     }];
     
 }
 
--(void)upload{
+- (void)export {
     NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
+    NSURL* fileURL = [NSURL fileURLWithPath:localVid];
+    
+    NSString *outLocalVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie_out.mp4"];
+    NSURL* outFileURL = [NSURL fileURLWithPath:outLocalVid];
+
+    unlink([outLocalVid UTF8String]);
+    
+    AVAsset *asset = [[AVURLAsset alloc] initWithURL:fileURL options:nil];
+    AVAssetExportSession *session = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetPassthrough];
+    
+    NSURL *url = outFileURL;
+    session.outputURL = url;
+    session.outputFileType = AVFileTypeAppleM4V;
+    
+    NSArray *videoTracks = [asset tracksWithMediaType:AVMediaTypeVideo];
+    AVAssetTrack *videoTrack = [videoTracks objectAtIndex:0];
+    
+    
+    CMTimeRange timeRange = CMTimeRangeMake(CMTimeMakeWithSeconds( 0, videoTrack.timeRange.duration.timescale),
+                                            CMTimeMakeWithSeconds(videoTrack.timeRange.duration.timescale * 6.0, videoTrack.timeRange.duration.timescale));
+    session.timeRange = timeRange;
+    
+    [session exportAsynchronouslyWithCompletionHandler:^{
+        switch (session.status) {
+            case AVAssetExportSessionStatusCompleted:
+                
+                [self upload];
+                
+                break;
+            case AVAssetExportSessionStatusFailed:
+                NSLog(@"Failed: %@", session.error);
+                break;
+            case AVAssetExportSessionStatusCancelled:
+                NSLog(@"Canceled: %@", session.error);
+                break;
+            case AVAssetExportSessionStatusExporting:
+                NSLog(@"%f", session.progress);
+                break;
+            default:
+                break;
+        }
+    }];
+    
+}
+
+-(void)playerItemDidReachEnd:(NSNotification *)not{
+    [_avPlayer seekToTime:CMTimeMake(0.0, 30.0)];
+    NSLog(@"HERE");
+}
+
+-(void)upload{
+    NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie_out.mp4"];
     NSURL* fileURL = [NSURL fileURLWithPath:localVid];
     
     __block NSError *error = nil;
@@ -307,6 +425,7 @@ typedef enum {
 }
 
 -(void)updateForCurrentState{
+        
     
     [UIView animateWithDuration:0.6 animations:^{
 
@@ -330,7 +449,7 @@ typedef enum {
             _lineView.frame = CGRectMake((self.view.bounds.size.width - 164)/2, _lineView.top, 164, 0.5);
             
         } else if (_currentState == StatePost){
-            [self stopRecording];
+
             _preRecordingView.alpha = 0.0;
             _postView.alpha = 1.0;
             _recordingView.alpha = 0.0;
