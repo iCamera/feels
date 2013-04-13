@@ -8,6 +8,7 @@
 
 #import "RootViewController.h"
 #import "ArchiveViewController.h"
+#import "MathHelper.h"
 
 @interface RootViewController ()
 
@@ -17,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *createLabel;
 @property (weak, nonatomic) IBOutlet UILabel *archiveLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *menuArrow;
+@property (weak, nonatomic) IBOutlet UIButton *archiveButton;
 
 @property (weak, nonatomic) IBOutlet UIImageView *vidPlaceholderImage;
 @property (weak, nonatomic) IBOutlet UILabel *vidTimeLabel;
@@ -97,6 +99,10 @@
     self.archiveViewController.view.origin = CGPointMake(self.view.height, 0);
     [self.view addSubview:self.archiveViewController.view];
     [self.view bringSubviewToFront:_menuView];
+    
+    /* Gesture recongnizer */
+    UIPanGestureRecognizer *panGesturizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(menuPanned:)];
+    [_archiveButton addGestureRecognizer:panGesturizer];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -119,23 +125,62 @@
 }
 
 - (IBAction)archiveButtonTapped:(id)sender {
-    if (_isArchiveMode) {
+    [self showArchive:!_isArchiveMode animated:YES];
+}
+
+- (void)showArchive:(BOOL)show animated:(BOOL)animated {
+    if (show) {
+        [UIView animateWithDuration:0.6 animations:^{
+            self.archiveViewController.view.left = _menuView.width-13;
+            _menuView.left = -7;
+            _vidPlaceholderImage.left = -60;
+            _fadeView.alpha = 1;
+        }];
+    } else {
         [UIView animateWithDuration:0.6 animations:^{
             self.archiveViewController.view.origin = CGPointMake(self.view.height, 0);
             _menuView.left = self.view.height - _menuView.width +7;
             _vidPlaceholderImage.left = 0;
             _fadeView.alpha = 0;
         }];
-    } else {
-        [UIView animateWithDuration:0.6 animations:^{
-            self.archiveViewController.view.origin = CGPointMake(0, 0);
-            _menuView.left = -10;
-            _vidPlaceholderImage.left = -40;
-            _fadeView.alpha = 1;
-        }];
     }
     
-    _isArchiveMode = !_isArchiveMode;
+    _isArchiveMode = show;
+}
+
+-(void)menuPanned:(UIPanGestureRecognizer *)pan{
+    CGPoint translatedPoint = [pan translationInView:pan.view];
+    
+    if ([pan state] == UIGestureRecognizerStateChanged) {
+        float left = 0;
+
+        if (_isArchiveMode) {
+            left = translatedPoint.x-2;
+        } else {
+            left = translatedPoint.x + self.view.bounds.size.width - pan.view.width;
+        }
+        
+        _menuView.left = left;
+        self.archiveViewController.view.left = left+_menuView.width-14;
+        _vidPlaceholderImage.left = map(clamp(0, 1, left/(self.view.bounds.size.width - pan.view.width)), 1, 0, 0, -60);
+        _fadeView.alpha = map(left/(self.view.bounds.size.width - pan.view.width), 1, 0, 0, 0.9);
+        
+        } else if ([pan state] == UIGestureRecognizerStateEnded || [pan state] == UIGestureRecognizerStateCancelled){
+            CGPoint velocity = [pan velocityInView:self.view];
+            if (_isArchiveMode) {
+                if (velocity.x < -400.0 || translatedPoint.x < -150) {
+                    [self showArchive:YES animated:YES];
+                } else {
+                    [self showArchive:NO animated:YES];
+                }
+            } else {
+                if (velocity.x > 400.0 || translatedPoint.x > 150 ) {
+                    [self showArchive:NO animated:YES];
+                } else {
+                    [self showArchive:YES animated:YES];
+                }
+            }
+        }
 }
 
 @end

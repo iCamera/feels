@@ -14,4 +14,6 @@
 - (IBAction)timeButtonTapped:(id)sender;
 - (IBAction)archiveButtonTapped:(id)sender;
 
+- (void)showArchive:(BOOL)show animated:(BOOL)animated;
+
 @end
