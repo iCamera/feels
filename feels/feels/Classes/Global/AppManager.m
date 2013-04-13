@@ -12,11 +12,13 @@
 #import "UIDevice+IdentifierAddition.h"
 #import "VideoModel.h"
 #import "NSTimer+Block.h"
+#import "KVOR.h"
 
 @interface AppManager ()
 @property (nonatomic, strong) TimeHolder *currentTimeHolder;
 @property (nonatomic, readonly) NSTimeInterval time;
 @property (nonatomic, strong) NSTimer *videoFetchingTimer;
+@property (nonatomic, strong) NSTimer *getPointsTimer;
 @end
 
 @implementation AppManager
@@ -41,12 +43,13 @@
         
         /* Points / seconds */
         BOOL hasLaunchedBefore = [[NSUserDefaults standardUserDefaults] boolForKey:kLaunchedBefore];
-        int points = [[NSUserDefaults standardUserDefaults] integerForKey:kUsersAmountOfPoints];
+        self.points = [[NSUserDefaults standardUserDefaults] integerForKey:kUsersAmountOfPoints];
         if (!hasLaunchedBefore) {
-            points = 6000; //first time
-            [[NSUserDefaults standardUserDefaults] setInteger:points forKey:kUsersAmountOfPoints];
+            self.points = 6000; //first time
+            [[NSUserDefaults standardUserDefaults] setInteger:self.points forKey:kUsersAmountOfPoints];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kLaunchedBefore];
         }
+        self.seconds = self.points / 1000;
     }
     return self;
 }
@@ -56,10 +59,41 @@
 }
 
 - (void)start {
+    [self startGettingPoints];
     [[AppManager sharedManager] syncServerWithCompleteBlock:^{
         [self startFetchingVideos];
         self.startTimestamp = self.serverTimeIntervalSince1970;
     }];
+}
+
+- (void)startGettingPoints {
+    self.getPointsTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 completion:^{
+        [self getPoints];
+    } repeat:YES];
+    [self getPoints];
+}
+
+- (void)getPoints {
+    if (self.points >= 18000)
+        return;
+    
+    int increment;
+    if (self.points < 6000) {
+        increment = 10;
+    } else if (self.points < 12000) {
+        increment = 5;
+    } else {
+        increment = 2;
+    }
+    
+    int oldPoints = self.points;
+    self.points += increment;
+    
+    
+    if (oldPoints/1000 - self.points/1000) {
+        //User got a new second!
+        self.seconds = self.points / 1000;
+    }
 }
 
 - (void)startFetchingVideos {
