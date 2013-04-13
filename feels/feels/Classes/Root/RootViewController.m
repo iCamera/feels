@@ -56,6 +56,25 @@
     [_vidDateLabel setKerning:kern];
     [_vidLocationLabel setAdjustsLetterSpacingToFitWidth:YES];
     [_vidLocationLabel setAdjustsFontSizeToFitWidth:YES];
+    
+    CGFloat shOpacity = 0.4;
+    CGFloat shRadius = 2.0;
+    CGSize shOffset = CGSizeMake(0,0);
+    
+    _vidTimeLabel.layer.shadowColor = [UIColor blackColor].CGColor;
+    _vidTimeLabel.layer.shadowOpacity = shOpacity;
+    _vidTimeLabel.layer.shadowRadius = shRadius;
+    _vidTimeLabel.layer.shadowOffset = shOffset;
+    
+    _vidDateLabel.layer.shadowColor = [UIColor blackColor].CGColor;
+    _vidDateLabel.layer.shadowOpacity = shOpacity;
+    _vidDateLabel.layer.shadowRadius = shRadius;
+    _vidDateLabel.layer.shadowOffset = shOffset;
+    
+    _vidLocationLabel.layer.shadowColor = [UIColor blackColor].CGColor;
+    _vidLocationLabel.layer.shadowOpacity = shOpacity;
+    _vidLocationLabel.layer.shadowRadius = shRadius;
+    _vidLocationLabel.layer.shadowOffset = shOffset;
 }
 
 - (void)didReceiveMemoryWarning {
