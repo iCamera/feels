@@ -58,14 +58,9 @@
 		29F3036617183F28003B7812 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F3035D17183F28003B7812 /* UIImageView+AFNetworking.m */; };
 		29F3036917183F7D003B7812 /* FeelsShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 29F3036717183F7D003B7812 /* FeelsShader.fsh */; };
 		29F3036A17183F7D003B7812 /* FeelsShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 29F3036817183F7D003B7812 /* FeelsShader.vsh */; };
-		6010AF311718BE040092D50A /* lookup.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF2D1718BE040092D50A /* lookup.png */; };
-		6010AF321718BE040092D50A /* lookup_xpro.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF2E1718BE040092D50A /* lookup_xpro.png */; };
-		6010AF331718BE040092D50A /* lookup_toaster.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF2F1718BE040092D50A /* lookup_toaster.png */; };
-		6010AF341718BE040092D50A /* lookup_nashville.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF301718BE040092D50A /* lookup_nashville.png */; };
-		6010AF361718C3550092D50A /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 6010AF351718C3550092D50A /* test.png */; };
-		6010AF611718D7060092D50A /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 292295D21718957A00362325 /* libGPUImage.a */; };
 		6010AF521718D0050092D50A /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6010AF501718CFFD0092D50A /* libGPUImage.a */; };
 		6010AF531718D02B0092D50A /* FeelsFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BEA0EF1718A1F200F3A073 /* FeelsFilter.m */; };
+		6010AF611718D7060092D50A /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 292295D21718957A00362325 /* libGPUImage.a */; };
 		602F42601718C9DD009ADE50 /* UILabel+Feels.m in Sources */ = {isa = PBXBuildFile; fileRef = 602F425F1718C9DD009ADE50 /* UILabel+Feels.m */; };
 		602F42681718CFD2009ADE50 /* menu_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F42621718CFD2009ADE50 /* menu_arrow.png */; };
 		602F42691718CFD2009ADE50 /* menu_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 602F42631718CFD2009ADE50 /* menu_arrow@2x.png */; };
@@ -84,6 +79,8 @@
 		F4192978171894140017C12B /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = F4192976171894140017C12B /* UIDevice+IdentifierAddition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F419297B171897390017C12B /* AppManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F419297A171897390017C12B /* AppManager.m */; };
 		F419297F171898C80017C12B /* TimeHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = F419297E171898C80017C12B /* TimeHolder.m */; };
+		F44760BB1718E56C007C6B18 /* KVOR.m in Sources */ = {isa = PBXBuildFile; fileRef = F44760B71718E56C007C6B18 /* KVOR.m */; };
+		F44760BC1718E56C007C6B18 /* KVORTaskObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = F44760BA1718E56C007C6B18 /* KVORTaskObserver.m */; };
 		F44E11081718335000E9D4EC /* MixerController.m in Sources */ = {isa = PBXBuildFile; fileRef = F44E11071718335000E9D4EC /* MixerController.m */; };
 		F44E110B1718337F00E9D4EC /* Mixer.m in Sources */ = {isa = PBXBuildFile; fileRef = F44E110A1718337F00E9D4EC /* Mixer.m */; };
 		F44E11511718385B00E9D4EC /* OALAction.m in Sources */ = {isa = PBXBuildFile; fileRef = F44E11111718385A00E9D4EC /* OALAction.m */; };
@@ -120,6 +117,7 @@
 		F44E11781718440600E9D4EC /* base.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F44E11761718440600E9D4EC /* base.mp3 */; };
 		F44E11791718440600E9D4EC /* sample.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F44E11771718440600E9D4EC /* sample.mp3 */; };
 		F44E117C17185C7400E9D4EC /* Intense.m in Sources */ = {isa = PBXBuildFile; fileRef = F44E117B17185C7400E9D4EC /* Intense.m */; };
+		F46D26561718E336001DD7CE /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46D26551718E336001DD7CE /* VideoViewController.m */; };
 		F49D2BC01718BE71004E99A2 /* VideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F49D2BBF1718BE71004E99A2 /* VideoModel.m */; };
 		F49D2BC41718C67A004E99A2 /* NSDictionary+Null.m in Sources */ = {isa = PBXBuildFile; fileRef = F49D2BC31718C67A004E99A2 /* NSDictionary+Null.m */; };
 /* End PBXBuildFile section */
@@ -262,6 +260,11 @@
 		F419297A171897390017C12B /* AppManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppManager.m; sourceTree = "<group>"; };
 		F419297D171898C80017C12B /* TimeHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeHolder.h; sourceTree = "<group>"; };
 		F419297E171898C80017C12B /* TimeHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeHolder.m; sourceTree = "<group>"; };
+		F44760B61718E56C007C6B18 /* KVOR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVOR.h; sourceTree = "<group>"; };
+		F44760B71718E56C007C6B18 /* KVOR.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVOR.m; sourceTree = "<group>"; };
+		F44760B81718E56C007C6B18 /* KVORConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVORConstants.h; sourceTree = "<group>"; };
+		F44760B91718E56C007C6B18 /* KVORTaskObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVORTaskObserver.h; sourceTree = "<group>"; };
+		F44760BA1718E56C007C6B18 /* KVORTaskObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVORTaskObserver.m; sourceTree = "<group>"; };
 		F44E11061718335000E9D4EC /* MixerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MixerController.h; sourceTree = "<group>"; };
 		F44E11071718335000E9D4EC /* MixerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MixerController.m; sourceTree = "<group>"; };
 		F44E11091718337F00E9D4EC /* Mixer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mixer.h; sourceTree = "<group>"; };
@@ -336,6 +339,8 @@
 		F44E11771718440600E9D4EC /* sample.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sample.mp3; sourceTree = "<group>"; };
 		F44E117A17185C7400E9D4EC /* Intense.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Intense.h; sourceTree = "<group>"; };
 		F44E117B17185C7400E9D4EC /* Intense.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Intense.m; sourceTree = "<group>"; };
+		F46D26541718E336001DD7CE /* VideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoViewController.h; sourceTree = "<group>"; };
+		F46D26551718E336001DD7CE /* VideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoViewController.m; sourceTree = "<group>"; };
 		F49D2BBE1718BE71004E99A2 /* VideoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoModel.h; sourceTree = "<group>"; };
 		F49D2BBF1718BE71004E99A2 /* VideoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoModel.m; sourceTree = "<group>"; };
 		F49D2BC21718C67A004E99A2 /* NSDictionary+Null.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Null.h"; sourceTree = "<group>"; };
@@ -687,9 +692,31 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		F44760B41718E56C007C6B18 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				F44760B51718E56C007C6B18 /* KVOR */,
+			);
+			path = External;
+			sourceTree = "<group>";
+		};
+		F44760B51718E56C007C6B18 /* KVOR */ = {
+			isa = PBXGroup;
+			children = (
+				F44760B61718E56C007C6B18 /* KVOR.h */,
+				F44760B71718E56C007C6B18 /* KVOR.m */,
+				F44760B81718E56C007C6B18 /* KVORConstants.h */,
+				F44760B91718E56C007C6B18 /* KVORTaskObserver.h */,
+				F44760BA1718E56C007C6B18 /* KVORTaskObserver.m */,
+			);
+			path = KVOR;
+			sourceTree = "<group>";
+		};
 		F44E1104171832E800E9D4EC /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				F44760B41718E56C007C6B18 /* External */,
+				F46D26511718E32A001DD7CE /* Controllers */,
 				F419297C171898C10017C12B /* Models */,
 				F4192972171894140017C12B /* Categories */,
 				F419296D1718899F0017C12B /* Global */,
@@ -837,6 +864,15 @@
 				F44E1171171839B700E9D4EC /* snare.mp3 */,
 			);
 			path = Music;
+			sourceTree = "<group>";
+		};
+		F46D26511718E32A001DD7CE /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F46D26541718E336001DD7CE /* VideoViewController.h */,
+				F46D26551718E336001DD7CE /* VideoViewController.m */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		F49D2BC11718C67A004E99A2 /* NSDictionary */ = {
@@ -1027,6 +1063,9 @@
 				D13214461718BD8C004E0C87 /* UIFont+Feels.m in Sources */,
 				6010AF531718D02B0092D50A /* FeelsFilter.m in Sources */,
 				602F42601718C9DD009ADE50 /* UILabel+Feels.m in Sources */,
+				F46D26561718E336001DD7CE /* VideoViewController.m in Sources */,
+				F44760BB1718E56C007C6B18 /* KVOR.m in Sources */,
+				F44760BC1718E56C007C6B18 /* KVORTaskObserver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
