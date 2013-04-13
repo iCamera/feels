@@ -14,9 +14,9 @@
 #import "AppManager.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "NSTimer+Block.h"
-
-#define videoWidth 1280
-#define videoHeight 720
+#import "LocationManager.h"
+#define videoWidth 640
+#define videoHeight 480
 
 typedef enum {
     StateUnknown,
@@ -83,6 +83,8 @@ typedef enum {
 -(void)viewDidLoad{
     [super viewDidLoad];
     
+//    [[LocationManager sharedManager] ]
+    
     _uploadSuccessLabel.font = [UIFont GeoSansLight:20.0];
     
     _procentLabel.font = [UIFont  AvantGardeExtraLight:_procentLabel.font.pointSize];
@@ -117,9 +119,8 @@ typedef enum {
         _postTapLabel.font = [UIFont GeogrotesqueGardeExtraLight:_postTapLabel.font.pointSize];
     }
     
-    _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1280x720 cameraPosition:AVCaptureDevicePositionBack];
+    _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionBack];
 
-    
     _videoCamera.outputImageOrientation = UIInterfaceOrientationLandscapeLeft;
     _videoCamera.horizontallyMirrorFrontFacingCamera = NO;
     _videoCamera.horizontallyMirrorRearFacingCamera = NO;
@@ -144,7 +145,7 @@ typedef enum {
     NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
     unlink([pathToMovie UTF8String]); // If a file already exists, AVAssetWriter won't let you record new frames, so delete the old movie
     NSURL *movieURL = [NSURL fileURLWithPath:pathToMovie];
-    _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(1280.0, 720.0)];
+    _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(640.0, 480.0)];
 
     [_filter addTarget:_movieWriter];
     
@@ -208,36 +209,44 @@ typedef enum {
         
         if (dragValue < 0.25) {
             [_videoCamera removeTarget:_filter];
+      [_filter removeTarget:_movieWriter];            
             _filter = [[FeelsFilter alloc] init];
             UIImage *i = [self blendImage:@"lookup" andImage2:@"lookup_xpro" first:map(dragValue, 0.0, 0.25, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
             
             [_filter addTarget:_gpuImageView];
+            [_filter addTarget:_movieWriter];            
             [_videoCamera addTarget:_filter];
             
         } else if (dragValue < 0.50){
             [_videoCamera removeTarget:_filter];
+      [_filter removeTarget:_movieWriter];
             _filter = [[FeelsFilter alloc] init];
             UIImage *i = [self blendImage:@"lookup_xpro" andImage2:@"lookup_toaster" first:map(dragValue, 0.25, 0.50, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
             
             [_filter addTarget:_gpuImageView];
+            [_filter addTarget:_movieWriter];            
             [_videoCamera addTarget:_filter];
         } else if (dragValue < 0.75){
+      [_filter removeTarget:_movieWriter];
             [_videoCamera removeTarget:_filter];
             _filter = [[FeelsFilter alloc] init];
             UIImage *i = [self blendImage:@"lookup_toaster" andImage2:@"lookup_nashville" first:map(dragValue, 0.50, 0.75, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
             
             [_filter addTarget:_gpuImageView];
+            [_filter addTarget:_movieWriter];            
             [_videoCamera addTarget:_filter];
         } else {
             [_videoCamera removeTarget:_filter];
+            [_filter removeTarget:_movieWriter];
             _filter = [[FeelsFilter alloc] init];
             UIImage *i = [self blendImage:@"lookup_nashville" andImage2:@"lookup" first:map(dragValue, 0.75, 1.0, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
             
             [_filter addTarget:_gpuImageView];
+            [_filter addTarget:_movieWriter];
             [_videoCamera addTarget:_filter];
         }
     } else if (_currentState == StatePost){
@@ -337,7 +346,7 @@ typedef enum {
     [_postVideoContainer addSubview:newView];
     
     _recording = NO;
-    [_filter removeTarget:_movieWriter];
+   
     _videoCamera.audioEncodingTarget = nil;
 
     [_movieWriter finishRecordingWithCompletionHandler:^{
@@ -345,8 +354,7 @@ typedef enum {
         NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
         NSURL* fileURL = [NSURL fileURLWithPath:localVid];
      
-
-        
+        [_filter removeTarget:_movieWriter];
         _playerItem = [AVPlayerItem playerItemWithURL:fileURL];
         //AVPlayer *avPlayer = [[AVPlayer playerWithURL:[NSURL URLWithString:url]] retain];
         _avPlayer = [AVPlayer playerWithPlayerItem:_playerItem];
@@ -515,9 +523,11 @@ typedef enum {
         } else if(_currentState == StateUploading){
             _uploadView.alpha = 1.0;
             _doneView.alpha = 0.0;
+            _postView.alpha = 0.0;
         } else if(_currentState == StateDone){
             _uploadView.alpha = 0.0;
             _doneView.alpha = 1.0;
+            _postView.alpha = 0.0;            
         }
         
     } completion:^(BOOL finished) {
