@@ -12,5 +12,6 @@
 #define kUsersAmountOfPoints @"kUsersAmountOfPoints"
 #define kLastUpdate @"kLastUpdate"
 #define kLaunchedBefore @"kLaunchedBefore"
+#define kClosedAppTimeStamp @"kClosedAppTimeStamp"
 
 #endif

@@ -29,7 +29,7 @@
 - (void)syncServerWithCompleteBlock:(void(^)())block;
 - (NSTimeInterval)serverTimeIntervalSince1970;
 - (void)fetchVideosWithBlock:(void(^)(NSMutableArray *videos))completeBlock afterIndex:(NSString *)index;
-
+- (void)addPointsFromSeconds:(int)seconds;
 
 
 @end

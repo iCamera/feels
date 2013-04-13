@@ -106,6 +106,13 @@
     }
 }
 
+- (void)addPointsFromSeconds:(int)seconds {
+    self.points += seconds*2;
+    if (self.points > 18000) {
+        self.points = 18000;
+    }
+}
+
 - (void)startFetchingVideos {
     self.videoFetchingTimer = [NSTimer scheduledTimerWithTimeInterval:10.0 completion:^{
         [self fetchVideos];
