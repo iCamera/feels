@@ -10,4 +10,8 @@
 
 @interface RootViewController : UIViewController
 
+- (IBAction)createButtonTapped:(id)sender;
+- (IBAction)timeButtonTapped:(id)sender;
+- (IBAction)archiveButtonTapped:(id)sender;
+
 @end
