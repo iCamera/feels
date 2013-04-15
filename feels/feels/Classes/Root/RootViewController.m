@@ -14,6 +14,7 @@
 #import "VideoModel.h"
 #import "KVOR.h"
 #import "AppManager.h"
+#import "HCAnimator.h"
 
 @interface RootViewController ()
 
@@ -25,6 +26,11 @@
 @property (weak, nonatomic) IBOutlet UIImageView *menuArrow;
 @property (weak, nonatomic) IBOutlet UIButton *archiveButton;
 
+@property (weak, nonatomic) IBOutlet UIView *msView;
+@property (weak, nonatomic) IBOutlet UILabel *msLabel;
+@property (weak, nonatomic) IBOutlet UILabel *msUnitLabel;
+@property (weak, nonatomic) IBOutlet UILabel *msDescLabel;
+
 @property (weak, nonatomic) IBOutlet UIImageView *vidPlaceholderImage;
 @property (weak, nonatomic) IBOutlet UILabel *vidTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *vidDateLabel;
@@ -33,6 +39,7 @@
 
 @property (nonatomic, strong) ArchiveViewController *archiveViewController;
 @property (nonatomic, assign) BOOL isArchiveMode;
+@property (nonatomic, assign) BOOL msActive;
 @property (weak, nonatomic) IBOutlet UIView *videoWrapperView;
 
 @property(strong,nonatomic) VideoViewController *videoViewController;
@@ -40,6 +47,37 @@
 @end
 
 @implementation RootViewController
+
+static inline float StrongEaseOut(float time, float begin, float change, float duration) {
+    return change * ((time = time / duration - 1) * time * time * time * time + 1) + begin;
+}
+
+float elasticEaseOut(float t, float b, float c, float d){
+    if (t == 0) {
+        return b;
+    }
+    
+    if ((t /= d) == 1) {
+        return b + c;
+    }
+    
+    float p = 1.0;
+    float a = 1.0;
+    float s = 0;
+    
+    if (!p) {
+        p = d * 0.3;
+    }
+    
+    if (!a || a < fabs(c)) {
+        a = c;
+        s = p / 4;
+    }
+    else {
+        s = p / (2 * M_PI) * asin(c / a);
+    }
+    return a * powf(2, -10 * t) * sin((t * d - s) * (2 * M_PI) / p) + c + b;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -72,6 +110,10 @@
     [_archiveLabel setKerning:1.0];
     
     _menuArrow.transform = CGAffineTransformMakeRotation(-M_PI);
+    
+    [_msLabel setFont:[UIFont AvantGardeExtraLight:21]];
+    [_msUnitLabel setFont:[UIFont GeoSansLight:11]];
+    [_msDescLabel setFont:[UIFont GeoSansLight:10]];
     
     /* VIDEO */
     [_vidTimeLabel setFont:[UIFont AvantGardeExtraLight:32]];
@@ -113,7 +155,7 @@
     [self.view addSubview:self.archiveViewController.view];
     [self.view bringSubviewToFront:_menuView];
     
-    /* Gesture recongnizer */
+    /* Gesture recongnizers */
     UIPanGestureRecognizer *panGesturizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(menuPanned:)];
     [_archiveButton addGestureRecognizer:panGesturizer];
     
@@ -172,6 +214,15 @@
         //BAM!
         self.timeLabel.text = [NSString stringWithFormat:@"%d", [AppManager sharedManager].seconds];
     }];
+    
+    [KVOR target:[AppManager sharedManager] keyPath:@"points" task:^(NSString *keyPath, NSDictionary *change) {
+        NSNumberFormatter *numberFormat = [[NSNumberFormatter alloc] init];
+        numberFormat.usesGroupingSeparator = YES;
+        numberFormat.groupingSeparator = @",";
+        numberFormat.groupingSize = 3;
+        //self.msLabel.text = [NSString stringWithFormat:@"%d", [AppManager sharedManager].points];
+        self.msLabel.text = [numberFormat stringFromNumber:[NSNumber numberWithInt:[AppManager sharedManager].points]];
+    }];
 }
 
 
@@ -205,7 +256,22 @@
 }
 
 - (IBAction)timeButtonTapped:(id)sender {
-    NSLog(@"SHOW ME THAT BTCH");
+    [HCAnimator periodWithDuration:0.3 delay:0.0 timingFunction:elasticEaseOut updateBlock:^(float progress) {
+        _msView.top = (!_msActive) ? map(progress, 0, 1, 0, -_msView.height) : map(progress, 1, 0, 0, -_msView.height);
+    } completeBlock:^{
+        //..
+    }];
+    /*if (!_msActive) {
+        [UIView animateWithDuration:0.3 animations:^{
+            _msView.top = 0;
+        }];
+    } else {
+        [UIView animateWithDuration:0.3 animations:^{
+            _msView.top = -_msView.height;
+        }];
+    }*/
+        
+    _msActive = !_msActive;
 }
 
 - (IBAction)archiveButtonTapped:(id)sender {
