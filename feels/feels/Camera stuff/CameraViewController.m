@@ -294,8 +294,7 @@ typedef enum {
         }
         _changeCounter = 0;
         
-        float dragValue = [[touches anyObject] locationInView:self.view].x/self.view.width;
-        
+        float dragValue = [[touches anyObject] locationInView:self.view].x/self.view.bounds.size.width;
         
         if (dragValue < 0.25) {
             [_videoCamera removeTarget:_filter];
