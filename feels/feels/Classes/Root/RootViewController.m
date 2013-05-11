@@ -253,6 +253,15 @@ float elasticEaseOut(float t, float b, float c, float d){
             
             _fadeView.alpha = map(left/(self.view.bounds.size.width - self.view.width), 1, 0, 0, 0.9);
             _archiveViewController.imageViewsContainer.left = scrollView.contentOffset.x + 8;
+        } else {
+            float left = -(8);
+            
+            _menuView.left = left;
+            self.archiveViewController.view.left = left+_menuView.width-14;
+            _videoWrapperView.left = map(clamp(0, 1, left/(self.view.bounds.size.width - self.view.width)), 1, 0, 0, -120);
+            
+            _fadeView.alpha = map(left/(self.view.bounds.size.width - self.view.width), 1, 0, 0, 0.9);
+            _archiveViewController.imageViewsContainer.left = 8;
         }
     };
     [_archiveViewController setDidScroll:block];
