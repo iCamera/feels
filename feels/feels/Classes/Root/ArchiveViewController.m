@@ -36,6 +36,9 @@
     
     NSMutableArray *videoImages = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"sweet_lips", @"sweet_lips", @"sweet_lips", @"sweet_lips", @"sweet_lips", @"sweet_lips", nil]];
     NSMutableArray *videoTitles = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"STHLM Startup Hack", @"Surf trip Norway", @"The Beach", @"Home", @"Title", @"Lorem ipsum", nil]];
+
+    _imageViewsContainer = [[UIView alloc] initWithFrame:self.view.bounds];
+    _imageViewsContainer.width += 1000;
     
     for (int i=0; i<[videoImages count]; i++) {
         UIImageView *videoImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[videoImages objectAtIndex:i]]];
@@ -43,7 +46,6 @@
         [videoImgView setContentMode:UIViewContentModeScaleAspectFill];
         videoImgView.top = (i%2==0) ? 0 : 160;
         videoImgView.left = ceil(i/2)*284;
-        [self.scrollView addSubview:videoImgView];
         
         UIImageView *infoBox = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"info_box"]];
         infoBox.top = 104;
@@ -70,7 +72,9 @@
         }
         timeLabel.top = infoBox.bottom+2;
         [videoImgView addSubview:timeLabel];
+        [_imageViewsContainer addSubview:videoImgView];
     }
+    [self.scrollView addSubview:_imageViewsContainer];
 
     self.scrollView.width -= 48; //Menu width
     CGFloat contentWidth = ceil([videoImages count]/2) * 284;
@@ -82,7 +86,7 @@
     self.videoView = [[AVPlayerView alloc] initWithFrame:CGRectMake(284, -2, 284, 166)];
     [self.videoView setContentMode:UIViewContentModeScaleAspectFill];
     [self.videoView setPlayerForLocalFile:videoPath];
-    [self.scrollView addSubview:self.videoView];
+    [_imageViewsContainer addSubview:self.videoView];
     
     UIImageView *infoBox = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"info_box"]];
     infoBox.top = 104;
@@ -147,6 +151,12 @@
 
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if (_didScroll) {
+        _didScroll(scrollView);
+    }
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
 
 }
 

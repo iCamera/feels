@@ -10,4 +10,9 @@
 
 @interface ArchiveViewController : UIViewController
 
+typedef void(^ScrollViewDidScroll)(UIScrollView *scrollview);
+typedef void(^ScrollViewDidEndDraggin)(UIScrollView *scrollview);
+@property (nonatomic,copy) ScrollViewDidScroll didScroll;
+@property (nonatomic,copy) ScrollViewDidEndDraggin didEndScroll;
+@property (nonatomic, strong) UIView *imageViewsContainer;
 @end
