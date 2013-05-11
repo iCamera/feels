@@ -46,19 +46,30 @@
         [self.scrollView addSubview:videoImgView];
         
         UIImageView *infoBox = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"info_box"]];
-        infoBox.top = 108;
+        infoBox.top = 104;
         infoBox.left = 139;
         [videoImgView addSubview:infoBox];
         
-        UILabel *infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(6, 13, 126, 24)];
+        UILabel *infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(6, 10, 126, 24)];
         infoLabel.backgroundColor = [UIColor clearColor];
         infoLabel.textAlignment = NSTextAlignmentCenter;
-        [infoLabel setFont:[UIFont AvantGardeExtraLight:12]];
+        [infoLabel setFont:[UIFont GeoSansLight:12]];
         [infoLabel setTextColor:[UIColor colorWithWhite:0 alpha:0.8]];
         if (i < videoTitles.count) {
             infoLabel.text = [[videoTitles objectAtIndex:i] uppercaseString];
         }
         [infoBox addSubview:infoLabel];
+        
+        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(infoBox.origin.x, 0, infoBox.width, 18)];
+        timeLabel.backgroundColor = [UIColor clearColor];
+        timeLabel.textAlignment = NSTextAlignmentRight;
+        [timeLabel setFont:[UIFont GeoSansLight:9]];
+        [timeLabel setTextColor:[UIColor colorWithWhite:1 alpha:1]];
+        if (i < videoTitles.count) {
+            timeLabel.text = [@"Updated today at 18:50" uppercaseString];
+        }
+        timeLabel.top = infoBox.bottom+2;
+        [videoImgView addSubview:timeLabel];
     }
 
     self.scrollView.width -= 48; //Menu width
@@ -72,6 +83,29 @@
     [self.videoView setContentMode:UIViewContentModeScaleAspectFill];
     [self.videoView setPlayerForLocalFile:videoPath];
     [self.scrollView addSubview:self.videoView];
+    
+    UIImageView *infoBox = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"info_box"]];
+    infoBox.top = 104;
+    infoBox.left = 139;
+    [self.videoView addSubview:infoBox];
+    
+    UILabel *infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(6, 10, 126, 24)];
+    infoLabel.backgroundColor = [UIColor clearColor];
+    infoLabel.textAlignment = NSTextAlignmentCenter;
+    [infoLabel setFont:[UIFont GeoSansLight:12]];
+    [infoLabel setTextColor:[UIColor colorWithWhite:0 alpha:0.8]];
+    infoLabel.text = [@"The Beach" uppercaseString];
+    [infoBox addSubview:infoLabel];
+    
+    UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(infoBox.origin.x, 0, infoBox.width, 18)];
+    timeLabel.backgroundColor = [UIColor clearColor];
+    timeLabel.textAlignment = NSTextAlignmentRight;
+    [timeLabel setFont:[UIFont GeoSansLight:9]];
+    [timeLabel setTextColor:[UIColor colorWithWhite:1 alpha:1]];
+    timeLabel.text = [@"Updated today at 18:50" uppercaseString];
+    timeLabel.top = infoBox.bottom+2;
+    [self.videoView addSubview:timeLabel];
+    
     
     /*[self.videoView setDidReachEnd:^(AVPlayer *player){
         [player play];
