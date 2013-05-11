@@ -166,7 +166,7 @@ typedef enum {
     [_lineView addSubview:_lineViewProgress];
     
     _lineCurrentPostion = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.5)];
-    _lineCurrentPostion.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
+    _lineCurrentPostion.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:1.0];
     [_lineView addSubview:_lineCurrentPostion];
     
     [self.view addSubview:_lineView];
@@ -262,7 +262,7 @@ typedef enum {
     if (_currentState == StateRecording) {
         if (_canStopRecording) {
             [self setCurrentState:StatePost];
-            [self performSelectorInBackground:@selector(stopRecording) withObject:nil];
+            if(_recording) [self performSelectorInBackground:@selector(stopRecording) withObject:nil];
         }
         
     } else if (_currentState == StatePre){
@@ -354,7 +354,11 @@ typedef enum {
         [_avPlayer seekToTime:CMTimeMake((_startTime/30.0) * _playerItem.duration.timescale, _playerItem.duration.timescale) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
         [_avPlayer pause];
         
-        
+        _lineCurrentPostion.width = (6.0/lenght) * _lineView.width;
+        _lineCurrentPostion.left = clamp(0, _lineView.width - _lineCurrentPostion.width, map(dragValue, 0, 1, 0, _lineView.width - _lineCurrentPostion.width));
+        NSLog(@"%f %f",_lineCurrentPostion.width,_lineView.width - _lineCurrentPostion.width);
+    } else if (_currentState == StatePost){
+
     }
     
     
@@ -468,9 +472,28 @@ typedef enum {
         
         _avPlayer.actionAtItemEnd = AVPlayerActionAtItemEndNone;
         
+        
+        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:[_avPlayer currentItem]];
         
         [_videoCamera stopCameraCapture];
+        
+        float dragValue = 0;
+        
+        NSLog(@"%lld %d",_playerItem.duration.value,_playerItem.duration.timescale);
+        float lenght = _playerItem.duration.value/_playerItem.duration.timescale;
+        int frames = roundf(lenght * 30);
+        
+        int maxStart = frames - (6 * 30);
+        int start = map(dragValue, 0, 1, 0, maxStart);
+        _startTime = start;
+        NSLog(@"lenght %f %i %i",lenght,frames,start);
+        [_avPlayer seekToTime:CMTimeMake((_startTime/30.0) * _playerItem.duration.timescale, _playerItem.duration.timescale) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+        [_avPlayer pause];
+        
+        _lineCurrentPostion.width = (6.0/lenght) * _lineView.width;
+        _lineCurrentPostion.left = clamp(0, 1.0, map(0, 0, 1, 0, _lineView.width - _lineCurrentPostion.width));
+        
         //        _video = [[GPUImageMovie alloc] initWithAsset:asset];
         //        _video.delegate = self;
         //
@@ -486,12 +509,9 @@ typedef enum {
     NSURL* fileURL = [NSURL fileURLWithPath:localVid];
     int i = [[NSUserDefaults standardUserDefaults] integerForKey:kUploadedVideos];
     i++;
-    NSString *outLocalVid = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Documents/Movie_out%i.mp4",i]];
+    NSString *outLocalVid = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Documents/Movie_out.mp4"]];
     NSURL* outFileURL = [NSURL fileURLWithPath:outLocalVid];
     
-    NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Documents/Movie_out%i.mp4",i]];
-    BOOL v = [self addSkipBackupAttributeToKey:pathToMovie];
-    NSLog(@"palla_out : %d",v);
     
     unlink([outLocalVid UTF8String]);
     
@@ -633,6 +653,7 @@ typedef enum {
             _closeButton.alpha = 1.0;
             _backButton.alpha = 0.0;
             _doneView.alpha = 0.0;
+            _lineViewProgress.alpha = 0.0;
         } else if (_currentState == StateRecording){
             _uploadView.alpha = 0.0;
             _preRecordingView.alpha = 0.0;
@@ -646,6 +667,7 @@ typedef enum {
             _closeButton.alpha = 0.0;
             _backButton.alpha = 1.0;
             _doneView.alpha = 0.0;
+            _lineViewProgress.alpha = 0.0;            
         } else if (_currentState == StatePost){
             [_geoCoder reverseGeocodeLocation:[LocationManager sharedManager].locationManager.location  completionHandler: ^(NSArray *placemarks, NSError *error) {
                 CLPlacemark *placemark = [placemarks objectAtIndex:0];
@@ -662,16 +684,19 @@ typedef enum {
             _closeButton.alpha = 0.0;
             _backButton.alpha = 1.0;
             _doneView.alpha = 0.0;
+            _lineViewProgress.alpha = 1.0;
         } else if(_currentState == StateUploading){
             _uploadView.alpha = 1.0;
             _doneView.alpha = 0.0;
             _postView.alpha = 0.0;
             _backButton.alpha = 0.0;
+            _lineViewProgress.alpha = 0.0;
         } else if(_currentState == StateDone){
             _uploadView.alpha = 0.0;
             _doneView.alpha = 1.0;
             _postTitleLabel.alpha = 0;
-            _postView.alpha = 0;        
+            _postView.alpha = 0;
+            _lineViewProgress.alpha = 0.0;
         }
         
     } completion:^(BOOL finished) {
