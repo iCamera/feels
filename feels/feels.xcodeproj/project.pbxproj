@@ -140,6 +140,7 @@
 		F46D26561718E336001DD7CE /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46D26551718E336001DD7CE /* VideoViewController.m */; };
 		F49D2BC01718BE71004E99A2 /* VideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F49D2BBF1718BE71004E99A2 /* VideoModel.m */; };
 		F49D2BC41718C67A004E99A2 /* NSDictionary+Null.m in Sources */ = {isa = PBXBuildFile; fileRef = F49D2BC31718C67A004E99A2 /* NSDictionary+Null.m */; };
+		F4F0A3B3173E5D310036796F /* EGOCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F0A3B2173E5D310036796F /* EGOCache.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -387,6 +388,8 @@
 		F49D2BBF1718BE71004E99A2 /* VideoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoModel.m; sourceTree = "<group>"; };
 		F49D2BC21718C67A004E99A2 /* NSDictionary+Null.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Null.h"; sourceTree = "<group>"; };
 		F49D2BC31718C67A004E99A2 /* NSDictionary+Null.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Null.m"; sourceTree = "<group>"; };
+		F4F0A3B1173E5D310036796F /* EGOCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGOCache.h; sourceTree = "<group>"; };
+		F4F0A3B2173E5D310036796F /* EGOCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGOCache.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -771,6 +774,7 @@
 		F44760B41718E56C007C6B18 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				F4F0A3B0173E5D310036796F /* EGOCache */,
 				602F4289171972AB009ADE50 /* HCAnimator */,
 				F44760B51718E56C007C6B18 /* KVOR */,
 			);
@@ -958,6 +962,15 @@
 				F49D2BC31718C67A004E99A2 /* NSDictionary+Null.m */,
 			);
 			path = NSDictionary;
+			sourceTree = "<group>";
+		};
+		F4F0A3B0173E5D310036796F /* EGOCache */ = {
+			isa = PBXGroup;
+			children = (
+				F4F0A3B1173E5D310036796F /* EGOCache.h */,
+				F4F0A3B2173E5D310036796F /* EGOCache.m */,
+			);
+			path = EGOCache;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1161,6 +1174,7 @@
 				602F428E171972BE009ADE50 /* HCAnimator.m in Sources */,
 				602F4291171972D9009ADE50 /* HCTimingFunction.m in Sources */,
 				29BEA0F7173E377E00F3A073 /* AVPlayerView.m in Sources */,
+				F4F0A3B3173E5D310036796F /* EGOCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
