@@ -16,4 +16,6 @@
 
 - (void)showArchive:(BOOL)show animated:(BOOL)animated;
 
+@property(nonatomic,assign) BOOL alaska;
+-(void)updateVideoMode;
 @end

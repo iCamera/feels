@@ -10,6 +10,7 @@
 #import "AVPlayerView.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
+#import "RootViewController.h"
 
 @interface ArchiveViewController ()<UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -42,6 +43,10 @@
     
     for (int i=0; i<[videoImages count]; i++) {
         UIImageView *videoImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[videoImages objectAtIndex:i]]];
+        if (i == 0) {
+            [videoImgView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFirst)]];
+            videoImgView.userInteractionEnabled = YES;
+        }
         videoImgView.size = CGSizeMake(284, 160);
         [videoImgView setContentMode:UIViewContentModeScaleAspectFill];
         videoImgView.top = (i%2==0) ? 0 : 160;
@@ -81,11 +86,10 @@
     self.scrollView.contentSize = CGSizeMake(contentWidth, 320);
 
     /* VIDEO */
-    NSString *videoPath=[[NSBundle mainBundle] pathForResource:@"demo" ofType:@"m4v"];
-    
     self.videoView = [[AVPlayerView alloc] initWithFrame:CGRectMake(284, -2, 284, 166)];
     [self.videoView setContentMode:UIViewContentModeScaleAspectFill];
-    [self.videoView setPlayerForLocalFile:videoPath];
+    [self.videoView setPlayerForMp4File:@"small"];
+    [self.videoView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAlaska)]];
     [_imageViewsContainer addSubview:self.videoView];
     
     UIImageView *infoBox = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"info_box"]];
@@ -114,6 +118,21 @@
     /*[self.videoView setDidReachEnd:^(AVPlayer *player){
         [player play];
     }];*/
+}
+
+-(void)tapFirst{
+    
+    RootViewController *vc = (RootViewController *)self.parentViewController;
+    [vc setAlaska:NO];
+    [vc showArchive:NO animated:YES];
+    
+}
+
+-(void)tapAlaska{
+    RootViewController *vc = (RootViewController *)self.parentViewController;
+    [vc setAlaska:YES];
+    [vc showArchive:NO animated:YES];
+
 }
 
 -(void)viewDidAppear:(BOOL)animated{

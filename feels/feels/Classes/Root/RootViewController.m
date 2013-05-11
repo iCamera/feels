@@ -15,6 +15,7 @@
 #import "KVOR.h"
 #import "AppManager.h"
 #import "HCAnimator.h"
+#import "AVPlayerView.h"
 
 @interface RootViewController ()
 @property (weak, nonatomic) IBOutlet UIView *detailView;
@@ -37,6 +38,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *vidDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *vidLocationLabel;
 @property (weak, nonatomic) IBOutlet UIView *fadeView;
+
+@property (strong, nonatomic) AVPlayerView *alaskaVideo;
 
 @property (nonatomic, strong) ArchiveViewController *archiveViewController;
 @property (nonatomic, assign) BOOL isArchiveMode;
@@ -93,6 +96,13 @@ float elasticEaseOut(float t, float b, float c, float d){
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _alaskaVideo = [[AVPlayerView alloc] initWithFrame:self.view.bounds];
+    [_alaskaVideo setPlayerForMp4File:@"small"];
+    [self.view addSubview:_alaskaVideo];
+    [[_alaskaVideo player]play];
+    [_alaskaVideo setDidReachEnd:^(AVPlayerView *view){
+        [view.player seekToTime:kCMTimeZero];
+    }];
     
     /* MENU */
     [_timeUnitLabel setFont:[UIFont GeoSansLight:11]];
@@ -246,6 +256,8 @@ float elasticEaseOut(float t, float b, float c, float d){
         }
     };
     [_archiveViewController setDidScroll:block];
+    _alaska = YES;
+    [self updateVideoMode];
 }
 
 -(void)tap:(UITapGestureRecognizer *)tap{
@@ -273,6 +285,7 @@ float elasticEaseOut(float t, float b, float c, float d){
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     self.archiveViewController.view.bounds = self.view.bounds;
+    _alaskaVideo.frame = self.view.bounds;
     self.archiveViewController.view.origin = CGPointMake(self.view.height, 0);
 }
 
@@ -379,6 +392,24 @@ float elasticEaseOut(float t, float b, float c, float d){
                 }
             }
         }
+}
+
+-(void)setAlaska:(BOOL)alaska{
+    _alaska = alaska;
+    [self updateVideoMode];
+}
+
+
+-(void)updateVideoMode{
+
+    if (_alaska) {
+        [self.view insertSubview:_alaskaVideo belowSubview:_archiveViewController.view];
+        _alaskaVideo.hidden = NO;
+    }else{
+
+        _alaskaVideo.hidden = YES;
+    }
+    
 }
 
 @end
