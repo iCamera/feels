@@ -141,7 +141,7 @@ typedef enum {
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-
+    _lineViewProgress.backgroundColor = [UIColor redColor];
     _geoCoder = [[CLGeocoder alloc] init];
     [[LocationManager sharedManager] startTracking];
     
@@ -163,13 +163,16 @@ typedef enum {
     _lineView = [[UIView alloc] initWithFrame:CGRectMake((self.view.width-144)/2, 296, 144, 0.5)];
     _lineView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
     
-    _lineViewProgress = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.5)];
-    _lineViewProgress.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
-    [_lineView addSubview:_lineViewProgress];
+    
     
     _lineCurrentPostion = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.5)];
-    _lineCurrentPostion.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:1.0];
+    _lineCurrentPostion.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3];
     [_lineView addSubview:_lineCurrentPostion];
+    
+    _lineViewProgress = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.5)];
+    _lineViewProgress.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:1.0];
+    [_lineView addSubview:_lineViewProgress];
+    
     
     [self.view addSubview:_lineView];
     
@@ -225,6 +228,9 @@ typedef enum {
     
     
     [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)]];
+ 
+    
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateTimeIndicator) userInfo:nil repeats:YES];
     
 }
 
@@ -352,8 +358,7 @@ typedef enum {
         
         float dragValue = [[touches anyObject] locationInView:self.view].x/self.view.width;
         
-        NSLog(@"%lld %d",_avPlayer.playerItem.duration.value,_avPlayer.playerItem.duration.timescale);
-        float lenght = _avPlayer.playerItem.duration.value/_avPlayer.playerItem.duration.timescale;
+        float lenght = (float)_avPlayer.playerItem.duration.value/(float)_avPlayer.playerItem.duration.timescale;
         int frames = roundf(lenght * 30);
         
         int maxStart = frames - (6 * 30);
@@ -756,6 +761,19 @@ typedef enum {
 
 - (IBAction)closeButton:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)updateTimeIndicator{
+    if (!_avPlayer) return;
+
+    float lenght = (float)_avPlayer.playerItem.duration.value/(float)_avPlayer.playerItem.duration.timescale;
+    float progress = (float)_avPlayer.player.currentTime.value/(float)_avPlayer.player.currentTime.timescale;
+    int frames = roundf(lenght * 30);
+    
+    _lineViewProgress.width = (progress/lenght) * _lineCurrentPostion.width;
+    _lineViewProgress.left = _lineCurrentPostion.left;
+    
+
 }
 
 #pragma mark - UIAlertViewDelegate

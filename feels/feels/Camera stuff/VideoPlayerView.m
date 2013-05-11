@@ -956,7 +956,7 @@ static VideoPlayerFullscreenView *VIDEO_PLAYER_FULLSCREEN_CONTAINER_VIEW = nil;
 
 + (void)setupGlobalAudioSession {
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-    [[AVAudioSession sharedInstance] setActive:YES error:nil];
+    [[AVAudioSession sharedInstance] setActive:NO error:nil];
 }
 
 
