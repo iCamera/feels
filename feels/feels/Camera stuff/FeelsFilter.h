@@ -12,6 +12,7 @@
 
 @property(nonatomic,strong) GPUImagePicture *lookupImageSource;
 @property(nonatomic,assign) BOOL loading;
+@property(nonatomic,assign) float saturation;
 @property(nonatomic,strong) UIImage *sourceImage;
 
 @end

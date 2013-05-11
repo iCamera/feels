@@ -34,25 +34,41 @@
 }
 
 -(void)prepareForImageCapture {
-    if (_lookupImageSource) {
-
-    }
-        [_lookupImageSource processImage];            
+    [_lookupImageSource processImage];
 
     [super prepareForImageCapture];
 }
 
 -(void)setSourceImage:(UIImage *)sourceImage{
-//    _loading = YES;
-    _sourceImage = sourceImage;
-    _lookupImageSource = [[GPUImagePicture alloc] initWithImage:_sourceImage];
-    GPUImageLookupFilter *lookupFilter = [[GPUImageLookupFilter alloc] init];
+    _loading = YES;
 
+    
+//    GPUImagePicture *i = [[GPUImagePicture alloc] initWithImage:sourceImage];
+//    [i addTarget:saturation];
+//    [i processImage];
+    _sourceImage = sourceImage;
+    
+    
+    _lookupImageSource = [[GPUImagePicture alloc] initWithImage:_sourceImage];
+    
+    GPUImageLookupFilter *lookupFilter = [[GPUImageLookupFilter alloc] init];
+    GPUImageSaturationFilter *saturation = [[GPUImageSaturationFilter alloc] init];
+    saturation.saturation = _saturation;
+    
+    [_lookupImageSource addTarget:saturation atTextureLocation:1];
     [_lookupImageSource addTarget:lookupFilter atTextureLocation:1];
+
     [_lookupImageSource processImage];
     
+
+    NSLog(@"%f",_saturation);
     self.initialFilters = [NSArray arrayWithObjects:lookupFilter, nil];
     self.terminalFilter = lookupFilter;
     _loading = NO;
+}
+
+-(void)setSaturation:(float)saturation{
+    _saturation = saturation;
+    NSLog(@"%f",saturation);
 }
 @end
