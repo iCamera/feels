@@ -35,8 +35,8 @@
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped)];
     [self.view addGestureRecognizer:tgr];
     
-    NSMutableArray *videoImages = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"sweet_lips", @"sweet_lips", @"sweet_lips", @"sweet_lips", @"sweet_lips", @"sweet_lips", nil]];
-    NSMutableArray *videoTitles = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"STHLM Startup Hack", @"Surf trip Norway", @"The Beach", @"Home", @"Title", @"Lorem ipsum", nil]];
+    NSMutableArray *videoImages = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"sweet_lips", @"surfer", @"sweet_lips", @"leafs", @"paris", @"alaska", nil]];
+    NSMutableArray *videoTitles = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"STHLM Startup Hack", @"Surf trip Norway", @"The Beach", @"Fall 2013", @"Party in Paris!", @"Alaska", nil]];
 
     _imageViewsContainer = [[UIView alloc] initWithFrame:self.view.bounds];
     _imageViewsContainer.width += 1000;
