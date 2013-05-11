@@ -18,6 +18,7 @@
 #import "LocationManager.h"
 #import <CommonCrypto/CommonDigest.h>
 #include <sys/xattr.h>
+#import "VideoModel.h"
 #import "AVPlayerView.h"
 #define videoWidth 960
 #define videoHeight 540
@@ -536,6 +537,8 @@ typedef enum {
 
 - (void)export {
     NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
+    
+    [[EGOCache globalCache] objectForKey:@"Movie.mp4"];
     NSURL* fileURL = [NSURL fileURLWithPath:localVid];
     int i = [[NSUserDefaults standardUserDefaults] integerForKey:kUploadedVideos];
     i++;
@@ -566,11 +569,61 @@ typedef enum {
 
     [session exportAsynchronouslyWithCompletionHandler:^{
         switch (session.status) {
-            case AVAssetExportSessionStatusCompleted:
+            case AVAssetExportSessionStatusCompleted: {
                 NSLog(@"COMPLETE");
-                [self upload];
+                NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie_out.mp4"];
                 
-                break;
+                NSString *cachedName = [[NSString stringWithFormat:@"%i", arc4random()] MD5];
+                NSData *videoData = [NSData dataWithContentsOfFile:localVid];
+                [[EGOCache globalCache] setData:videoData forKey:cachedName];
+                
+                NSString *location = (_placeString) ? _placeString : [@"[Unknown location]" uppercaseString];
+                NSString *author = [[AppManager sharedManager] author];
+                NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];
+                
+                
+                VideoModel *model = [[VideoModel alloc] init];
+                model.timestamp = timestamp;
+                model.author = author;
+                model.location = location;
+                model.ID = cachedName;
+                
+                NSString *path = [[EGOCache globalCache] cachePathForKey:cachedName];
+                
+                NSURL *videoURL = [NSURL fileURLWithPath:path];
+                model.videoURL = [NSURL fileURLWithPath:localVid];
+                
+                NSLog(@"URL: %@", videoURL);
+                
+                //[self upload];
+                [AppManager sharedManager].startTimestamp -= 6;
+                [[AppManager sharedManager] removePoints];
+                [[[AppManager sharedManager] videos] addObject:model];
+                
+                int i = [[NSUserDefaults standardUserDefaults] integerForKey:kUploadedVideos];
+                i++;
+                [[NSUserDefaults standardUserDefaults] setInteger:i forKey:kUploadedVideos];
+                NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+                double secs = now - [AppManager sharedManager].disappearTime;
+                
+                int numberOfClips = secs/6;
+                int newIndex = (numberOfClips + [AppManager sharedManager].currentIndex) % [AppManager sharedManager].videos.count;
+                
+                double yourTime = ([AppManager sharedManager].videos.count - newIndex) * 6;
+                NSDate *date = [NSDate dateWithTimeIntervalSinceNow:yourTime];
+                
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setAMSymbol:@"AM"];
+                [dateFormatter setPMSymbol:@"PM"];
+                [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+                [dateFormatter setDateFormat:@"hh:mm a"];
+                _uploadTimeLabel.text = [[dateFormatter stringFromDate:date] uppercaseString];
+                [dateFormatter setDateFormat:@"dd LLL yyyy"];
+                _uploadDateLabel.text = [[dateFormatter stringFromDate:date] uppercaseString];
+
+                
+                [self setCurrentState:StateDone];
+            } break;
             case AVAssetExportSessionStatusFailed:
                 NSLog(@"Failed: %@", session.error);
                 break;

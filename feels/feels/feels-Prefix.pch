@@ -19,4 +19,5 @@
     #import "UIFont+Feels.h"
     #import "UILabel+Feels.h"
     #import "Defines.h"
+    #import "EGOCache.h"
 #endif

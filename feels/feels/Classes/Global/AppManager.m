@@ -122,8 +122,8 @@
 
 - (void)startFetchingVideos {
     self.videoFetchingTimer = [NSTimer scheduledTimerWithTimeInterval:10.0 completion:^{
-        [self fetchVideos];
-    } repeat:YES];
+        //[self fetchVideos];
+    } repeat:NO];
     [self fetchVideos];
 }
 
@@ -165,12 +165,16 @@
     
     [[APIClient shareClient] getPath:[NSString stringWithFormat:@"/ahd/stream/%@", index] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSMutableArray *videos = [NSMutableArray array];
+        int i = 0;
         if ([responseObject nullCheckedObjectForKey:@"success"]) {
             for (NSDictionary *dict in responseObject[@"data"]) {
                 VideoModel *video = [[VideoModel alloc] initWithDictionary:dict];
                 if (![videos containsObject:video]) {
                     [videos addObject:video];
+                    i++;
                 }
+                
+                if (i > 1) break;
             }
         }
         
