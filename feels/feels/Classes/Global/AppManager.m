@@ -51,6 +51,14 @@
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
         self.seconds = self.points / 1000;
+        
+        [self dummyData];
+        self.videos = [self.startupHackVideos mutableCopy];
+        
+        self.loading = NO;
+        self.startIndex = 0;
+        
+        self.startSecondTimeInterval = 0;
     }
     return self;
 }
@@ -89,14 +97,14 @@
     }
     
     /*
-    int increment;
-    if (self.points < 6000) {
-        increment = 10;
-    } else if (self.points < 12000) {
-        increment = 5;
-    } else {
-        increment = 2;
-    }*/
+     int increment;
+     if (self.points < 6000) {
+     increment = 10;
+     } else if (self.points < 12000) {
+     increment = 5;
+     } else {
+     increment = 2;
+     }*/
     
     //int oldPoints = self.points;
     self.points += increment;
@@ -122,9 +130,10 @@
 
 - (void)startFetchingVideos {
     self.videoFetchingTimer = [NSTimer scheduledTimerWithTimeInterval:10.0 completion:^{
-        [self fetchVideos];
-    } repeat:YES];
-    [self fetchVideos];
+        //[self fetchVideos];
+    } repeat:NO];
+    //[self fetchVideos];
+    self.play = YES;
 }
 
 - (void)fetchVideos {
@@ -161,16 +170,61 @@
     } afterIndex:lastID];
 }
 
+- (void)dummyData {
+    
+    _startupHackVideos = [NSMutableArray array];
+    
+    {
+        VideoModel *model = [[VideoModel alloc] init];
+        model.index = 0;
+        model.ID = @"225";
+        model.videoURL = [NSURL URLWithString:@"http://dev.hiddencode.me/ahd/uploads/ae0a6930ea2cb2b43ecbf7e4854efc13.mp4"];
+        model.timestamp = 1368266396;
+        model.location = @"STOCKHOLM, SKEPPSHOLMEN";
+        model.author = @"8eb35def40f558ebce9c11863b6fc19d";
+        
+        [_startupHackVideos addObject:model];
+    }
+    
+    {
+        VideoModel *model = [[VideoModel alloc] init];
+        model.index = 1;
+        model.ID = @"231";
+        model.videoURL = [NSURL URLWithString:@"http://dev.hiddencode.me/ahd/uploads/8319664948be4faff3cf1f1cc7872002.mp4"];
+        model.timestamp = 1368267527;
+        model.location = @"STOCKHOLM, SKEPPSHOLMEN";
+        model.author = @"8eb35def40f558ebce9c11863b6fc19d";
+        
+        [_startupHackVideos addObject:model];
+    }
+    
+    {
+        VideoModel *model = [[VideoModel alloc] init];
+        model.index = 2;
+        model.ID = @"233";
+        model.videoURL = [NSURL URLWithString:@"http://dev.hiddencode.me/ahd/uploads/2afb9b103e1acac37331c90254a2570b.mp4"];
+        model.timestamp = 1368268759;
+        model.location = @"STOCKHOLM, SKEPPSHOLMEN";
+        model.author = @"8eb35def40f558ebce9c11863b6fc19d";
+        
+        [_startupHackVideos addObject:model];
+    }
+}
+
 - (void)fetchVideosWithBlock:(void(^)(NSMutableArray *videos))completeBlock afterIndex:(NSString *)index {
     
     [[APIClient shareClient] getPath:[NSString stringWithFormat:@"/ahd/stream/%@", index] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSMutableArray *videos = [NSMutableArray array];
+        int i = 0;
         if ([responseObject nullCheckedObjectForKey:@"success"]) {
             for (NSDictionary *dict in responseObject[@"data"]) {
                 VideoModel *video = [[VideoModel alloc] initWithDictionary:dict];
                 if (![videos containsObject:video]) {
                     [videos addObject:video];
+                    i++;
                 }
+                
+                if (i > 1) break;
             }
         }
         

@@ -17,6 +17,7 @@
 #import "HCAnimator.h"
 
 @interface RootViewController ()
+@property (weak, nonatomic) IBOutlet UIView *detailView;
 
 @property (weak, nonatomic) IBOutlet UIView *menuView;
 @property (weak, nonatomic) IBOutlet UILabel *timeUnitLabel;
@@ -39,6 +40,7 @@
 
 @property (nonatomic, strong) ArchiveViewController *archiveViewController;
 @property (nonatomic, assign) BOOL isArchiveMode;
+@property (nonatomic, assign) BOOL isFullscreen;
 @property (nonatomic, assign) BOOL msActive;
 @property (weak, nonatomic) IBOutlet UIView *videoWrapperView;
 
@@ -226,8 +228,31 @@ float elasticEaseOut(float t, float b, float c, float d){
         //self.msLabel.text = [NSString stringWithFormat:@"%d", [AppManager sharedManager].points];
         self.msLabel.text = [numberFormat stringFromNumber:[NSNumber numberWithInt:[AppManager sharedManager].points]];
     }];
+    _videoViewController.view.userInteractionEnabled = NO;
+    [_videoWrapperView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)]];
 }
 
+-(void)tap:(UITapGestureRecognizer *)tap{
+    NSLog(@"HEY");
+    
+    if (_isFullscreen) {
+        _isFullscreen = NO;
+    } else {
+        _isFullscreen = YES;
+    }
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        if (_isFullscreen) {
+            _menuView.left = self.view.height;
+            _detailView.alpha = 0.0;
+        } else {
+            _menuView.left = self.view.height - _menuView.width + 7;
+            _detailView.alpha = 1.0;
+        }
+        
+    }];
+}
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];

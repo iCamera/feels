@@ -18,6 +18,7 @@
 #import "LocationManager.h"
 #import <CommonCrypto/CommonDigest.h>
 #include <sys/xattr.h>
+#import "VideoModel.h"
 #import "AVPlayerView.h"
 #define videoWidth 960
 #define videoHeight 540
@@ -75,6 +76,7 @@ typedef enum {
     StateUnknown,
     StatePre,
     StateRecording,
+    StateSelectStream,
     StatePost,
     StateUploading,
     StateDone,
@@ -127,10 +129,12 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *uploadTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *uploadDateLabel;
 
+@property (weak, nonatomic) IBOutlet UIView *selectStreamView;
 @property (strong,nonatomic)  CLGeocoder *geoCoder;
 @property (strong,nonatomic)  NSString *placeString;
 - (IBAction)backButton:(id)sender;
 - (IBAction)closeButton:(id)sender;
+- (IBAction)pickStreamButtonClicked:(id)sender;
 
 @end
 
@@ -141,7 +145,7 @@ typedef enum {
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-
+    _lineViewProgress.backgroundColor = [UIColor redColor];
     _geoCoder = [[CLGeocoder alloc] init];
     [[LocationManager sharedManager] startTracking];
     
@@ -163,13 +167,16 @@ typedef enum {
     _lineView = [[UIView alloc] initWithFrame:CGRectMake((self.view.width-144)/2, 296, 144, 0.5)];
     _lineView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
     
-    _lineViewProgress = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.5)];
-    _lineViewProgress.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
-    [_lineView addSubview:_lineViewProgress];
+    
     
     _lineCurrentPostion = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.5)];
-    _lineCurrentPostion.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:1.0];
+    _lineCurrentPostion.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3];
     [_lineView addSubview:_lineCurrentPostion];
+    
+    _lineViewProgress = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.5)];
+    _lineViewProgress.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:1.0];
+    [_lineView addSubview:_lineViewProgress];
+    
     
     [self.view addSubview:_lineView];
     
@@ -225,6 +232,9 @@ typedef enum {
     
     
     [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)]];
+ 
+    
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateTimeIndicator) userInfo:nil repeats:YES];
     
 }
 
@@ -272,10 +282,12 @@ typedef enum {
         [self setCurrentState:StateRecording];
         
     } else if (_currentState == StatePost){
-        [self setCurrentState:StateUploading];
-        [self export];
+        [self setCurrentState:StateSelectStream];
     } else if(_currentState == StateDone){
         [self dismissViewControllerAnimated:YES completion:nil];
+    } else if(_currentState == StateSelectStream){
+        [self setCurrentState:StateUploading];
+        [self export];
     }
     
     
@@ -298,12 +310,15 @@ typedef enum {
         _changeCounter = 0;
         
         float dragValue = [[touches anyObject] locationInView:self.view].x/self.view.bounds.size.width;
-        
+        float dragValueY = [[touches anyObject] locationInView:self.view].y/self.view.bounds.size.height;
+        NSLog(@"dragValueY %f",dragValueY);
+        dragValueY = map(dragValueY, 0, 1, 2.0, 0.5);
         
         if (dragValue < 0.25) {
             [_videoCamera removeTarget:_filter];
             [_filter removeTarget:_movieWriter];            
             _filter = [[FeelsFilter alloc] init];
+            _filter.saturation = dragValueY;
             UIImage *i = [self blendImage:@"lookup" andImage2:@"lookup_xpro" first:map(dragValue, 0.0, 0.25, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
             
@@ -315,6 +330,7 @@ typedef enum {
             [_videoCamera removeTarget:_filter];
             [_filter removeTarget:_movieWriter];
             _filter = [[FeelsFilter alloc] init];
+                        _filter.saturation = dragValueY;
             UIImage *i = [self blendImage:@"lookup_xpro" andImage2:@"lookup_toaster" first:map(dragValue, 0.25, 0.50, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
             
@@ -325,6 +341,7 @@ typedef enum {
             [_filter removeTarget:_movieWriter];
             [_videoCamera removeTarget:_filter];
             _filter = [[FeelsFilter alloc] init];
+            _filter.saturation = dragValueY;            
             UIImage *i = [self blendImage:@"lookup_toaster" andImage2:@"lookup_nashville" first:map(dragValue, 0.50, 0.75, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
             
@@ -335,6 +352,7 @@ typedef enum {
             [_videoCamera removeTarget:_filter];
             [_filter removeTarget:_movieWriter];
             _filter = [[FeelsFilter alloc] init];
+            _filter.saturation = dragValueY;            
             UIImage *i = [self blendImage:@"lookup_nashville" andImage2:@"lookup" first:map(dragValue, 0.75, 1.0, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
             
@@ -346,8 +364,7 @@ typedef enum {
         
         float dragValue = [[touches anyObject] locationInView:self.view].x/self.view.width;
         
-        NSLog(@"%lld %d",_avPlayer.playerItem.duration.value,_avPlayer.playerItem.duration.timescale);
-        float lenght = _avPlayer.playerItem.duration.value/_avPlayer.playerItem.duration.timescale;
+        float lenght = (float)_avPlayer.playerItem.duration.value/(float)_avPlayer.playerItem.duration.timescale;
         int frames = roundf(lenght * 30);
         
         int maxStart = frames - (6 * 30);
@@ -530,6 +547,8 @@ typedef enum {
 
 - (void)export {
     NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
+    
+    [[EGOCache globalCache] objectForKey:@"Movie.mp4"];
     NSURL* fileURL = [NSURL fileURLWithPath:localVid];
     int i = [[NSUserDefaults standardUserDefaults] integerForKey:kUploadedVideos];
     i++;
@@ -560,11 +579,59 @@ typedef enum {
 
     [session exportAsynchronouslyWithCompletionHandler:^{
         switch (session.status) {
-            case AVAssetExportSessionStatusCompleted:
+            case AVAssetExportSessionStatusCompleted: {
                 NSLog(@"COMPLETE");
-                [self upload];
+                NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie_out.mp4"];
                 
-                break;
+                NSString *cachedName = [[NSString stringWithFormat:@"%i", arc4random()] MD5];
+                NSData *videoData = [NSData dataWithContentsOfFile:localVid];
+                [[EGOCache globalCache] setData:videoData forKey:cachedName];
+                
+                NSString *location = (_placeString) ? _placeString : [@"[Unknown location]" uppercaseString];
+                NSString *author = [[AppManager sharedManager] author];
+                NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];
+                
+                
+                VideoModel *model = [[VideoModel alloc] init];
+                model.timestamp = timestamp;
+                model.author = author;
+                model.location = @"Stockholm, Skeppsholmen";
+                model.ID = cachedName;
+                
+                NSString *path = [[EGOCache globalCache] cachePathForKey:cachedName];
+                
+                NSURL *videoURL = [NSURL fileURLWithPath:path];
+                model.videoURL = [NSURL fileURLWithPath:localVid];
+                
+                //[self upload];
+                [AppManager sharedManager].startTimestamp -= 6;
+                [[AppManager sharedManager] removePoints];
+                [[[AppManager sharedManager] videos] addObject:model];
+                
+                int i = [[NSUserDefaults standardUserDefaults] integerForKey:kUploadedVideos];
+                i++;
+                [[NSUserDefaults standardUserDefaults] setInteger:i forKey:kUploadedVideos];
+                NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+                double secs = now - [AppManager sharedManager].disappearTime;
+                
+                int numberOfClips = secs/6;
+                int newIndex = (numberOfClips + [AppManager sharedManager].currentIndex) % [AppManager sharedManager].videos.count;
+                
+                double yourTime = ([AppManager sharedManager].videos.count - newIndex) * 6;
+                NSDate *date = [NSDate dateWithTimeIntervalSinceNow:yourTime];
+                
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setAMSymbol:@"AM"];
+                [dateFormatter setPMSymbol:@"PM"];
+                [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+                [dateFormatter setDateFormat:@"hh:mm a"];
+                _uploadTimeLabel.text = [[dateFormatter stringFromDate:date] uppercaseString];
+                [dateFormatter setDateFormat:@"dd LLL yyyy"];
+                _uploadDateLabel.text = [[dateFormatter stringFromDate:date] uppercaseString];
+
+                
+                [self setCurrentState:StateDone];
+            } break;
             case AVAssetExportSessionStatusFailed:
                 NSLog(@"Failed: %@", session.error);
                 break;
@@ -662,7 +729,7 @@ typedef enum {
     
     
     [UIView animateWithDuration:0.6 animations:^{
-        
+        _selectStreamView.userInteractionEnabled = NO;
         if (_currentState == StatePre) {
             _uploadView.alpha = 0.0;
             _preRecordingView.alpha = 1.0;
@@ -678,6 +745,8 @@ typedef enum {
             _backButton.alpha = 0.0;
             _doneView.alpha = 0.0;
             _lineViewProgress.alpha = 0.0;
+            _selectStreamView.alpha = 0.0;
+            _lineView.alpha = 1.0;
         } else if (_currentState == StateRecording){
             _uploadView.alpha = 0.0;
             _preRecordingView.alpha = 0.0;
@@ -691,7 +760,9 @@ typedef enum {
             _closeButton.alpha = 0.0;
             _backButton.alpha = 0.0;
             _doneView.alpha = 0.0;
-            _lineViewProgress.alpha = 0.0;            
+            _lineViewProgress.alpha = 0.0;
+            _selectStreamView.alpha = 0.0;
+            _lineView.alpha = 1.0;
         } else if (_currentState == StatePost){
             [_geoCoder reverseGeocodeLocation:[LocationManager sharedManager].locationManager.location  completionHandler: ^(NSArray *placemarks, NSError *error) {
                 CLPlacemark *placemark = [placemarks objectAtIndex:0];
@@ -709,18 +780,34 @@ typedef enum {
             _backButton.alpha = 1.0;
             _doneView.alpha = 0.0;
             _lineViewProgress.alpha = 1.0;
+            _selectStreamView.alpha = 0.0;
+            _lineView.alpha = 1.0;
         } else if(_currentState == StateUploading){
             _uploadView.alpha = 1.0;
             _doneView.alpha = 0.0;
             _postView.alpha = 0.0;
             _backButton.alpha = 0.0;
             _lineViewProgress.alpha = 0.0;
+            _selectStreamView.alpha = 0.0;
+            _lineView.alpha = 0.0;
         } else if(_currentState == StateDone){
             _uploadView.alpha = 0.0;
             _doneView.alpha = 1.0;
             _postTitleLabel.alpha = 0;
             _postView.alpha = 0;
             _lineViewProgress.alpha = 0.0;
+            _selectStreamView.alpha = 0.0;
+            _lineView.alpha = 0.0;
+        } else if(_currentState == StateSelectStream){
+            _uploadView.alpha = 0.0;
+            _selectStreamView.alpha = 1.0;
+            _doneView.alpha = 0.0;
+            _postTitleLabel.alpha = 0;
+            _postView.alpha = 0;
+            _lineViewProgress.alpha = 0.0;
+            _lineView.alpha = 0.0;
+            
+            _selectStreamView.userInteractionEnabled = YES;
         }
         
     } completion:^(BOOL finished) {
@@ -732,7 +819,7 @@ typedef enum {
 
 - (IBAction)backButton:(id)sender {
     
-    if (_currentState == StatePost) {
+    if (_currentState == StatePost || _currentState == StateSelectStream) {
         NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
         NSURL* fileURL = [NSURL fileURLWithPath:localVid];
         unlink([localVid UTF8String]);
@@ -750,6 +837,21 @@ typedef enum {
 
 - (IBAction)closeButton:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)pickStreamButtonClicked:(id)sender {
+}
+
+-(void)updateTimeIndicator{
+    if (!_avPlayer) return;
+
+    float lenght = (float)_avPlayer.playerItem.duration.value/(float)_avPlayer.playerItem.duration.timescale;
+    float progress = (float)_avPlayer.player.currentTime.value/(float)_avPlayer.player.currentTime.timescale;
+    
+    _lineViewProgress.width = (progress/lenght) * _lineCurrentPostion.width;
+    _lineViewProgress.left = _lineCurrentPostion.left;
+    
+
 }
 
 #pragma mark - UIAlertViewDelegate
