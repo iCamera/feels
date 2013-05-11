@@ -245,14 +245,14 @@ float elasticEaseOut(float t, float b, float c, float d){
         if (scrollView.contentOffset.x < 0) {
             float left = 0;
             
-            left = -(scrollView.contentOffset.x + 14);
+            left = -(scrollView.contentOffset.x + 8);
             
             _menuView.left = left;
             self.archiveViewController.view.left = left+_menuView.width-14;
             _videoWrapperView.left = map(clamp(0, 1, left/(self.view.bounds.size.width - self.view.width)), 1, 0, 0, -120);
             
             _fadeView.alpha = map(left/(self.view.bounds.size.width - self.view.width), 1, 0, 0, 0.9);
-            _archiveViewController.imageViewsContainer.left = scrollView.contentOffset.x;
+            _archiveViewController.imageViewsContainer.left = scrollView.contentOffset.x + 8;
         }
     };
     [_archiveViewController setDidScroll:block];
@@ -352,6 +352,7 @@ float elasticEaseOut(float t, float b, float c, float d){
             _fadeView.alpha = 0;
             _archiveLabel.text = @"ARCHIVE";
             _menuArrow.transform = CGAffineTransformMakeRotation(M_PI);
+            _archiveViewController.imageViewsContainer.left = -2;
         }];
     }
     
