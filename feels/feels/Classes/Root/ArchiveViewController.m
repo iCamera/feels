@@ -11,7 +11,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface ArchiveViewController ()
+@interface ArchiveViewController ()<UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @property (nonatomic, strong) AVPlayerView *videoView;
@@ -48,7 +48,7 @@
     self.scrollView.width -= 48; //Menu width
     CGFloat contentWidth = ceil([videoImages count]/2) * 284;
     self.scrollView.contentSize = CGSizeMake(contentWidth, 320);
-    
+
     /* VIDEO */
     NSString *videoPath=[[NSBundle mainBundle] pathForResource:@"demo" ofType:@"m4v"];
     
@@ -78,6 +78,10 @@
         
         i++;
     }*/
+
+    [self.videoView setDidReachEnd:^(AVPlayerView *player){
+        [player.player seekToTime:kCMTimeZero];
+    }];
     [self.videoView.player play];
 }
 
@@ -89,6 +93,11 @@
 
 - (void)tapped {
     //[self.view removeFromSuperview];
+}
+
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+
 }
 
 @end
