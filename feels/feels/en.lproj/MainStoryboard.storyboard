@@ -214,6 +214,7 @@
                         <outlet property="archiveButton" destination="vKB-N4-drI" id="KqN-02-kwu"/>
                         <outlet property="archiveLabel" destination="Wug-j6-kgy" id="P8l-FT-sqN"/>
                         <outlet property="createLabel" destination="KiK-BA-0hg" id="mph-s3-vrp"/>
+                        <outlet property="detailView" destination="Jix-9g-Q4j" id="eKM-L6-cGL"/>
                         <outlet property="fadeView" destination="wFk-vg-SmY" id="X5a-oO-GlX"/>
                         <outlet property="menuArrow" destination="YBf-hP-iKl" id="T4s-yD-tdy"/>
                         <outlet property="menuView" destination="m8i-AP-zOl" id="Bkx-g6-1Bk"/>
@@ -542,6 +543,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/CameraViewController.h"/>
             <relationships>
                 <relationship kind="action" name="backButton:"/>
+                <relationship kind="action" name="cancelRecording:"/>
                 <relationship kind="action" name="closeButton:"/>
                 <relationship kind="action" name="pickStreamButtonClicked:"/>
                 <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
@@ -579,6 +581,7 @@
                 <relationship kind="outlet" name="archiveButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="archiveLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="createLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="detailView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="fadeView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="menuArrow" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="menuView" candidateClass="UIView"/>
