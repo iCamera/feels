@@ -18,6 +18,7 @@
 #import "LocationManager.h"
 #import <CommonCrypto/CommonDigest.h>
 #include <sys/xattr.h>
+#import "AVPlayerView.h"
 #define videoWidth 960
 #define videoHeight 540
 
@@ -111,9 +112,8 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *postTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *postTapLabel;
 
-@property(nonatomic, strong) AVPlayer *avPlayer;
+@property(nonatomic, strong) AVPlayerView *avPlayer;
 
-@property(nonatomic, strong) AVPlayerItem *playerItem;
 @property (weak, nonatomic) IBOutlet UIView *postVideoContainer;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
@@ -140,6 +140,7 @@ typedef enum {
 
 -(void)viewDidLoad{
     [super viewDidLoad];
+
     _geoCoder = [[CLGeocoder alloc] init];
     [[LocationManager sharedManager] startTracking];
     
@@ -262,7 +263,8 @@ typedef enum {
     if (_currentState == StateRecording) {
         if (_canStopRecording) {
             [self setCurrentState:StatePost];
-            if(_recording) [self performSelectorInBackground:@selector(stopRecording) withObject:nil];
+            if(_recording) [self stopRecording];//[self performSelectorInBackground:@selector(stopRecording) withObject:nil];
+            
         }
         
     } else if (_currentState == StatePre){
@@ -343,16 +345,16 @@ typedef enum {
         
         float dragValue = [[touches anyObject] locationInView:self.view].x/self.view.width;
         
-        NSLog(@"%lld %d",_playerItem.duration.value,_playerItem.duration.timescale);
-        float lenght = _playerItem.duration.value/_playerItem.duration.timescale;
+        NSLog(@"%lld %d",_avPlayer.playerItem.duration.value,_avPlayer.playerItem.duration.timescale);
+        float lenght = _avPlayer.playerItem.duration.value/_avPlayer.playerItem.duration.timescale;
         int frames = roundf(lenght * 30);
         
         int maxStart = frames - (6 * 30);
         int start = map(dragValue, 0, 1, 0, maxStart);
         _startTime = start;
         NSLog(@"lenght %f %i %i",lenght,frames,start);
-        [_avPlayer seekToTime:CMTimeMake((_startTime/30.0) * _playerItem.duration.timescale, _playerItem.duration.timescale) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
-        [_avPlayer pause];
+        [_avPlayer.player seekToTime:CMTimeMake((_startTime/30.0) * _avPlayer.playerItem.duration.timescale, _avPlayer.playerItem.duration.timescale) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+        [_avPlayer.player pause];
         
         _lineCurrentPostion.width = (6.0/lenght) * _lineView.width;
         _lineCurrentPostion.left = clamp(0, _lineView.width - _lineCurrentPostion.width, map(dragValue, 0, 1, 0, _lineView.width - _lineCurrentPostion.width));
@@ -365,8 +367,8 @@ typedef enum {
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    [_avPlayer seekToTime:CMTimeMake((_startTime/30.0) * _playerItem.duration.timescale, _playerItem.duration.timescale) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
-    [_avPlayer play];
+    [_avPlayer.player seekToTime:CMTimeMake((_startTime/30.0) * _avPlayer.playerItem.duration.timescale, _avPlayer.playerItem.duration.timescale) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    [_avPlayer.player play];
 }
 
 -(UIImage *)blendImage:(NSString *)imageName andImage2:(NSString *)image2Name first:(float)first second:(float)second{
@@ -395,40 +397,35 @@ typedef enum {
 
     
     _recording = YES;
-    double delayToStartRecording = 0.0;
-    dispatch_time_t startTime = dispatch_time(DISPATCH_TIME_NOW, delayToStartRecording * NSEC_PER_SEC);
-    dispatch_after(startTime, dispatch_get_main_queue(), ^(void){
-        NSLog(@"Start recording");
+    
+    _videoCamera.audioEncodingTarget = nil;
+    [_movieWriter startRecording];
+    
+    int startTime = [[NSDate date] timeIntervalSince1970];
+    _timeLabelTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 completion:^{
+        int nowTime = [[NSDate date] timeIntervalSince1970];
+        int diff = nowTime - startTime;
+        _recordingTimeLabel.text = [NSString stringWithFormat:@"00:%02d",diff];
+    } repeat:YES];
+    
+    
+    _stopRecTimer = [NSTimer scheduledTimerWithTimeInterval:6.0 completion:^{
+        _canStopRecording = YES;
         
-        _videoCamera.audioEncodingTarget = _movieWriter;
-        [_movieWriter startRecording];
-        
-        int startTime = [[NSDate date] timeIntervalSince1970];
-        _timeLabelTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 completion:^{
-            int nowTime = [[NSDate date] timeIntervalSince1970];
-            int diff = nowTime - startTime;
-            _recordingTimeLabel.text = [NSString stringWithFormat:@"00:%02d",diff];
-        } repeat:YES];
-        
-        
-        _stopRecTimer = [NSTimer scheduledTimerWithTimeInterval:6.0 completion:^{
-            _canStopRecording = YES;
-            
-            [UIView animateWithDuration:0.6 animations:^{
-                _recordingTapLabel.alpha = 1.0;
-            }];
-        } repeat:YES];
+        [UIView animateWithDuration:0.6 animations:^{
+            _recordingTapLabel.alpha = 1.0;
+        }];
+    } repeat:YES];
+    
+    
+    double delayInSeconds = 15.0;
+    dispatch_time_t stopTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(stopTime, dispatch_get_main_queue(), ^(void){
+        if (_recording) {
+            [self stopRecording];
+        }
         
         
-        double delayInSeconds = 15.0;
-        dispatch_time_t stopTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(stopTime, dispatch_get_main_queue(), ^(void){
-            if (_recording) {
-                [self stopRecording];
-            }
-            
-            
-        });
     });
     
 }
@@ -441,6 +438,15 @@ typedef enum {
     
     UIView *newView = [[UIView alloc] initWithFrame:self.view.bounds];
     newView.backgroundColor = [UIColor blackColor];
+    
+//    UILabel *l = [[UILabel alloc] initWithFrame:self.view.bounds];
+//    l.font = [UIFont AvantGardeExtraLight:24];
+//    l.backgroundColor = [UIColor clearColor];
+//    l.textAlignment = NSTextAlignmentCenter;
+//    l.text = @"Loading";
+//    l.textColor = [UIColor whiteColor];
+//    [newView addSubview:l]
+    
     [_postVideoContainer addSubview:newView];
     
     _recording = NO;
@@ -448,48 +454,52 @@ typedef enum {
     
    
     _videoCamera.audioEncodingTarget = nil;
-
+    [_videoCamera stopCameraCapture];
+    [_video startProcessing];
+    
     [_movieWriter finishRecordingWithCompletionHandler:^{
-        
+
         NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
-        NSURL* fileURL = [NSURL fileURLWithPath:localVid];
-        
-        
-        
      
         [_filter removeTarget:_movieWriter];
-        _playerItem = [AVPlayerItem playerItemWithURL:fileURL];
+
+//        _playerItem = [AVPlayerItem playerItemWithURL:fileURL];
         //AVPlayer *avPlayer = [[AVPlayer playerWithURL:[NSURL URLWithString:url]] retain];
-        _avPlayer = [AVPlayer playerWithPlayerItem:_playerItem];
+
+        _avPlayer = [[AVPlayerView alloc] initWithFrame:self.view.bounds];
+        [_avPlayer setPlayerForLocalFile:localVid];
+
         
-        AVPlayerLayer *avPlayerLayer = [AVPlayerLayer playerLayerWithPlayer:_avPlayer];
-        avPlayerLayer.frame = newView.bounds;
+//        AVPlayerLayer *avPlayerLayer = [[AVPlayerLayer alloc] init];
+//        [avPlayerLayer setPlayer:_avPlayer];
+//        avPlayerLayer.frame = newView.bounds;
+//        newView.backgroundColor = [UIColor redColor];
+//        
+//        [newView.layer addSublayer:avPlayerLayer];
         
-        [newView.layer addSublayer:avPlayerLayer];
-        
-        [_postVideoContainer addSubview:newView];
-        [_avPlayer play];
-        
-        _avPlayer.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+        [_postVideoContainer addSubview:_avPlayer];
+
+        [_avPlayer.player play];
+
         
         
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:[_avPlayer currentItem]];
         
-        [_videoCamera stopCameraCapture];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:[_avPlayer.player currentItem]];
+        
         
         float dragValue = 0;
         
-        NSLog(@"%lld %d",_playerItem.duration.value,_playerItem.duration.timescale);
-        float lenght = _playerItem.duration.value/_playerItem.duration.timescale;
+        NSLog(@"%lld %d",_avPlayer.playerItem.duration.value,_avPlayer.playerItem.duration.timescale);
+        float lenght = _avPlayer.playerItem.duration.value/_avPlayer.playerItem.duration.timescale;
         int frames = roundf(lenght * 30);
         
         int maxStart = frames - (6 * 30);
         int start = map(dragValue, 0, 1, 0, maxStart);
         _startTime = start;
         NSLog(@"lenght %f %i %i",lenght,frames,start);
-        [_avPlayer seekToTime:CMTimeMake((_startTime/30.0) * _playerItem.duration.timescale, _playerItem.duration.timescale) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
-        [_avPlayer pause];
+        [_avPlayer.player seekToTime:CMTimeMake((_startTime/30.0) * _avPlayer.playerItem.duration.timescale, _avPlayer.playerItem.duration.timescale) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+        //[_avPlayer pause];
         
         _lineCurrentPostion.width = (6.0/lenght) * _lineView.width;
         _lineCurrentPostion.left = clamp(0, 1.0, map(0, 0, 1, 0, _lineView.width - _lineCurrentPostion.width));
@@ -533,11 +543,11 @@ typedef enum {
     //CMTimeRange timeRange = CMTimeRangeMake(CMTimeMakeWithSeconds((_startTime/30.0) * _playerItem.duration.timescale, _playerItem.duration.timescale),
     //CMTimeMakeWithSeconds(((_startTime + 6)/30.0) * _playerItem.duration.timescale, _playerItem.duration.timescale));
     session.timeRange = timeRange;
-    
+
     [session exportAsynchronouslyWithCompletionHandler:^{
         switch (session.status) {
             case AVAssetExportSessionStatusCompleted:
-                
+                NSLog(@"COMPLETE");
                 [self upload];
                 
                 break;
@@ -558,7 +568,7 @@ typedef enum {
 }
 
 -(void)playerItemDidReachEnd:(NSNotification *)not{
-    [_avPlayer seekToTime:CMTimeMake((_startTime/30.0) * _playerItem.duration.timescale, _playerItem.duration.timescale) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    [_avPlayer.player seekToTime:CMTimeMake((_startTime/30.0) * _avPlayer.playerItem.duration.timescale, _avPlayer.playerItem.duration.timescale) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
 }
 
 - (void)upload {
@@ -706,14 +716,6 @@ typedef enum {
     }];
 }
 
-
--(void)didCompletePlayingMovie{
-    NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
-    NSURL* fileURL = [NSURL fileURLWithPath:localVid];
-    
-    _video = [[GPUImageMovie alloc] initWithURL:fileURL];
-    [_video startProcessing];
-}
 - (IBAction)backButton:(id)sender {
     
     if (_currentState == StatePost) {
