@@ -17,6 +17,7 @@
 #import "HCAnimator.h"
 
 @interface RootViewController ()
+@property (weak, nonatomic) IBOutlet UIView *detailView;
 
 @property (weak, nonatomic) IBOutlet UIView *menuView;
 @property (weak, nonatomic) IBOutlet UILabel *timeUnitLabel;
@@ -39,6 +40,7 @@
 
 @property (nonatomic, strong) ArchiveViewController *archiveViewController;
 @property (nonatomic, assign) BOOL isArchiveMode;
+@property (nonatomic, assign) BOOL isFullscreen;
 @property (nonatomic, assign) BOOL msActive;
 @property (weak, nonatomic) IBOutlet UIView *videoWrapperView;
 
@@ -226,8 +228,47 @@ float elasticEaseOut(float t, float b, float c, float d){
         //self.msLabel.text = [NSString stringWithFormat:@"%d", [AppManager sharedManager].points];
         self.msLabel.text = [numberFormat stringFromNumber:[NSNumber numberWithInt:[AppManager sharedManager].points]];
     }];
+    _videoViewController.view.userInteractionEnabled = NO;
+    [_videoWrapperView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)]];
+    
+    id block = ^(UIScrollView *scrollView){
+        if (scrollView.contentOffset.x < 0) {
+            float left = 0;
+            
+            left = -scrollView.contentOffset.x;
+            
+            _menuView.left = left;
+            self.archiveViewController.view.left = left+_menuView.width-14;
+            _videoWrapperView.left = map(clamp(0, 1, left/(self.view.bounds.size.width - self.view.width)), 1, 0, 0, -120);
+            
+            _fadeView.alpha = map(left/(self.view.bounds.size.width - self.view.width), 1, 0, 0, 0.9);
+            _archiveViewController.imageViewsContainer.left = scrollView.contentOffset.x;
+        }
+    };
+    [_archiveViewController setDidScroll:block];
 }
 
+-(void)tap:(UITapGestureRecognizer *)tap{
+    NSLog(@"HEY");
+    
+    if (_isFullscreen) {
+        _isFullscreen = NO;
+    } else {
+        _isFullscreen = YES;
+    }
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        if (_isFullscreen) {
+            _menuView.left = self.view.height;
+            _detailView.alpha = 0.0;
+        } else {
+            _menuView.left = self.view.height - _menuView.width + 7;
+            _detailView.alpha = 1.0;
+        }
+        
+    }];
+}
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
@@ -282,7 +323,7 @@ float elasticEaseOut(float t, float b, float c, float d){
 
 - (void)showArchive:(BOOL)show animated:(BOOL)animated {
     if (show) {
-        [UIView animateWithDuration:0.6 animations:^{
+        [UIView animateWithDuration:0.3 animations:^{
             self.archiveViewController.view.left = _menuView.width-13;
             _menuView.left = -7;
             _videoWrapperView.left = -120;
@@ -291,7 +332,7 @@ float elasticEaseOut(float t, float b, float c, float d){
             _menuArrow.transform = CGAffineTransformMakeRotation(0);
         }];
     } else {
-        [UIView animateWithDuration:0.6 animations:^{
+        [UIView animateWithDuration:0.3 animations:^{
             self.archiveViewController.view.origin = CGPointMake(self.view.height, 0);
             _menuView.left = self.view.height - _menuView.width +7;
             _videoWrapperView.left = 0;
