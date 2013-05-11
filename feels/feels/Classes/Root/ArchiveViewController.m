@@ -7,8 +7,14 @@
 //
 
 #import "ArchiveViewController.h"
+#import "AVPlayerView.h"
+#import <MediaPlayer/MediaPlayer.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface ArchiveViewController ()
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
+@property (nonatomic, strong) AVPlayerView *videoView;
 
 @end
 
@@ -28,13 +34,37 @@
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped)];
     [self.view addGestureRecognizer:tgr];
     
-
+    NSMutableArray *videoImages = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"sweet_lips", @"sweet_lips", @"sweet_lips", @"sweet_lips", @"sweet_lips", @"sweet_lips", nil]];
     
+    for (int i=0; i<[videoImages count]; i++) {
+        UIImageView *videoImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[videoImages objectAtIndex:i]]];
+        videoImgView.size = CGSizeMake(284, 160);
+        [videoImgView setContentMode:UIViewContentModeScaleAspectFill];
+        videoImgView.top = (i%2==0) ? 0 : 160;
+        videoImgView.left = ceil(i/2)*284;
+        [self.scrollView addSubview:videoImgView];
+    }
+
+    self.scrollView.width -= 48; //Menu width
+    CGFloat contentWidth = ceil([videoImages count]/2) * 284;
+    self.scrollView.contentSize = CGSizeMake(contentWidth, 320);
+    
+    /* VIDEO */
+    NSString *videoPath=[[NSBundle mainBundle] pathForResource:@"demo" ofType:@"m4v"];
+    
+    self.videoView = [[AVPlayerView alloc] initWithFrame:CGRectMake(284, -2, 284, 166)];
+    [self.videoView setContentMode:UIViewContentModeScaleAspectFill];
+    [self.videoView setPlayerForLocalFile:videoPath];
+    [self.scrollView addSubview:self.videoView];
+    
+    /*[self.videoView setDidReachEnd:^(AVPlayer *player){
+        [player play];
+    }];*/
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    BOOL b = YES;
+    /*BOOL b = YES;
     int i = 1;
     while (b) {
         NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Documents/Movie_out%i.mp4",i]];
@@ -47,7 +77,8 @@
         }
         
         i++;
-    }
+    }*/
+    [self.videoView.player play];
 }
 
 - (void)didReceiveMemoryWarning
