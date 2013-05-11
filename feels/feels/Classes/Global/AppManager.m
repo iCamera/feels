@@ -107,6 +107,12 @@
     }
 }
 
+- (void)removePoints {
+    int pointsToRemove = 6000;
+    self.points = (self.points < pointsToRemove) ? 0 : self.points - pointsToRemove;
+    self.seconds = self.points / 1000;
+}
+
 - (void)addPointsFromSeconds:(int)seconds {
     self.points += seconds*2;
     if (self.points > 18000) {

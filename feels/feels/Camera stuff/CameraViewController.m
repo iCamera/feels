@@ -619,12 +619,12 @@ typedef enum {
             _uploadDateLabel.text = [[dateFormatter stringFromDate:date] uppercaseString];
             
             [self setCurrentState:StateDone];
+            [[AppManager sharedManager] removePoints];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             UIAlertView *a = [[UIAlertView alloc] initWithTitle:@"Fel fel fel!" message:@"Det blev fel!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
             [a show];
             NSLog(@"Error: %@ %@", operation.responseString, [error localizedDescription]);
         }];
-        
         
         [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
             NSLog(@"Uploading: %.0f%%", ((float)totalBytesWritten/(float)totalBytesExpectedToWrite)*100.0);

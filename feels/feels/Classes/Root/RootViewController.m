@@ -252,7 +252,6 @@ float elasticEaseOut(float t, float b, float c, float d){
 }
 
 - (IBAction)createButtonTapped:(id)sender {
-    NSLog(@"CREATE THAT MTRFCKER");
     
     CameraViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"CameraViewController"];
     [self presentViewController:vc animated:YES completion:nil];
