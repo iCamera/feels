@@ -123,7 +123,7 @@
     [KVOR target:[AppManager sharedManager] keyPath:@"play" task:^(NSString *keyPath, NSDictionary *change) {
         current = YES;
         NSLog(@"Next clip in: %f", 6-[AppManager sharedManager].startSecondTimeInterval);
-        
+        NSLog(@"%@", [AppManager sharedManager].videos);
         VideoModel *video = [AppManager sharedManager].videos[[AppManager sharedManager].startIndex];
         self.currentIndex = [AppManager sharedManager].startIndex;
         

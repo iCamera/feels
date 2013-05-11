@@ -585,15 +585,13 @@ typedef enum {
                 VideoModel *model = [[VideoModel alloc] init];
                 model.timestamp = timestamp;
                 model.author = author;
-                model.location = location;
+                model.location = @"Stockholm, Skeppsholmen";
                 model.ID = cachedName;
                 
                 NSString *path = [[EGOCache globalCache] cachePathForKey:cachedName];
                 
                 NSURL *videoURL = [NSURL fileURLWithPath:path];
                 model.videoURL = [NSURL fileURLWithPath:localVid];
-                
-                NSLog(@"URL: %@", videoURL);
                 
                 //[self upload];
                 [AppManager sharedManager].startTimestamp -= 6;

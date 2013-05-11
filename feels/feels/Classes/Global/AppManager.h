@@ -11,6 +11,8 @@
 @interface AppManager : NSObject
 
 @property (nonatomic, strong) NSMutableArray *videos;
+@property (nonatomic, strong) NSMutableArray *startupHackVideos;
+
 @property (nonatomic, assign) double startTimestamp;
 @property (nonatomic, assign) double startSecondTimeInterval;
 @property (nonatomic, assign) int startIndex;
