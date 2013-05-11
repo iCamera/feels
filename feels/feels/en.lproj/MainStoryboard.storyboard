@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="5Iy-6n-OoE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="5Iy-6n-OoE">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -251,6 +251,9 @@
                                         <autoresizingMask key="autoresizingMask"/>
                                     </imageView>
                                 </subviews>
+                                <connections>
+                                    <outlet property="delegate" destination="ejj-dJ-F8Z" id="X0E-Th-6s1"/>
+                                </connections>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -544,76 +547,6 @@
         <image name="placeholder_archive.png" width="568" height="320"/>
         <image name="record_button.png" width="63" height="63"/>
     </resources>
-    <classes>
-        <class className="ArchiveViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ArchiveViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="CameraViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CameraViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="backButton:"/>
-                <relationship kind="action" name="cancelRecording:"/>
-                <relationship kind="action" name="closeButton:"/>
-                <relationship kind="action" name="pickStreamButtonClicked:"/>
-                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="closeButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="doneView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="postTapLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="postTitleLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="postVideoContainer" candidateClass="UIView"/>
-                <relationship kind="outlet" name="postView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="preRecordingView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="procentLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="recordingTapLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="recordingTimeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="recordingView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="selectStreamView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="startRecordingLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="tapLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="uploadDateLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="uploadDescLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="uploadDescriptionLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="uploadSuccessLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="uploadTimeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="uploadView" candidateClass="UIView"/>
-            </relationships>
-        </class>
-        <class className="MixerController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MixerController.h"/>
-        </class>
-        <class className="RootViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/RootViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="archiveButtonTapped:"/>
-                <relationship kind="action" name="createButtonTapped:"/>
-                <relationship kind="action" name="timeButtonTapped:"/>
-                <relationship kind="outlet" name="archiveButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="archiveLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="createLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="detailView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="fadeView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="menuArrow" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="menuView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="msDescLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="msLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="msUnitLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="msView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="timeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="timeUnitLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="vidDateLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="vidLocationLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="vidPlaceholderImage" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="vidTimeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="videoWrapperView" candidateClass="UIView"/>
-            </relationships>
-        </class>
-        <class className="VideoViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/VideoViewController.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
