@@ -129,6 +129,8 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *uploadTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *uploadDateLabel;
 
+@property (strong, nonatomic) NSTimer *timer;
+
 @property (weak, nonatomic) IBOutlet UIView *selectStreamView;
 @property (strong,nonatomic)  CLGeocoder *geoCoder;
 @property (strong,nonatomic)  NSString *placeString;
@@ -234,7 +236,7 @@ typedef enum {
     [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)]];
  
     
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateTimeIndicator) userInfo:nil repeats:YES];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateTimeIndicator) userInfo:nil repeats:YES];
     
 }
 
@@ -260,8 +262,10 @@ typedef enum {
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
+    [_timer invalidate],_timer = nil;
     [[LocationManager sharedManager] stopTracking];
 }
+
 
 -(void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
@@ -409,6 +413,7 @@ typedef enum {
 }
 
 -(void)startRecording{
+    
     _videoCamera.audioEncodingTarget = nil;
     _canStopRecording = NO;
     _recordingTapLabel.alpha = 0.0;
