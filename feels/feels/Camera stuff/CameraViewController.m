@@ -636,10 +636,20 @@ typedef enum {
                     _uploadTimeLabel.text = [[dateFormatter stringFromDate:date] uppercaseString];
                     [dateFormatter setDateFormat:@"dd LLL yyyy"];
                     _uploadDateLabel.text = [[dateFormatter stringFromDate:date] uppercaseString];
+                    __block float t = 0;
+                    __block NSTimer *timer =[NSTimer scheduledTimerWithTimeInterval:0.04 completion:^{
+                        
+                        _procentLabel.text = [NSString stringWithFormat:@"%.0f%%",clamp(0, 100, t*100.0)];
+                        t += 0.01;
+                        
+                        if(t >= 1.0) {
+                            [timer invalidate], timer = nil;
+                            [NSTimer scheduledTimerWithTimeInterval:0.2 completion:^{
+                                [self setCurrentState:StateDone];
+                            }];
+                        }
+                    } repeat:YES];
                     
-                    [NSTimer scheduledTimerWithTimeInterval:1.0 completion:^{
-                        [self setCurrentState:StateDone];
-                    }];
                     
                 });
             } break;
