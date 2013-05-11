@@ -98,6 +98,7 @@ typedef enum {
 
 @property (strong, nonatomic) NSTimer *stopRecTimer;
 @property (strong, nonatomic) NSTimer *timeLabelTimer;
+@property (strong, nonatomic) NSTimer *forceStopTimer;
 
 @property (strong, nonatomic) UIView *lineView;
 @property (strong, nonatomic) UIView *lineViewProgress;
@@ -423,16 +424,12 @@ typedef enum {
         }];
     } repeat:YES];
     
-    
-    double delayInSeconds = 15.0;
-    dispatch_time_t stopTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(stopTime, dispatch_get_main_queue(), ^(void){
+    _forceStopTimer = [NSTimer scheduledTimerWithTimeInterval:15 completion:^{
         if (_recording) {
             [self stopRecording];
         }
-        
-        
-    });
+    }];
+    
     
 }
 
@@ -441,6 +438,7 @@ typedef enum {
     NSLog(@"stopRecording");
     [_timeLabelTimer invalidate],_timeLabelTimer = nil;
     [_stopRecTimer invalidate],_stopRecTimer = nil;
+    [_forceStopTimer invalidate], _forceStopTimer = nil;
     
     UIView *newView = [[UIView alloc] initWithFrame:self.view.bounds];
     newView.backgroundColor = [UIColor blackColor];
@@ -518,6 +516,22 @@ typedef enum {
         
     }];
     
+}
+
+- (IBAction)cancelRecording:(id)sender {
+    
+    [_timeLabelTimer invalidate],_timeLabelTimer = nil;
+    [_stopRecTimer invalidate],_stopRecTimer = nil;
+    [_forceStopTimer invalidate], _forceStopTimer = nil;
+    
+    _recording = NO;
+    [_filter removeTarget:_movieWriter];
+    
+    _videoCamera.audioEncodingTarget = nil;
+    
+    [_movieWriter finishRecording];
+    
+    [self setCurrentState:StatePre];
 }
 
 - (void)export {
@@ -681,7 +695,7 @@ typedef enum {
             
             _lineView.frame = CGRectMake((self.view.bounds.size.width - 164)/2, _lineView.top, 164, 0.5);
             _closeButton.alpha = 0.0;
-            _backButton.alpha = 1.0;
+            _backButton.alpha = 0.0;
             _doneView.alpha = 0.0;
             _lineViewProgress.alpha = 0.0;            
         } else if (_currentState == StatePost){

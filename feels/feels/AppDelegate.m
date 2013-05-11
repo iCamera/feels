@@ -15,12 +15,7 @@
 
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    
-    [KVOR target:[AppManager sharedManager] keyPath:@"points" task:^(NSString *keyPath, NSDictionary *change) {
-        NSLog(@"%i", [AppManager sharedManager].points);
-    }];
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     /* TA INTE BORT
      
