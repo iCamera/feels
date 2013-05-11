@@ -35,6 +35,7 @@
     [self.view addGestureRecognizer:tgr];
     
     NSMutableArray *videoImages = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"sweet_lips", @"sweet_lips", @"sweet_lips", @"sweet_lips", @"sweet_lips", @"sweet_lips", nil]];
+    NSMutableArray *videoTitles = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"STHLM Startup Hack", @"Surf trip Norway", @"The Beach", @"Home", @"Title", @"Lorem ipsum", nil]];
     
     for (int i=0; i<[videoImages count]; i++) {
         UIImageView *videoImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[videoImages objectAtIndex:i]]];
@@ -43,6 +44,21 @@
         videoImgView.top = (i%2==0) ? 0 : 160;
         videoImgView.left = ceil(i/2)*284;
         [self.scrollView addSubview:videoImgView];
+        
+        UIImageView *infoBox = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"info_box"]];
+        infoBox.top = 108;
+        infoBox.left = 139;
+        [videoImgView addSubview:infoBox];
+        
+        UILabel *infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(6, 13, 126, 24)];
+        infoLabel.backgroundColor = [UIColor clearColor];
+        infoLabel.textAlignment = NSTextAlignmentCenter;
+        [infoLabel setFont:[UIFont AvantGardeExtraLight:12]];
+        [infoLabel setTextColor:[UIColor colorWithWhite:0 alpha:0.8]];
+        if (i < videoTitles.count) {
+            infoLabel.text = [[videoTitles objectAtIndex:i] uppercaseString];
+        }
+        [infoBox addSubview:infoLabel];
     }
 
     self.scrollView.width -= 48; //Menu width
