@@ -79,6 +79,8 @@ Copyright (C) 2010-2011 Apple Inc. All Rights Reserved.
 - (void)setVideoFillMode:(NSString *)fillMode {
 	AVPlayerLayer *playerLayer = (AVPlayerLayer*)[self layer];
 	playerLayer.videoGravity = fillMode;
+    
+
 }
 
 -(void)setPlayerForMp4File:(NSString *)file{

@@ -75,6 +75,7 @@ typedef enum {
     StateUnknown,
     StatePre,
     StateRecording,
+    StateSelectStream,
     StatePost,
     StateUploading,
     StateDone,
@@ -127,10 +128,12 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *uploadTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *uploadDateLabel;
 
+@property (weak, nonatomic) IBOutlet UIView *selectStreamView;
 @property (strong,nonatomic)  CLGeocoder *geoCoder;
 @property (strong,nonatomic)  NSString *placeString;
 - (IBAction)backButton:(id)sender;
 - (IBAction)closeButton:(id)sender;
+- (IBAction)pickStreamButtonClicked:(id)sender;
 
 @end
 
@@ -278,10 +281,12 @@ typedef enum {
         [self setCurrentState:StateRecording];
         
     } else if (_currentState == StatePost){
-        [self setCurrentState:StateUploading];
-        [self export];
+        [self setCurrentState:StateSelectStream];
     } else if(_currentState == StateDone){
         [self dismissViewControllerAnimated:YES completion:nil];
+    } else if(_currentState == StateSelectStream){
+        [self setCurrentState:StateUploading];
+        [self export];
     }
     
     
@@ -673,7 +678,7 @@ typedef enum {
     
     
     [UIView animateWithDuration:0.6 animations:^{
-        
+        _selectStreamView.userInteractionEnabled = NO;
         if (_currentState == StatePre) {
             _uploadView.alpha = 0.0;
             _preRecordingView.alpha = 1.0;
@@ -689,6 +694,8 @@ typedef enum {
             _backButton.alpha = 0.0;
             _doneView.alpha = 0.0;
             _lineViewProgress.alpha = 0.0;
+            _selectStreamView.alpha = 0.0;
+            _lineView.alpha = 1.0;
         } else if (_currentState == StateRecording){
             _uploadView.alpha = 0.0;
             _preRecordingView.alpha = 0.0;
@@ -702,7 +709,9 @@ typedef enum {
             _closeButton.alpha = 0.0;
             _backButton.alpha = 0.0;
             _doneView.alpha = 0.0;
-            _lineViewProgress.alpha = 0.0;            
+            _lineViewProgress.alpha = 0.0;
+            _selectStreamView.alpha = 0.0;
+            _lineView.alpha = 1.0;
         } else if (_currentState == StatePost){
             [_geoCoder reverseGeocodeLocation:[LocationManager sharedManager].locationManager.location  completionHandler: ^(NSArray *placemarks, NSError *error) {
                 CLPlacemark *placemark = [placemarks objectAtIndex:0];
@@ -720,18 +729,34 @@ typedef enum {
             _backButton.alpha = 1.0;
             _doneView.alpha = 0.0;
             _lineViewProgress.alpha = 1.0;
+            _selectStreamView.alpha = 0.0;
+            _lineView.alpha = 1.0;
         } else if(_currentState == StateUploading){
             _uploadView.alpha = 1.0;
             _doneView.alpha = 0.0;
             _postView.alpha = 0.0;
             _backButton.alpha = 0.0;
             _lineViewProgress.alpha = 0.0;
+            _selectStreamView.alpha = 0.0;
+            _lineView.alpha = 0.0;
         } else if(_currentState == StateDone){
             _uploadView.alpha = 0.0;
             _doneView.alpha = 1.0;
             _postTitleLabel.alpha = 0;
             _postView.alpha = 0;
             _lineViewProgress.alpha = 0.0;
+            _selectStreamView.alpha = 0.0;
+            _lineView.alpha = 0.0;
+        } else if(_currentState == StateSelectStream){
+            _uploadView.alpha = 0.0;
+            _selectStreamView.alpha = 1.0;
+            _doneView.alpha = 0.0;
+            _postTitleLabel.alpha = 0;
+            _postView.alpha = 0;
+            _lineViewProgress.alpha = 0.0;
+            _lineView.alpha = 0.0;
+            
+            _selectStreamView.userInteractionEnabled = YES;
         }
         
     } completion:^(BOOL finished) {
@@ -743,7 +768,7 @@ typedef enum {
 
 - (IBAction)backButton:(id)sender {
     
-    if (_currentState == StatePost) {
+    if (_currentState == StatePost || _currentState == StateSelectStream) {
         NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
         NSURL* fileURL = [NSURL fileURLWithPath:localVid];
         unlink([localVid UTF8String]);
@@ -763,12 +788,14 @@ typedef enum {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (IBAction)pickStreamButtonClicked:(id)sender {
+}
+
 -(void)updateTimeIndicator{
     if (!_avPlayer) return;
 
     float lenght = (float)_avPlayer.playerItem.duration.value/(float)_avPlayer.playerItem.duration.timescale;
     float progress = (float)_avPlayer.player.currentTime.value/(float)_avPlayer.player.currentTime.timescale;
-    int frames = roundf(lenght * 30);
     
     _lineViewProgress.width = (progress/lenght) * _lineCurrentPostion.width;
     _lineViewProgress.left = _lineCurrentPostion.left;
