@@ -296,12 +296,12 @@ typedef enum {
         }
         _changeCounter = 0;
         
-        float dragValue = [[touches anyObject] locationInView:self.view].x/self.view.width;
+        float dragValue = [[touches anyObject] locationInView:self.view].x/self.view.bounds.size.width;
         
         
         if (dragValue < 0.25) {
             [_videoCamera removeTarget:_filter];
-      [_filter removeTarget:_movieWriter];            
+            [_filter removeTarget:_movieWriter];            
             _filter = [[FeelsFilter alloc] init];
             UIImage *i = [self blendImage:@"lookup" andImage2:@"lookup_xpro" first:map(dragValue, 0.0, 0.25, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
@@ -312,7 +312,7 @@ typedef enum {
             
         } else if (dragValue < 0.50){
             [_videoCamera removeTarget:_filter];
-      [_filter removeTarget:_movieWriter];
+            [_filter removeTarget:_movieWriter];
             _filter = [[FeelsFilter alloc] init];
             UIImage *i = [self blendImage:@"lookup_xpro" andImage2:@"lookup_toaster" first:map(dragValue, 0.25, 0.50, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
@@ -321,7 +321,7 @@ typedef enum {
             [_filter addTarget:_movieWriter];            
             [_videoCamera addTarget:_filter];
         } else if (dragValue < 0.75){
-      [_filter removeTarget:_movieWriter];
+            [_filter removeTarget:_movieWriter];
             [_videoCamera removeTarget:_filter];
             _filter = [[FeelsFilter alloc] init];
             UIImage *i = [self blendImage:@"lookup_toaster" andImage2:@"lookup_nashville" first:map(dragValue, 0.50, 0.75, 1.0, 0.0) second:0.0];
