@@ -222,7 +222,7 @@ typedef enum {
     NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
     BOOL v = [self addSkipBackupAttributeToKey:pathToMovie];
     NSLog(@"palla : %d",v);
-
+    
     unlink([pathToMovie UTF8String]); // If a file already exists, AVAssetWriter won't let you record new frames, so delete the old movie
     NSURL *movieURL = [NSURL fileURLWithPath:pathToMovie];
     _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(960.0, 540.0)];
@@ -232,7 +232,7 @@ typedef enum {
     
     
     [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)]];
- 
+    
     
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateTimeIndicator) userInfo:nil repeats:YES];
     
@@ -316,43 +316,43 @@ typedef enum {
         
         if (dragValue < 0.25) {
             [_videoCamera removeTarget:_filter];
-            [_filter removeTarget:_movieWriter];            
+            [_filter removeTarget:_movieWriter];
             _filter = [[FeelsFilter alloc] init];
             _filter.saturation = dragValueY;
             UIImage *i = [self blendImage:@"lookup" andImage2:@"lookup_xpro" first:map(dragValue, 0.0, 0.25, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
             
             [_filter addTarget:_gpuImageView];
-            [_filter addTarget:_movieWriter];            
+            [_filter addTarget:_movieWriter];
             [_videoCamera addTarget:_filter];
             
         } else if (dragValue < 0.50){
             [_videoCamera removeTarget:_filter];
             [_filter removeTarget:_movieWriter];
             _filter = [[FeelsFilter alloc] init];
-                        _filter.saturation = dragValueY;
+            _filter.saturation = dragValueY;
             UIImage *i = [self blendImage:@"lookup_xpro" andImage2:@"lookup_toaster" first:map(dragValue, 0.25, 0.50, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
             
             [_filter addTarget:_gpuImageView];
-            [_filter addTarget:_movieWriter];            
+            [_filter addTarget:_movieWriter];
             [_videoCamera addTarget:_filter];
         } else if (dragValue < 0.75){
             [_filter removeTarget:_movieWriter];
             [_videoCamera removeTarget:_filter];
             _filter = [[FeelsFilter alloc] init];
-            _filter.saturation = dragValueY;            
+            _filter.saturation = dragValueY;
             UIImage *i = [self blendImage:@"lookup_toaster" andImage2:@"lookup_nashville" first:map(dragValue, 0.50, 0.75, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
             
             [_filter addTarget:_gpuImageView];
-            [_filter addTarget:_movieWriter];            
+            [_filter addTarget:_movieWriter];
             [_videoCamera addTarget:_filter];
         } else {
             [_videoCamera removeTarget:_filter];
             [_filter removeTarget:_movieWriter];
             _filter = [[FeelsFilter alloc] init];
-            _filter.saturation = dragValueY;            
+            _filter.saturation = dragValueY;
             UIImage *i = [self blendImage:@"lookup_nashville" andImage2:@"lookup" first:map(dragValue, 0.75, 1.0, 1.0, 0.0) second:0.0];
             [_filter setSourceImage:i];
             
@@ -378,7 +378,7 @@ typedef enum {
         _lineCurrentPostion.left = clamp(0, _lineView.width - _lineCurrentPostion.width, map(dragValue, 0, 1, 0, _lineView.width - _lineCurrentPostion.width));
         NSLog(@"%f %f",_lineCurrentPostion.width,_lineView.width - _lineCurrentPostion.width);
     } else if (_currentState == StatePost){
-
+        
     }
     
     
@@ -412,7 +412,7 @@ typedef enum {
     _videoCamera.audioEncodingTarget = nil;
     _canStopRecording = NO;
     _recordingTapLabel.alpha = 0.0;
-
+    
     
     _recording = YES;
     
@@ -454,48 +454,48 @@ typedef enum {
     UIView *newView = [[UIView alloc] initWithFrame:self.view.bounds];
     newView.backgroundColor = [UIColor blackColor];
     
-//    UILabel *l = [[UILabel alloc] initWithFrame:self.view.bounds];
-//    l.font = [UIFont AvantGardeExtraLight:24];
-//    l.backgroundColor = [UIColor clearColor];
-//    l.textAlignment = NSTextAlignmentCenter;
-//    l.text = @"Loading";
-//    l.textColor = [UIColor whiteColor];
-//    [newView addSubview:l]
+    //    UILabel *l = [[UILabel alloc] initWithFrame:self.view.bounds];
+    //    l.font = [UIFont AvantGardeExtraLight:24];
+    //    l.backgroundColor = [UIColor clearColor];
+    //    l.textAlignment = NSTextAlignmentCenter;
+    //    l.text = @"Loading";
+    //    l.textColor = [UIColor whiteColor];
+    //    [newView addSubview:l]
     
     [_postVideoContainer addSubview:newView];
     
     _recording = NO;
     [_filter removeTarget:_movieWriter];
     
-   
+    
     _videoCamera.audioEncodingTarget = nil;
     [_videoCamera stopCameraCapture];
     [_video startProcessing];
     
     [_movieWriter finishRecordingWithCompletionHandler:^{
-
+        
         NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.mp4"];
-     
+        
         [_filter removeTarget:_movieWriter];
-
-//        _playerItem = [AVPlayerItem playerItemWithURL:fileURL];
+        
+        //        _playerItem = [AVPlayerItem playerItemWithURL:fileURL];
         //AVPlayer *avPlayer = [[AVPlayer playerWithURL:[NSURL URLWithString:url]] retain];
-
+        
         _avPlayer = [[AVPlayerView alloc] initWithFrame:self.view.bounds];
         [_avPlayer setPlayerForLocalFile:localVid];
-
         
-//        AVPlayerLayer *avPlayerLayer = [[AVPlayerLayer alloc] init];
-//        [avPlayerLayer setPlayer:_avPlayer];
-//        avPlayerLayer.frame = newView.bounds;
-//        newView.backgroundColor = [UIColor redColor];
-//        
-//        [newView.layer addSublayer:avPlayerLayer];
+        
+        //        AVPlayerLayer *avPlayerLayer = [[AVPlayerLayer alloc] init];
+        //        [avPlayerLayer setPlayer:_avPlayer];
+        //        avPlayerLayer.frame = newView.bounds;
+        //        newView.backgroundColor = [UIColor redColor];
+        //
+        //        [newView.layer addSublayer:avPlayerLayer];
         
         [_postVideoContainer addSubview:_avPlayer];
-
+        
         [_avPlayer.player play];
-
+        
         
         
         
@@ -576,61 +576,67 @@ typedef enum {
     //CMTimeRange timeRange = CMTimeRangeMake(CMTimeMakeWithSeconds((_startTime/30.0) * _playerItem.duration.timescale, _playerItem.duration.timescale),
     //CMTimeMakeWithSeconds(((_startTime + 6)/30.0) * _playerItem.duration.timescale, _playerItem.duration.timescale));
     session.timeRange = timeRange;
-
+    
     [session exportAsynchronouslyWithCompletionHandler:^{
         switch (session.status) {
             case AVAssetExportSessionStatusCompleted: {
                 NSLog(@"COMPLETE");
-                NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie_out.mp4"];
                 
-                NSString *cachedName = [[NSString stringWithFormat:@"%i", arc4random()] MD5];
-                NSData *videoData = [NSData dataWithContentsOfFile:localVid];
-                [[EGOCache globalCache] setData:videoData forKey:cachedName];
-                
-                NSString *location = (_placeString) ? _placeString : [@"[Unknown location]" uppercaseString];
-                NSString *author = [[AppManager sharedManager] author];
-                NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];
-                
-                
-                VideoModel *model = [[VideoModel alloc] init];
-                model.timestamp = timestamp;
-                model.author = author;
-                model.location = @"Stockholm, Skeppsholmen";
-                model.ID = cachedName;
-                
-                NSString *path = [[EGOCache globalCache] cachePathForKey:cachedName];
-                
-                NSURL *videoURL = [NSURL fileURLWithPath:path];
-                model.videoURL = [NSURL fileURLWithPath:localVid];
-                
-                //[self upload];
-                [AppManager sharedManager].startTimestamp -= 6;
-                [[AppManager sharedManager] removePoints];
-                [[[AppManager sharedManager] videos] addObject:model];
-                
-                int i = [[NSUserDefaults standardUserDefaults] integerForKey:kUploadedVideos];
-                i++;
-                [[NSUserDefaults standardUserDefaults] setInteger:i forKey:kUploadedVideos];
-                NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
-                double secs = now - [AppManager sharedManager].disappearTime;
-                
-                int numberOfClips = secs/6;
-                int newIndex = (numberOfClips + [AppManager sharedManager].currentIndex) % [AppManager sharedManager].videos.count;
-                
-                double yourTime = ([AppManager sharedManager].videos.count - newIndex) * 6;
-                NSDate *date = [NSDate dateWithTimeIntervalSinceNow:yourTime];
-                
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                [dateFormatter setAMSymbol:@"AM"];
-                [dateFormatter setPMSymbol:@"PM"];
-                [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
-                [dateFormatter setDateFormat:@"hh:mm a"];
-                _uploadTimeLabel.text = [[dateFormatter stringFromDate:date] uppercaseString];
-                [dateFormatter setDateFormat:@"dd LLL yyyy"];
-                _uploadDateLabel.text = [[dateFormatter stringFromDate:date] uppercaseString];
-
-                
-                [self setCurrentState:StateDone];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    NSString *localVid = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie_out.mp4"];
+                    
+                    NSString *cachedName = [[NSString stringWithFormat:@"%i", arc4random()] MD5];
+                    NSData *videoData = [NSData dataWithContentsOfFile:localVid];
+                    [[EGOCache globalCache] setData:videoData forKey:cachedName];
+                    
+                    NSString *location = (_placeString) ? _placeString : [@"[Unknown location]" uppercaseString];
+                    NSString *author = [[AppManager sharedManager] author];
+                    NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];
+                    
+                    
+                    VideoModel *model = [[VideoModel alloc] init];
+                    model.timestamp = timestamp;
+                    model.author = author;
+                    model.location = @"STOCKHOLM, SKEPPSHOLMEN";
+                    model.ID = cachedName;
+                    
+                    NSString *path = [[EGOCache globalCache] cachePathForKey:cachedName];
+                    
+                    NSURL *videoURL = [NSURL fileURLWithPath:path];
+                    model.videoURL = [NSURL fileURLWithPath:localVid];
+                    
+                    //[self upload];
+                    [AppManager sharedManager].startTimestamp -= 6;
+                    [[AppManager sharedManager] removePoints];
+                    [[[AppManager sharedManager] videos] addObject:model];
+                    
+                    int i = [[NSUserDefaults standardUserDefaults] integerForKey:kUploadedVideos];
+                    i++;
+                    [[NSUserDefaults standardUserDefaults] setInteger:i forKey:kUploadedVideos];
+                    NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+                    double secs = now - [AppManager sharedManager].disappearTime;
+                    
+                    int numberOfClips = secs/6;
+                    int newIndex = (numberOfClips + [AppManager sharedManager].currentIndex) % [AppManager sharedManager].videos.count;
+                    
+                    double yourTime = ([AppManager sharedManager].videos.count - newIndex) * 6;
+                    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:yourTime];
+                    
+                    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                    [dateFormatter setAMSymbol:@"AM"];
+                    [dateFormatter setPMSymbol:@"PM"];
+                    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+                    [dateFormatter setDateFormat:@"hh:mm a"];
+                    _uploadTimeLabel.text = [[dateFormatter stringFromDate:date] uppercaseString];
+                    [dateFormatter setDateFormat:@"dd LLL yyyy"];
+                    _uploadDateLabel.text = [[dateFormatter stringFromDate:date] uppercaseString];
+                    
+                    [NSTimer scheduledTimerWithTimeInterval:1.0 completion:^{
+                        [self setCurrentState:StateDone];
+                    }];
+                    
+                });
             } break;
             case AVAssetExportSessionStatusFailed:
                 NSLog(@"Failed: %@", session.error);
@@ -844,18 +850,18 @@ typedef enum {
 
 -(void)updateTimeIndicator{
     if (!_avPlayer) return;
-
+    
     float lenght = (float)_avPlayer.playerItem.duration.value/(float)_avPlayer.playerItem.duration.timescale;
     float progress = (float)_avPlayer.player.currentTime.value/(float)_avPlayer.player.currentTime.timescale;
     
     _lineViewProgress.width = (progress/lenght) * _lineCurrentPostion.width;
     _lineViewProgress.left = _lineCurrentPostion.left;
     
-
+    
 }
 
 #pragma mark - UIAlertViewDelegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-
+    
 }
 @end
