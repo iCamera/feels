@@ -31,7 +31,7 @@
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" id="IP6-H0-SGn">
                                         <rect key="frame" x="0.0" y="37" width="157" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="25"/>
+                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -555,7 +555,6 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/CameraViewController.h"/>
             <relationships>
                 <relationship kind="action" name="backButton:"/>
-                <relationship kind="action" name="cancelRecording:"/>
                 <relationship kind="action" name="closeButton:"/>
                 <relationship kind="action" name="pickStreamButtonClicked:"/>
                 <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>

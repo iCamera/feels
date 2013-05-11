@@ -119,7 +119,7 @@ float elasticEaseOut(float t, float b, float c, float d){
     
     /* VIDEO */
     [_vidTimeLabel setFont:[UIFont AvantGardeExtraLight:32]];
-    [_vidDateLabel setFont:[UIFont AvantGardeExtraLight:25]];
+    [_vidDateLabel setFont:[UIFont AvantGardeExtraLight:24]];
     [_vidLocationLabel setFont:[UIFont AvantGardeExtraLight:14]];
     float kern = 1.1;
     [_vidTimeLabel setKerning:kern];
