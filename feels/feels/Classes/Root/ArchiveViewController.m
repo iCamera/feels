@@ -9,6 +9,7 @@
 #import "ArchiveViewController.h"
 
 @interface ArchiveViewController ()
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @end
 
@@ -28,8 +29,20 @@
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped)];
     [self.view addGestureRecognizer:tgr];
     
-
+    NSMutableArray *videoImages = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"sweet_lips", @"sweet_lips", @"sweet_lips", @"sweet_lips", @"sweet_lips", @"sweet_lips", nil]];
     
+    for (int i=0; i<[videoImages count]; i++) {
+        UIImageView *videoImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[videoImages objectAtIndex:i]]];
+        videoImgView.size = CGSizeMake(284, 160);
+        [videoImgView setContentMode:UIViewContentModeScaleAspectFill];
+        videoImgView.top = (i%2==0) ? 0 : 160;
+        videoImgView.left = ceil(i/2)*284;
+        [self.scrollView addSubview:videoImgView];
+    }
+
+    self.scrollView.width -= 48; //Menu width
+    CGFloat contentWidth = ceil([videoImages count]/2) * 284;
+    self.scrollView.contentSize = CGSizeMake(contentWidth, 320);
 }
 
 -(void)viewDidAppear:(BOOL)animated{
