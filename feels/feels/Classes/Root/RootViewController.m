@@ -245,7 +245,7 @@ float elasticEaseOut(float t, float b, float c, float d){
         if (scrollView.contentOffset.x < 0) {
             float left = 0;
             
-            left = -scrollView.contentOffset.x;
+            left = -(scrollView.contentOffset.x + 14);
             
             _menuView.left = left;
             self.archiveViewController.view.left = left+_menuView.width-14;

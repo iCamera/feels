@@ -35,17 +35,20 @@
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped)];
     [self.view addGestureRecognizer:tgr];
     
-    NSMutableArray *videoImages = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"sweet_lips", @"surfer", @"sweet_lips", @"leafs", @"paris", @"alaska", nil]];
-    NSMutableArray *videoTitles = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"STHLM Startup Hack", @"Surf trip Norway", @"The Beach", @"Fall 2013", @"Party in Paris!", @"Alaska", nil]];
+    NSMutableArray *videoImages = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"alaska", @"surfer", @"sweet_lips", @"leafs", @"paris", @"sweet_lips", nil]];
+    NSMutableArray *videoTitles = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects: @"Alaska",  @"Surf trip Norway", @"The Beach", @"Fall 2013", @"Party in Paris!",@"STHLM Startup Hack", nil]];
 
     _imageViewsContainer = [[UIView alloc] initWithFrame:self.view.bounds];
     _imageViewsContainer.width += 1000;
     
     for (int i=0; i<[videoImages count]; i++) {
         UIImageView *videoImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[videoImages objectAtIndex:i]]];
-        if (i == 0) {
+        if (i == [videoImages count] - 1) {
             [videoImgView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFirst)]];
             videoImgView.userInteractionEnabled = YES;
+        } else if(i == 0) {
+            videoImgView.userInteractionEnabled = YES;            
+            [videoImgView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAlaska)]];
         }
         videoImgView.size = CGSizeMake(284, 160);
         [videoImgView setContentMode:UIViewContentModeScaleAspectFill];
@@ -88,8 +91,8 @@
     /* VIDEO */
     self.videoView = [[AVPlayerView alloc] initWithFrame:CGRectMake(284, -2, 284, 166)];
     [self.videoView setContentMode:UIViewContentModeScaleAspectFill];
-    [self.videoView setPlayerForMp4File:@"small"];
-    [self.videoView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAlaska)]];
+    [self.videoView setPlayerForM4vFile:@"demo"];
+//    [self.videoView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAlaska)]];
     [_imageViewsContainer addSubview:self.videoView];
     
     UIImageView *infoBox = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"info_box"]];
